@@ -1,0 +1,113 @@
+{
+  "name": "connect-reports",
+  "readme_file": "README.md",
+  "version": "0.1.0",
+  "language": "python",
+  "reports": [
+    {
+      "name": "assets",
+      "readme_file": "reports/assets/README.md",
+      "entrypoint": "reports.assets.entrypoint.generate",
+      "audience": [
+        "provider",
+        "vendor"
+      ],
+      "report_spec": "2",
+      "parameters": [
+        {
+          "id": "product",
+          "type": "product",
+          "name": "Product List",
+          "description": "Select the products you want to include in report",
+          "required": true
+        },
+        {
+          "id": "date",
+          "type": "date_range",
+          "name": "Report period",
+          "description": "Provide the time period to create the report",
+          "required": false
+        },
+        {
+          "id": "status",
+          "type": "choice",
+          "name": "Asset status",
+          "description": "Select the status of the asset you want to include in report",
+          "required": false,
+          "choices": [
+            {
+              "value": "",
+              "label": "All"
+            },
+            {
+              "value": "draft",
+              "label": "Draft"
+            },
+            {
+              "value": "processing",
+              "label": "Processing"
+            },
+            {
+              "value": "suspended",
+              "label": "Suspended"
+            },
+            {
+              "value": "active",
+              "label": "Active"
+            },
+            {
+              "value": "terminating",
+              "label": "Terminating"
+            },
+            {
+              "value": "terminated",
+              "label": "Terminated"
+            }
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "id": "xlsx",
+          "type": "xlsx",
+          "default": true,
+          "description": "Export data in Microsoft Excel 2020 format.",
+          "template": "reports/assets/templates/xlsx/template.xlsx",
+          "args": {
+            "start_row": 1,
+            "start_col": 1
+          }
+        },
+        {
+          "id": "json",
+          "type": "json",
+          "default": false,
+          "description": "Export data as JSON"
+        },
+        {
+          "id": "csv",
+          "type": "csv",
+          "default": false,
+          "description": "Export data as CSV"
+        },
+        {
+          "id": "xml",
+          "type": "jinja2",
+          "default": false,
+          "description": "Export data as XML",
+          "template": "reports/assets/templates/xml/template.xml.j2"
+        },
+        {
+          "id": "pdf-portrait",
+          "type": "pdf",
+          "default": false,
+          "description": "Export data as PDF (portrait)",
+          "template": "reports/assets/templates/pdf/template.html.j2",
+          "args": {
+            "css_file": "reports/assets/templates/pdf/template.css"
+          }
+        }
+      ]
+    }
+  ]
+}
