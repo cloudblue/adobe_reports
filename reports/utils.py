@@ -60,7 +60,7 @@ def _process_asset_parameters(asset_params: list, asset_parameters: list) -> dic
     for param in asset_params:
         param_id = param['id']
         if param_id == 'discount_group':
-            discount_group = get_discount_level(param['value'])
+            discount_group = _get_discount_level(param['value'])
             params_dict[param_id] = discount_group
         elif param_id in asset_parameters:
             params_dict[param_id] = param['value']
@@ -120,7 +120,7 @@ def _get_value_from_split_header(asset: dict, header: str) -> str:
     return value
 
 
-def get_discount_level(discount_group: str) -> str:
+def _get_discount_level(discount_group: str) -> str:
     """
     Transform the discount_group to a proper level of discount
 
@@ -151,7 +151,7 @@ def get_discount_level(discount_group: str) -> str:
     return discount
 
 
-def get_marketplace_params(client, asset):
+def get_marketplace_params(client, asset, testing=None):
     """
     This function returns a dict with key,value pairs for each marketplace_header or None if there is no listing
     for the marketplace and product in asset
@@ -165,13 +165,13 @@ def get_marketplace_params(client, asset):
     listing = api_calls.request_listing(client, asset['marketplace']['id'], asset['product']['id'])
     if listing and 'pricelist' in listing:
         price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
-        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'])
+        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'], testing)
         if price_list_version and price_list_points:
             # dict with currency and currency change
             currency = _get_currency_and_change(price_list_version)
 
             # dict with all financials from all items in price list
-            price_list_financials = get_financials_from_price_list(price_list_points)
+            price_list_financials = _get_financials_from_price_list(price_list_points)
 
             # dict with seats and financials from assets items
             financials_and_seats = _get_financials_and_seats(asset['items'], price_list_financials)
@@ -187,16 +187,16 @@ def get_marketplace_params(client, asset):
     return None
 
 
-def get_financials_from_price_list(price_lists_points: list) -> dict:
+def _get_financials_from_price_list(price_list_points: list) -> dict:
     """
     This function retrieves the cost, reseller_cost and msrp from each point at the price list points
 
-    :type price_lists_points: list
-    :param price_lists_points: request with points of price list
+    :type price_list_points: list
+    :param price_list_points: request with points of price list
     :return: dict with cost, reseller_cost and msrp
     """
     items_financials = {}
-    for point in price_lists_points:
+    for point in price_list_points:
         if point['item']['global_id'] not in items_financials:
             items_financials[point['item']['global_id']] = {}
         if float(point['attributes']['price']) != 0.0:

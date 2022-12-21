@@ -15,7 +15,6 @@ import requests
 import responses
 from connect.client import ConnectClient
 
-
 ConnectResponse = namedtuple(
     'ConnectResponse',
     (
@@ -114,13 +113,13 @@ def extra_context_callback(mocker):
 @pytest.fixture
 def response_factory():
     def _create_response(
-        count=None,
-        query=None,
-        ordering=None,
-        select=None,
-        value=None,
-        status=None,
-        exception=None,
+            count=None,
+            query=None,
+            ordering=None,
+            select=None,
+            value=None,
+            status=None,
+            exception=None,
     ):
         return ConnectResponse(
             count=count,
@@ -131,8 +130,8 @@ def response_factory():
             status=status,
             exception=exception,
         )
-    return _create_response
 
+    return _create_response
 
 
 @pytest.fixture
@@ -179,7 +178,7 @@ def sync_client_factory():
             else:
                 mock_kwargs['status'] = res.status or 200
                 mock_kwargs['body'] = str(res.value)
-            
+
             with responses.RequestsMock() as rsps:
                 rsps.add(
                     method.upper(),
@@ -187,22 +186,56 @@ def sync_client_factory():
                     **mock_kwargs,
                 )
                 self.response = requests.request(method, url, **kwargs)
-            
+
                 if self.response.status_code >= 400:
                     self.response.raise_for_status()
 
         client = ConnectClient('Key', use_specs=False)
         client._execute_http_call = MethodType(_execute_http_call, client)
         return client
+
     return _create_client
 
 
 @pytest.fixture
-def asset():
+def assets():
     with open(
             os.path.join(
                 os.getcwd(),
-                'asset.json',
+                'active_assets.json',
+            ),
+    ) as request:
+        return json.load(request)
+
+
+@pytest.fixture
+def listing():
+    with open(
+            os.path.join(
+                os.getcwd(),
+                'adobe_listing.json',
+            ),
+    ) as request:
+        return json.load(request)
+
+
+@pytest.fixture()
+def pricelist_version():
+    with open(
+            os.path.join(
+                os.getcwd(),
+                'pricelist_version.json',
+            ),
+    ) as request:
+        return json.load(request)
+
+
+@pytest.fixture()
+def pricelist_points():
+    with open(
+            os.path.join(
+                os.getcwd(),
+                'pricelist_points.json',
             ),
     ) as request:
         return json.load(request)
