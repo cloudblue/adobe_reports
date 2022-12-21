@@ -1,6 +1,5 @@
 from connect.client import R
 
-
 def request_assets(client, input_data) -> list:
     rql = R().events.created.at.ge(input_data['date']['after'])
     rql &= R().events.created.at.le(input_data['date']['before'])
@@ -25,7 +24,8 @@ def request_price_list(client, price_list_id) -> dict:
     return client('pricing').versions.filter(rql).first()
 
 
-def request_price_list_version_points(client, price_list_version_id) -> list:
+def request_price_list_version_points(client, price_list_version_id, testing) -> list:
     rql = R()
     rql &= R().status.eq('filled')
-    return client('pricing').versions[price_list_version_id].points.filter(rql).all()
+    return client('pricing').versions[price_list_version_id].points.filter(rql).all() if testing is None \
+        else client('pricing').versions[price_list_version_id].points.filter(rql).all()[0]
