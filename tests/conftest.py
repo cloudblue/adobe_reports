@@ -8,7 +8,6 @@ from collections.abc import Iterable
 from types import MethodType
 from urllib.parse import parse_qs
 
-import os
 import json
 import pytest
 import requests
@@ -199,43 +198,23 @@ def sync_client_factory():
 
 @pytest.fixture
 def assets():
-    with open(
-            os.path.join(
-                os.getcwd(),
-                'active_assets.json',
-            ),
-    ) as request:
+    with open('tests/active_assets.json') as request:
         return json.load(request)
 
 
 @pytest.fixture
 def listing():
-    with open(
-            os.path.join(
-                os.getcwd(),
-                'adobe_listing.json',
-            ),
-    ) as request:
+    with open('tests/adobe_listing.json') as request:
         return json.load(request)
 
 
 @pytest.fixture()
 def pricelist_version():
-    with open(
-            os.path.join(
-                os.getcwd(),
-                'pricelist_version.json',
-            ),
-    ) as request:
+    with open('tests/pricelist_version.json') as request:
         return json.load(request)
 
 
 @pytest.fixture()
 def pricelist_points():
-    with open(
-            os.path.join(
-                os.getcwd(),
-                'pricelist_points.json',
-            ),
-    ) as request:
+    with open('tests/pricelist_points.json') as request:
         return json.load(request)

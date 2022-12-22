@@ -1,5 +1,6 @@
 from connect.client import R
 
+
 def request_assets(client, input_data) -> list:
     rql = R().events.created.at.ge(input_data['date']['after'])
     rql &= R().events.created.at.le(input_data['date']['before'])

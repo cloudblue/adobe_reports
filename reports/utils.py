@@ -156,10 +156,12 @@ def get_marketplace_params(client, asset, testing=None):
     This function returns a dict with key,value pairs for each marketplace_header or None if there is no listing
     for the marketplace and product in asset
 
-    :type client:
+    :type client: connect.ConnectClient
     :type asset: dict
-    :param client:
+    :type testing: None or value
+    :param client: connect.ConnectClient
     :param asset: dict with asset from connect
+    :param testing: if not None this will retrieve the normal resoureSet
     :return: dict if listing or None
     """
     listing = api_calls.request_listing(client, asset['marketplace']['id'], asset['product']['id'])
