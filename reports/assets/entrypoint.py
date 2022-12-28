@@ -65,6 +65,8 @@ def generate(
 
     total = assets.count()
     counter = 0
+    if total == 0:
+        yield 'Empty assets'
     for asset in assets:
         marketplace_params = utils.get_marketplace_params(client, asset)
         if not marketplace_params:

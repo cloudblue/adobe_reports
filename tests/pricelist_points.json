@@ -298,9 +298,9 @@
     },
     "status": "filled",
     "attributes": {
-      "st0p": 77,
-      "st1p": 77,
-      "price": 77
+      "st0p": 0,
+      "st1p": 0,
+      "price": 0
     }
   }
 ]

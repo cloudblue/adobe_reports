@@ -1,66 +1,134 @@
-{
-  "id": "PLV-667-945-709-0003",
-  "description": "sdfjkjsalf",
-  "base": {
-    "id": "PLV-667-945-709-0002",
-    "start_at": "2022-09-21T11:30:08+00:00"
-  },
-  "start_at": "2022-10-05T08:31:20+00:00",
-  "status": "active",
-  "pricelist": {
-    "id": "PL-667-945-709",
-    "name": "Test Insights pricelist - 2",
-    "currency": "USD",
-    "precision": 0.01,
-    "status": "active",
-    "owner": {
-      "id": "VA-610-138",
-      "name": "IMC Gamma Team Vendor"
+[
+  {
+    "id": "PLV-667-945-709-0003",
+    "description": "sdfjkjsalf",
+    "base": {
+      "id": "PLV-667-945-709-0002",
+      "start_at": "2022-09-21T11:30:08+00:00"
     },
-    "attributes": [
-      {
-        "id": "price",
-        "name": "Price",
-        "description": "Wholesale price of an item from a Vendor to a Provider, i.e. Provider's cost."
+    "start_at": "2022-10-05T08:31:20+00:00",
+    "status": "active",
+    "pricelist": {
+      "id": "PL-667-945-709",
+      "name": "Test Insights pricelist - 2",
+      "currency": "EUR",
+      "precision": 0.01,
+      "status": "active",
+      "owner": {
+        "id": "VA-610-138",
+        "name": "IMC Gamma Team Vendor"
       },
-      {
-        "id": "st0p",
-        "name": "Suggested T0 Price",
-        "description": "Vendor's (manufacturer's) suggested Retail Customer (Tier-0) price, also known as MSRP."
-      },
-      {
-        "id": "st1p",
-        "name": "Suggested T1 Price",
-        "description": "Vendor's (manufacturer's) suggested Direct Reseller (Tier-1) price."
+      "attributes": [
+        {
+          "id": "price",
+          "name": "Price",
+          "description": "Wholesale price of an item from a Vendor to a Provider, i.e. Provider's cost."
+        },
+        {
+          "id": "st0p",
+          "name": "Suggested T0 Price",
+          "description": "Vendor's (manufacturer's) suggested Retail Customer (Tier-0) price, also known as MSRP."
+        },
+        {
+          "id": "st1p",
+          "name": "Suggested T1 Price",
+          "description": "Vendor's (manufacturer's) suggested Direct Reseller (Tier-1) price."
+        }
+      ],
+      "stats": {
+        "products": 1,
+        "listings": 1
       }
-    ],
-    "stats": {
-      "products": 1,
-      "listings": 1
+    },
+    "xlsx_file": "/public/v1/pricing/versions/PLV-667-945-709-0003?format=xlsx",
+    "events": {
+      "activated": {
+        "at": "2022-10-05T07:31:44+00:00",
+        "by": {
+          "id": "UR-806-871-487",
+          "name": "dfranco"
+        }
+      },
+      "created": {
+        "at": "2022-10-05T07:31:27+00:00",
+        "by": {
+          "id": "UR-806-871-487",
+          "name": "dfranco"
+        }
+      },
+      "updated": {
+        "at": "2022-10-05T07:31:27+00:00",
+        "by": {
+          "id": "UR-806-871-487",
+          "name": "dfranco"
+        }
+      }
     }
   },
-  "xlsx_file": "/public/v1/pricing/versions/PLV-667-945-709-0003?format=xlsx",
-  "events": {
-    "activated": {
-      "at": "2022-10-05T07:31:44+00:00",
-      "by": {
-        "id": "UR-806-871-487",
-        "name": "dfranco"
+  {
+    "id": "PLV-667-945-709-0003",
+    "description": "sdfjkjsalf",
+    "base": {
+      "id": "PLV-667-945-709-0002",
+      "start_at": "2022-09-21T11:30:08+00:00"
+    },
+    "start_at": "2022-10-05T08:31:20+00:00",
+    "status": "active",
+    "pricelist": {
+      "id": "PL-667-945-709",
+      "name": "Test Insights pricelist - 2",
+      "currency": "USD",
+      "precision": 0.01,
+      "status": "active",
+      "owner": {
+        "id": "VA-610-138",
+        "name": "IMC Gamma Team Vendor"
+      },
+      "attributes": [
+        {
+          "id": "price",
+          "name": "Price",
+          "description": "Wholesale price of an item from a Vendor to a Provider, i.e. Provider's cost."
+        },
+        {
+          "id": "st0p",
+          "name": "Suggested T0 Price",
+          "description": "Vendor's (manufacturer's) suggested Retail Customer (Tier-0) price, also known as MSRP."
+        },
+        {
+          "id": "st1p",
+          "name": "Suggested T1 Price",
+          "description": "Vendor's (manufacturer's) suggested Direct Reseller (Tier-1) price."
+        }
+      ],
+      "stats": {
+        "products": 1,
+        "listings": 1
       }
     },
-    "created": {
-      "at": "2022-10-05T07:31:27+00:00",
-      "by": {
-        "id": "UR-806-871-487",
-        "name": "dfranco"
-      }
-    },
-    "updated": {
-      "at": "2022-10-05T07:31:27+00:00",
-      "by": {
-        "id": "UR-806-871-487",
-        "name": "dfranco"
+    "xlsx_file": "/public/v1/pricing/versions/PLV-667-945-709-0003?format=xlsx",
+    "events": {
+      "activated": {
+        "at": "2022-10-05T07:31:44+00:00",
+        "by": {
+          "id": "UR-806-871-487",
+          "name": "dfranco"
+        }
+      },
+      "created": {
+        "at": "2022-10-05T07:31:27+00:00",
+        "by": {
+          "id": "UR-806-871-487",
+          "name": "dfranco"
+        }
+      },
+      "updated": {
+        "at": "2022-10-05T07:31:27+00:00",
+        "by": {
+          "id": "UR-806-871-487",
+          "name": "dfranco"
+        }
       }
     }
   }
-}
+]
