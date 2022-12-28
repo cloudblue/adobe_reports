@@ -142,5 +142,4 @@ def test_forexapi_server_error(requests_mock, pricelist_version):
 def test_forexapi_exception(requests_mock, pricelist_version):
     requests_mock.get(utils.FOREXAPI_URL, exc=requests.exceptions.ConnectTimeout)
     exchange = utils.get_currency_and_change(pricelist_version[0])
-    print(exchange)
     assert exchange['change'] == 0.0
