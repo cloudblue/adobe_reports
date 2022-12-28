@@ -166,7 +166,6 @@ def get_marketplace_params(client, asset):
         price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
         price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id']) \
             if price_list_version else []
-        print(price_list_points)
         if price_list_version and price_list_points:
             # dict with currency and currency change
             currency = get_currency_and_change(price_list_version)
