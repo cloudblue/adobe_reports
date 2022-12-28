@@ -1,4 +1,6 @@
+
 from connect.client import R
+import requests
 
 
 def request_assets(client, input_data) -> list:
@@ -25,8 +27,17 @@ def request_price_list(client, price_list_id) -> dict:
     return client('pricing').versions.filter(rql).first()
 
 
-def request_price_list_version_points(client, price_list_version_id, testing) -> list:
+def request_price_list_version_points(client, price_list_version_id) -> list:
     rql = R()
     rql &= R().status.eq('filled')
-    return client('pricing').versions[price_list_version_id].points.filter(rql).all() if testing is None \
-        else client('pricing').versions[price_list_version_id].points.filter(rql).all()[0]
+    return client('pricing').versions[price_list_version_id].points.filter(rql).all()
+
+
+def request_get(url):
+    res = requests.models.Response
+    res.status_code = 0
+    try:
+        res = requests.get(url)
+    except requests.exceptions.RequestException as e:
+        print(e)
+    return res

@@ -1,6 +1,5 @@
 import datetime
 import re
-import requests
 from reports import api_calls
 
 BASE_CURRENCY = 'USD'
@@ -79,9 +78,9 @@ def _calculate_renewal_date(renewal_date_parameter, asset_creation_date, action_
             renewal_date = datetime.datetime.fromisoformat(asset_creation_date).replace(
                 year=(datetime.datetime.now(datetime.timezone.utc).year + 1))
     else:  # Transfer, use parameter value
-        if '/' in renewal_date_parameter:
-            regex = re.match('(.*)/(.*)/(.*)', renewal_date_parameter)
-            renewal_date_parameter = regex.group(3) + '-' + regex.group(2) + '-' + regex.group(1)
+
+        regex = re.match('(.*)/(.*)/(.*)', renewal_date_parameter)
+        renewal_date_parameter = regex.group(3) + '-' + regex.group(2) + '-' + regex.group(1)
         if datetime.datetime.now(datetime.timezone.utc) < (
                 datetime.datetime.fromisoformat(renewal_date_parameter).replace(
                     tzinfo=datetime.timezone.utc) + datetime.timedelta(days=365)):
@@ -151,26 +150,26 @@ def _get_discount_level(discount_group: str) -> str:
     return discount
 
 
-def get_marketplace_params(client, asset, testing=None):
+def get_marketplace_params(client, asset):
     """
     This function returns a dict with key,value pairs for each marketplace_header or None if there is no listing
     for the marketplace and product in asset
 
     :type client: connect.ConnectClient
     :type asset: dict
-    :type testing: None or value
     :param client: connect.ConnectClient
     :param asset: dict with asset from connect
-    :param testing: if not None this will retrieve the normal resoureSet
     :return: dict if listing or None
     """
     listing = api_calls.request_listing(client, asset['marketplace']['id'], asset['product']['id'])
     if listing and 'pricelist' in listing:
         price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
-        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'], testing)
+        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id']) \
+            if price_list_version else []
+        print(price_list_points)
         if price_list_version and price_list_points:
             # dict with currency and currency change
-            currency = _get_currency_and_change(price_list_version)
+            currency = get_currency_and_change(price_list_version)
 
             # dict with all financials from all items in price list
             price_list_financials = _get_financials_from_price_list(price_list_points)
@@ -199,8 +198,8 @@ def _get_financials_from_price_list(price_list_points: list) -> dict:
     """
     items_financials = {}
     for point in price_list_points:
-        if point['item']['global_id'] not in items_financials:
-            items_financials[point['item']['global_id']] = {}
+        items_financials[point['item']['global_id']] = {} if point['item']['global_id'] not in items_financials \
+            else point['item']['global_id']
         if float(point['attributes']['price']) != 0.0:
             items_financials[point['item']['global_id']]['cost'] = \
                 float(point['attributes']['price'])
@@ -213,9 +212,10 @@ def _get_financials_from_price_list(price_list_points: list) -> dict:
     return items_financials
 
 
-def _get_currency_and_change(price_list_version: dict) -> dict:
+def get_currency_and_change(price_list_version: dict) -> dict:
     """
-    Use the price list version to retrieve the currency and change from this currency to dollars
+    Use the price list version to retrieve the currency and change from this currency to dollars in case
+    of api fail the change will be 0 so the USD columns will be 0
 
     :type price_list_version: dict
     :param price_list_version: request with price list version
@@ -223,14 +223,14 @@ def _get_currency_and_change(price_list_version: dict) -> dict:
     """
     currency = {'currency': price_list_version['pricelist']['currency']}
     if currency['currency'] != BASE_CURRENCY:
-        try:
-            exchange_response = requests.get(FOREXAPI_URL)
-            if exchange_response.status_code == 200:
-                currency['change'] = exchange_response.json()['rates'][BASE_CURRENCY]
-        except requests.exceptions.RequestException as e:
-            print(e)
+        exchange_response = api_calls.request_get(FOREXAPI_URL)
+        if exchange_response.status_code == 200:
+            currency['change'] = exchange_response.json()['rates'][BASE_CURRENCY]
+        else:
+            currency['change'] = 0.0
     else:
         currency['change'] = 1.0
+
     return currency
 
 

@@ -218,3 +218,9 @@ def pricelist_version():
 def pricelist_points():
     with open('tests/pricelist_points.json') as request:
         return json.load(request)
+
+
+@pytest.fixture()
+def currencies():
+    with open('tests/test_currencies.json') as request:
+        return json.load(request)

@@ -29,6 +29,7 @@ flake8-comprehensions = "~3"
 flake8-string-format =  "^0"
 flake8-debugger = "~3"
 flake8-eradicate = "~1"
+requests-mock = "^1.10.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -43,6 +44,7 @@ branch = true
 
 [tool.coverage.report]
 omit = [
+    "reports/assets/entrypoint.py"
 ]
 
 exclude_lines = [
