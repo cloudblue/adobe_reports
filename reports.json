@@ -1,11 +1,11 @@
 {
-  "name": "connect-reports",
+  "name": "Adobe Connect reports",
   "readme_file": "README.md",
   "version": "0.1.0",
   "language": "python",
   "reports": [
     {
-      "name": "assets",
+      "name": "Active assets",
       "readme_file": "reports/assets/README.md",
       "entrypoint": "reports.assets.entrypoint.generate",
       "audience": [
