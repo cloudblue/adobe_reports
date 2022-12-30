@@ -26,17 +26,17 @@
           "type": "date_range",
           "name": "Report period",
           "description": "Provide the time period to create the report",
-          "required": false
+          "required": true
         },
         {
           "id": "status",
           "type": "choice",
           "name": "Asset status",
           "description": "Select the status of the asset you want to include in report",
-          "required": false,
+          "required": true,
           "choices": [
             {
-              "value": "",
+              "value": "all",
               "label": "All"
             },
             {
