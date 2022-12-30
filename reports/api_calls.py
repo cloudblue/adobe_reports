@@ -7,7 +7,7 @@ def request_assets(client, input_data) -> list:
     rql = R().events.created.at.ge(input_data['date']['after'])
     rql &= R().events.created.at.le(input_data['date']['before'])
     rql &= R().product.id.oneof(input_data['product']['choices'])
-    if input_data['status'] != "":
+    if input_data['status'] != "all":
         rql &= R().status.eq(input_data['status'])
     return client('subscriptions').assets.filter(rql).all()
 
