@@ -82,7 +82,7 @@ def _process_line(asset: dict, marketplace_params: dict) -> list:
     """
     asset_values = utils.process_asset_headers(asset, asset_headers)
     asset_values.update(utils.process_asset_parameters(asset['params'], asset_params_headers))
-    asset_values['renewal_date'] = utils.calculate_renewal_date(asset_values['created-at'])
+    asset_values['renewal_date'] = str(utils.calculate_renewal_date(asset_values['created-at']))
     asset_values.update(marketplace_params)
     return list(asset_values.values())
 
