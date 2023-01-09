@@ -1,17 +1,16 @@
 import datetime
-import re
 from reports import api_calls
 
 BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
 
 
-def get_param_value(params: list, param: str) -> str:
-    if params[0]['id'] == param:
+def get_param_value(params: list, value: str) -> str:
+    if params[0]['id'] == value:
         return params[0]['value']
     if len(params) == 1:
         return '-'
-    return get_param_value(list(params[1:]), param)
+    return get_param_value(list(params[1:]), value)
 
 
 def get_basic_value(base, value):
@@ -36,7 +35,11 @@ def convert_to_datetime(param_value):
     )
 
 
-def today_str():
+def today() -> datetime:
+    return datetime.datetime.today()
+
+
+def today_str() -> str:
     return datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
 
@@ -82,31 +85,11 @@ def process_asset_parameters(asset_params: list, asset_parameters: list) -> dict
     return params_dict
 
 
-def calculate_renewal_date(renewal_date_parameter, asset_creation_date, action_type):
-    # Net new, dates set by asset. Second validation n case the report is executed for a non-Adobe product,
-    # making sure it doesn't fail
-    if action_type == 'purchase' or renewal_date_parameter is None or renewal_date_parameter == '-' or \
-            renewal_date_parameter == '' or '/' not in renewal_date_parameter:
-        if datetime.datetime.now(datetime.timezone.utc) < (
-                datetime.datetime.fromisoformat(asset_creation_date) + datetime.timedelta(days=365)):
-            renewal_date = datetime.datetime.fromisoformat(asset_creation_date) + datetime.timedelta(days=365)
-        else:
-            renewal_date = datetime.datetime.fromisoformat(asset_creation_date).replace(
-                year=(datetime.datetime.now(datetime.timezone.utc).year + 1))
-    else:  # Transfer, use parameter value
-
-        regex = re.match('(.*)/(.*)/(.*)', renewal_date_parameter)
-        renewal_date_parameter = regex.group(3) + '-' + regex.group(2) + '-' + regex.group(1)
-        if datetime.datetime.now(datetime.timezone.utc) < (
-                datetime.datetime.fromisoformat(renewal_date_parameter).replace(
-                    tzinfo=datetime.timezone.utc) + datetime.timedelta(days=365)):
-            renewal_date = datetime.datetime.fromisoformat(renewal_date_parameter).replace(
-                tzinfo=datetime.timezone.utc) + datetime.timedelta(days=365)
-        else:
-            renewal_date = datetime.datetime.fromisoformat(renewal_date_parameter).replace(
-                tzinfo=datetime.timezone.utc).replace(year=(datetime.datetime.now(datetime.timezone.utc).year + 1))
-
-    return renewal_date.strftime("%Y-%m-%d %H:%M:%S")
+def calculate_renewal_date(asset_creation_date):
+    renewal_date = datetime.datetime.fromisoformat(asset_creation_date).replace(year=today().year)
+    if renewal_date >= today().replace(tzinfo=datetime.timezone.utc):
+        return renewal_date
+    return renewal_date.replace(year=today().year + 1)
 
 
 def get_value_from_split_header(asset: dict, header: str) -> str:
@@ -143,26 +126,12 @@ def get_discount_level(discount_group: str) -> str:
     :param discount_group:
     :return: str with level of discount
     """
-    if discount_group == '01A12':
-        discount = 'Level 1'
-    elif discount_group == '02A12':
-        discount = 'Level 2'
-    elif discount_group == '03A12':
-        discount = 'Level 3'
-    elif discount_group == '04A12':
-        discount = 'Level 4'
-    elif discount_group == '01012':
-        discount = 'TLP Level 1'
-    elif discount_group == '02012':
-        discount = 'TLP Level 2'
-    elif discount_group == '03012':
-        discount = 'TLP Level 3'
-    elif discount_group == '04012':
-        discount = 'TLP Level 4'
-    elif discount_group == '':
-        discount = 'Empty'
+    if len(discount_group) > 2 and discount_group[2] == 'A':
+        discount = 'Level ' + discount_group[1]
+    elif len(discount_group) > 2 and discount_group[2] == '0':
+        discount = 'TLP Level ' + discount_group[1]
     else:
-        discount = 'Other'
+        discount = 'Empty'
     return discount
 
 
