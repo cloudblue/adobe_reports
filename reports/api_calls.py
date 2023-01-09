@@ -57,7 +57,6 @@ def request_approved_requests(client, parameters):
         query &= R().type.oneof(parameters['rr_type']['choices'])
     if parameters.get('mkp') and parameters['mkp']['all'] is False:
         query &= R().marketplace.id.oneof(parameters['mkp']['choices'])
-    print(query)
     return client.requests.filter(query).order_by("created")
 
 
