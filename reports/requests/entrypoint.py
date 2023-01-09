@@ -23,23 +23,16 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         adobe_user_email = ''
 
         # get subscription parameters values
-        for param in request['asset']['params']:
-            if 'adobe_vip_number' == utils.get_basic_value(param, 'id'):
-                vip_number = utils.get_basic_value(param, 'value')
-            if 'adobe_order_id' == utils.get_basic_value(param, 'id'):
-                order_number = utils.get_basic_value(param, 'value')
-            if 'transfer_id' == utils.get_basic_value(param, 'id'):
-                transfer_number = utils.get_basic_value(param, 'value')
-            if 'action_type' == utils.get_basic_value(param, 'id'):
-                action = utils.get_basic_value(param, 'value')
-            if 'adobe_user_email' == utils.get_basic_value(param, 'id'):
-                adobe_user_email = utils.get_basic_value(param, 'value')
-            if 'adobe_customer_id' == utils.get_basic_value(param, 'id'):
-                adobe_cloud_program_id = utils.get_basic_value(param, 'value')
-            if 'discount_group' == utils.get_basic_value(param, 'id'):
-                pricing_level = utils.get_basic_value(param, 'value')
+        parameters_list = request['asset']['params']
+        vip_number = utils.get_param_value(parameters_list, 'adobe_vip_number')
+        order_number = utils.get_param_value(parameters_list, 'adobe_order_id')
+        transfer_number = utils.get_param_value(parameters_list, 'transfer_id')
+        action = utils.get_param_value(parameters_list, 'action_type')
+        adobe_user_email = utils.get_param_value(parameters_list, 'adobe_user_email')
+        adobe_cloud_program_id = utils.get_param_value(parameters_list, 'adobe_customer_id')
+        pricing_level = utils.get_discount_level(utils.get_param_value(parameters_list, 'discount_group'))
 
-        pricing_level = utils.get_discount_level(pricing_level)
+        # get currency from configuration params
         currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
 
         financials = utils.get_financials_from_product_per_marketplace(
@@ -56,7 +49,7 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 if len(item['quantity']) > 0 and len(item['old_quantity']) > 0:
                     try:
                         delta = float(item['quantity']) - float(item['old_quantity'])
-                    except Exception:  # Preguntar a Franco
+                    except Exception:
                         delta_str = item['quantity'] + ' - ' + item['old_quantity']
                 if delta_str == '' and delta > 0:
                     delta_str = "+" + str(delta)

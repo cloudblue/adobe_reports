@@ -139,13 +139,10 @@ def sync_client_factory():
         response_iterator = iter(connect_responses)
 
         def _execute_http_call(self, method, url, kwargs):
-            aux_iter = response_iterator
-            try:
-                res = next(aux_iter)
-            except StopIteration:
-                _execute_http_call(_create_client(connect_responses), method, url, kwargs)
+            res = next(response_iterator)
 
             query, ordering, select = _parse_qs(url)
+
             if res.query:
                 assert query == res.query, 'RQL query does not match.'
             if res.ordering:

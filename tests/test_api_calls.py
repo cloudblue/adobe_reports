@@ -12,6 +12,9 @@ from reports import api_calls
 LISTING_QUERY = 'and(eq(marketplace.id,MP-65669),eq(product.id,PRD-207-752-513),eq(status,listed))'
 PRICELIST_VERSION_QUERY = 'and(eq(pricelist.id,PL-667-945-709),eq(status,active))'
 PRICELIST_POINTS_QUERY = 'eq(status,filled)'
+APPROVED_REQUESTS = 'and(eq(status,approved),ge(created,2022-12-1T00:00:00),le(created,2022-12-15T00:00:00),' \
+                    'in(asset.connection.type,(test)),in(asset.product.id,(PRD-207-752-513)),in(type,()),' \
+                    'in(marketplace.id,()))'
 
 # input_data as passed to generate
 input_data = {
@@ -23,7 +26,19 @@ input_data = {
         "all": False,
         "choices": ['PRD-207-752-513'],
     },
-    "status": 'active'
+    "status": 'all',
+    "mkp": {
+        "all": False,
+        "choices": [],
+    },
+    "rr_type": {
+        "all": False,
+        "choices": [],
+    },
+    "connexion_type": {
+        "all": False,
+        "choices": ["test"],
+    },
 }
 
 
@@ -46,13 +61,17 @@ def test_api_calls(sync_client_factory, response_factory, assets, listing, price
             query=PRICELIST_POINTS_QUERY,
             value=True,
         ),
+        response_factory(
+            query=APPROVED_REQUESTS,
+            value=True,
+        ),
     ]
     client = sync_client_factory(responses)
-    input_data['status'] = 'all'
     assert api_calls.request_assets(client, input_data)
     assert api_calls.request_listing(client, assets[0]['marketplace']['id'], assets[0]['product']['id'])
     assert api_calls.request_price_list(client, listing[0]['pricelist']['id'])
     assert api_calls.request_price_list_version_points(client, pricelist_version[0]['id'])
+    assert api_calls.request_approved_requests(client, input_data)
 
 
 def test_forexapi_server_error(requests_mock, pricelist_version):

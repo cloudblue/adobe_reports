@@ -63,7 +63,6 @@ def generate(
     if total == 0:
         yield 'EMPTY ASSETS'
     for asset in assets:
-        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         marketplace_params = _get_marketplace_params(client, asset)
         if not marketplace_params:
             marketplace_params = dict.fromkeys(marketplace_headers)
@@ -83,8 +82,7 @@ def _process_line(asset: dict, marketplace_params: dict) -> list:
     """
     asset_values = utils.process_asset_headers(asset, asset_headers)
     asset_values.update(utils.process_asset_parameters(asset['params'], asset_params_headers))
-    asset_values['renewal_date'] = utils.calculate_renewal_date(
-        asset_values['renewal_date'], asset_values['created-at'], asset_values['action_type'])
+    asset_values['renewal_date'] = utils.calculate_renewal_date(asset_values['created-at'])
     asset_values.update(marketplace_params)
     return list(asset_values.values())
 
