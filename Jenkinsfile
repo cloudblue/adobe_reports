@@ -1,3 +1,4 @@
+pipeline {
     agent {
         label 'build.dev.cloud.im'
     }
