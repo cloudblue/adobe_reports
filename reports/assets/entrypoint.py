@@ -119,6 +119,9 @@ def _get_marketplace_params(client, asset):
             currency.pop('change')
             currency.update(financials_and_seats)
             currency.update(base_financials)
+            currency['cost'] = '{:0.2f}'.format(currency['cost'])
+            currency['reseller_cost'] = '{:0.2f}'.format(currency['reseller_cost'])
+            currency['msrp'] = '{:0.2f}'.format(currency['msrp'])
             return currency
     # Listing has no price list or is not active
     return None

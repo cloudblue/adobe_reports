@@ -8,9 +8,11 @@ This report creates an Excel file with details about all approved requests with 
 
 Request can be parametrized by:
 
-* Product
 * Request creation date range
-* Asset Status
+* Product
+* Marketplace
+* Environment
+* Request Type
 
 # Columns
 * Request ID
@@ -23,4 +25,4 @@ Request can be parametrized by:
 * Request Effective Date, Request Creation Date, Request Type, Adobe User Email, Currency
 * Cost, Reseller Cost, MSRP, Connection Type or Environment Type, Exported At
 
-Command to create report: ccli report execute assets -d .
+Command to create report: ccli report execute requests -d .
