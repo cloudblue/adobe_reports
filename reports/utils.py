@@ -1,30 +1,49 @@
 import datetime
-import re
 from reports import api_calls
 
 BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
 
 
-def process_line(asset: dict, asset_headers: list, asset_params_headers: list, marketplace_params: dict) -> list:
-    """
-    This functions uses several functions on this file to build a line with values to yield at xlsx file
-
-    :param asset: one asset from requested assets
-    :param asset_headers: headers to build the dictionaries
-    :param asset_params_headers: headers to build the dictionaries
-    :param marketplace_params: dict to build the line
-    :return: list with line values
-    """
-    asset_values = _process_asset_headers(asset, asset_headers)
-    asset_values.update(_process_asset_parameters(asset['params'], asset_params_headers))
-    asset_values['renewal_date'] = _calculate_renewal_date(
-        asset_values['renewal_date'], asset_values['created-at'], asset_values['action_type'])
-    asset_values.update(marketplace_params)
-    return list(asset_values.values())
+def get_param_value(params: list, value: str) -> str:
+    if params[0]['id'] == value:
+        return params[0]['value']
+    if len(params) == 1:
+        return '-'
+    return get_param_value(list(params[1:]), value)
 
 
-def _process_asset_headers(asset, asset_headers) -> dict:
+def get_basic_value(base, value):
+    if base and value in base:
+        return base[value]
+    return '-'
+
+
+def get_value(base, prop, value):
+    if prop in base:
+        return get_basic_value(base[prop], value)
+    return '-'
+
+
+def convert_to_datetime(param_value):
+    if param_value == "" or param_value == "-" or param_value is None:
+        return "-"
+
+    return datetime.datetime.strptime(
+        param_value.replace("T", " ").replace("+00:00", ""),
+        "%Y-%m-%d %H:%M:%S",
+    )
+
+
+def today() -> datetime:
+    return datetime.datetime.today()
+
+
+def today_str() -> str:
+    return datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+
+
+def process_asset_headers(asset, asset_headers) -> dict:
     """
     This function takes an asset and asset_headers to reach values in asset for
     each key at asset_headers
@@ -38,13 +57,13 @@ def _process_asset_headers(asset, asset_headers) -> dict:
     params = dict.fromkeys(asset_headers)
     for header in asset_headers:
         if '-' in header:
-            params[header] = _get_value_from_split_header(asset, header)
+            params[header] = get_value_from_split_header(asset, header)
         else:
             params[header] = asset[header]
     return params
 
 
-def _process_asset_parameters(asset_params: list, asset_parameters: list) -> dict:
+def process_asset_parameters(asset_params: list, asset_parameters: list) -> dict:
     """
     This function takes asset_params and asset_parameters(headers) to reach values in asset_params for
     each key at asset_parameters
@@ -59,41 +78,21 @@ def _process_asset_parameters(asset_params: list, asset_parameters: list) -> dic
     for param in asset_params:
         param_id = param['id']
         if param_id == 'discount_group':
-            discount_group = _get_discount_level(param['value'])
+            discount_group = get_discount_level(param['value'])
             params_dict[param_id] = discount_group
         elif param_id in asset_parameters:
             params_dict[param_id] = param['value']
     return params_dict
 
 
-def _calculate_renewal_date(renewal_date_parameter, asset_creation_date, action_type):
-    # Net new, dates set by asset. Second validation n case the report is executed for a non-Adobe product,
-    # making sure it doesn't fail
-    if action_type == 'purchase' or renewal_date_parameter is None or renewal_date_parameter == '-' or \
-            renewal_date_parameter == '' or '/' not in renewal_date_parameter:
-        if datetime.datetime.now(datetime.timezone.utc) < (
-                datetime.datetime.fromisoformat(asset_creation_date) + datetime.timedelta(days=365)):
-            renewal_date = datetime.datetime.fromisoformat(asset_creation_date) + datetime.timedelta(days=365)
-        else:
-            renewal_date = datetime.datetime.fromisoformat(asset_creation_date).replace(
-                year=(datetime.datetime.now(datetime.timezone.utc).year + 1))
-    else:  # Transfer, use parameter value
-
-        regex = re.match('(.*)/(.*)/(.*)', renewal_date_parameter)
-        renewal_date_parameter = regex.group(3) + '-' + regex.group(2) + '-' + regex.group(1)
-        if datetime.datetime.now(datetime.timezone.utc) < (
-                datetime.datetime.fromisoformat(renewal_date_parameter).replace(
-                    tzinfo=datetime.timezone.utc) + datetime.timedelta(days=365)):
-            renewal_date = datetime.datetime.fromisoformat(renewal_date_parameter).replace(
-                tzinfo=datetime.timezone.utc) + datetime.timedelta(days=365)
-        else:
-            renewal_date = datetime.datetime.fromisoformat(renewal_date_parameter).replace(
-                tzinfo=datetime.timezone.utc).replace(year=(datetime.datetime.now(datetime.timezone.utc).year + 1))
-
-    return renewal_date.strftime("%Y-%m-%d %H:%M:%S")
+def calculate_renewal_date(asset_creation_date):
+    renewal_date = datetime.datetime.fromisoformat(asset_creation_date).replace(year=today().year)
+    if renewal_date >= today().replace(tzinfo=datetime.timezone.utc):
+        return renewal_date
+    return renewal_date.replace(year=today().year + 1)
 
 
-def _get_value_from_split_header(asset: dict, header: str) -> str:
+def get_value_from_split_header(asset: dict, header: str) -> str:
     """
     This function gets the header with '-' format and split it to reach the value in asset
     example: product-id -> asset[product][id]
@@ -119,7 +118,7 @@ def _get_value_from_split_header(asset: dict, header: str) -> str:
     return value
 
 
-def _get_discount_level(discount_group: str) -> str:
+def get_discount_level(discount_group: str) -> str:
     """
     Transform the discount_group to a proper level of discount
 
@@ -127,67 +126,16 @@ def _get_discount_level(discount_group: str) -> str:
     :param discount_group:
     :return: str with level of discount
     """
-    if discount_group == '01A12':
-        discount = 'Level 1'
-    elif discount_group == '02A12':
-        discount = 'Level 2'
-    elif discount_group == '03A12':
-        discount = 'Level 3'
-    elif discount_group == '04A12':
-        discount = 'Level 4'
-    elif discount_group == '01012':
-        discount = 'TLP Level 1'
-    elif discount_group == '02012':
-        discount = 'TLP Level 2'
-    elif discount_group == '03012':
-        discount = 'TLP Level 3'
-    elif discount_group == '04012':
-        discount = 'TLP Level 4'
-    elif discount_group == '':
-        discount = 'Empty'
+    if len(discount_group) > 2 and discount_group[2] == 'A':
+        discount = 'Level ' + discount_group[1]
+    elif len(discount_group) > 2 and discount_group[2] == '0':
+        discount = 'TLP Level ' + discount_group[1]
     else:
-        discount = 'Other'
+        discount = 'Empty'
     return discount
 
 
-def get_marketplace_params(client, asset):
-    """
-    This function returns a dict with key,value pairs for each marketplace_header or None if there is no listing
-    for the marketplace and product in asset
-
-    :type client: connect.ConnectClient
-    :type asset: dict
-    :param client: connect.ConnectClient
-    :param asset: dict with asset from connect
-    :return: dict if listing or None
-    """
-    listing = api_calls.request_listing(client, asset['marketplace']['id'], asset['product']['id'])
-    if listing and 'pricelist' in listing:
-        price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
-        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id']) \
-            if price_list_version else []
-        if price_list_version and price_list_points:
-            # dict with currency and currency change
-            currency = get_currency_and_change(price_list_version)
-
-            # dict with all financials from all items in price list
-            price_list_financials = _get_financials_from_price_list(price_list_points)
-
-            # dict with seats and financials from assets items
-            financials_and_seats = _get_financials_and_seats(asset['items'], price_list_financials)
-
-            # dict with financials in USD
-            base_financials = _get_base_currency_financials(financials_and_seats, currency)
-
-            currency.pop('change')
-            currency.update(financials_and_seats)
-            currency.update(base_financials)
-            return currency
-    # Listing has no price list or is not active
-    return None
-
-
-def _get_financials_from_price_list(price_list_points: list) -> dict:
+def get_financials_from_price_list(price_list_points: list) -> dict:
     """
     This function retrieves the cost, reseller_cost and msrp from each point at the price list points
 
@@ -233,21 +181,21 @@ def get_currency_and_change(price_list_version: dict) -> dict:
     return currency
 
 
-def _get_financials_and_seats(asset_items: list, price_list_financials: dict) -> dict:
+def get_financials_and_seats(items: list, price_list_financials: dict) -> dict:
     """
-    This function takes the items from asset request and price list for those items to return a dict
-    with the marketplace_headers as keys and their values filled if present on asset items
+    This function takes items and price list for those items to return a dict with values if they
+    exits at items and all financials added from each item
 
     :type price_list_financials: dict
-    :type asset_items: list
-    :param asset_items: list with items from requested asset
+    :type items: list
+    :param items: list with items from request
     :param price_list_financials: dict with cost, reseller_cost and msrp for each item[global_id]
-    :return: dict with marketplace_headers as keys(not automated)
+    :return: dict
     """
     asset_financials = {}
     asset_type = None
     seats = cost = reseller_cost = msrp = 0.0
-    for item in asset_items:
+    for item in items:
         item_quantity = int(item['quantity'])
         if 'Enterprise' in item['display_name'] and not asset_type:
             asset_type = 'enterprise'
@@ -271,7 +219,7 @@ def _get_financials_and_seats(asset_items: list, price_list_financials: dict) ->
     return asset_financials
 
 
-def _get_base_currency_financials(financials_and_seats: dict, currency: dict) -> dict:
+def get_base_currency_financials(financials_and_seats: dict, currency: dict) -> dict:
     """
     This function returns the value in dollars for the current cost, reseller_cost and msrp
 
@@ -285,3 +233,12 @@ def _get_base_currency_financials(financials_and_seats: dict, currency: dict) ->
         'USD-cost': '{:0.2f}'.format(financials_and_seats['cost'] * currency['change']),
         'USD-reseller_cost': '{:0.2f}'.format(financials_and_seats['reseller_cost'] * currency['change']),
         'USD-msrp': '{:0.2f}'.format(financials_and_seats['msrp'] * currency['change'])}
+
+
+def get_financials_from_product_per_marketplace(client, marketplace_id, asset_id):
+    listing = api_calls.request_listing(client, marketplace_id, asset_id)
+    price_list_points = []
+    if listing and listing['pricelist']:
+        price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
+        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'])
+    return get_financials_from_price_list(price_list_points)

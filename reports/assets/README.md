@@ -1,9 +1,23 @@
-# Report assets_report
+# Report Assets
 
-This reports retrieves the headers present in entrypoint.py and shows them in a xlsx file.
-In case that some header is not present at connect request it will show as blank,
-if the currency api (forexapi) fails the USD columns will be 0.
+This report creates an Excel file with details about assets with scope parameters
 
-Actually this reports is built for Adobe, but it can work on other products.
+# Available parameters
+
+Assets can be parametrized by:
+
+* Product
+* Request creation date range
+* Asset Status
+
+# Columns
+
+* Asset ID
+* Asset Status
+* External ID, Product ID, Provider ID, Provider Name, Marketplace, Marketplace Name, Contract ID, Contract Name
+* Reseller ID, Reseller External ID, Reseller Name, Created At, Customer ID, Customer External ID, Customer Name
+* Seamless Move, Discount Group, Action, Renewal Date, Purchase Type
+* Adobe Customer ID, Adobe Vip Number, Adobe User Email, 
+* Currency, Cost, Reseller Cost, MSRP, Seats, USD Cost, USD Reseller Cost, USD MSRP
 
 Command to create report: ccli report execute assets -d .

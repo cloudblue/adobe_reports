@@ -7,9 +7,9 @@ from reports import api_calls
 from reports import utils
 
 asset_headers = [
-    'id', 'status', 'created-at', 'external_id', 'product-id', 'provider-id', 'provider-name', 'marketplace-id',
+    'id', 'status', 'external_id', 'product-id', 'provider-id', 'provider-name', 'marketplace-id',
     'marketplace-name', 'contract-id', 'contract-name', 'reseller-id', 'reseller-external_id', 'reseller-name',
-    'customer-id', 'customer-external_id', 'customer-name'
+    'created-at', 'customer-id', 'customer-external_id', 'customer-name'
 ]
 
 asset_params_headers = [
@@ -58,20 +58,70 @@ def generate(
     """
 
     assets = api_calls.request_assets(client, input_data)
-    headers = asset_headers + asset_params_headers + marketplace_headers
-
-    if renderer_type == 'xlsx':
-        yield headers
-
     total = assets.count()
     counter = 0
     if total == 0:
-        yield 'Empty assets'
+        yield 'EMPTY ASSETS'
     for asset in assets:
-        marketplace_params = utils.get_marketplace_params(client, asset)
+        marketplace_params = _get_marketplace_params(client, asset)
         if not marketplace_params:
             marketplace_params = dict.fromkeys(marketplace_headers)
         # assets need to be in a list to yield
-        yield utils.process_line(asset, asset_headers, asset_params_headers, marketplace_params)
+        yield _process_line(asset, marketplace_params)
         counter += 1
         progress_callback(counter, total)
+
+
+def _process_line(asset: dict, marketplace_params: dict) -> list:
+    """
+    This functions uses several functions on this file to build a line with values to yield at xlsx file
+
+    :param asset: one asset from requested assets
+    :param marketplace_params: dict to build the line
+    :return: list with line values
+    """
+    asset_values = utils.process_asset_headers(asset, asset_headers)
+    asset_values.update(utils.process_asset_parameters(asset['params'], asset_params_headers))
+    asset_values['renewal_date'] = str(utils.calculate_renewal_date(asset_values['created-at']))
+    asset_values.update(marketplace_params)
+    return list(asset_values.values())
+
+
+def _get_marketplace_params(client, asset):
+    """
+    This function returns a dict with key,value pairs for each marketplace_header or None if there is no listing
+    for the marketplace and product in asset
+
+    :type client: connect.ConnectClient
+    :type asset: dict
+    :param client: connect.ConnectClient
+    :param asset: dict with asset from connect
+    :return: dict if listing or None
+    """
+    listing = api_calls.request_listing(client, asset['marketplace']['id'], asset['product']['id'])
+    if listing and 'pricelist' in listing:
+        price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
+        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id']) \
+            if price_list_version else []
+        if price_list_version and price_list_points:
+            # dict with currency and currency change
+            currency = utils.get_currency_and_change(price_list_version)
+
+            # dict with all financials from all items in price list
+            price_list_financials = utils.get_financials_from_price_list(price_list_points)
+
+            # dict with seats and financials from assets items
+            financials_and_seats = utils.get_financials_and_seats(asset['items'], price_list_financials)
+
+            # dict with financials in USD
+            base_financials = utils.get_base_currency_financials(financials_and_seats, currency)
+
+            currency.pop('change')
+            currency.update(financials_and_seats)
+            currency.update(base_financials)
+            currency['cost'] = '{:0.2f}'.format(currency['cost'])
+            currency['reseller_cost'] = '{:0.2f}'.format(currency['reseller_cost'])
+            currency['msrp'] = '{:0.2f}'.format(currency['msrp'])
+            return currency
+    # Listing has no price list or is not active
+    return None

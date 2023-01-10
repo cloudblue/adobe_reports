@@ -142,6 +142,7 @@ def sync_client_factory():
             res = next(response_iterator)
 
             query, ordering, select = _parse_qs(url)
+
             if res.query:
                 assert query == res.query, 'RQL query does not match.'
             if res.ordering:
@@ -203,6 +204,18 @@ def assets():
 
 
 @pytest.fixture
+def asset():
+    with open('tests/requests_asset.json') as request:
+        return json.load(request)
+
+
+@pytest.fixture
+def ff_requests():
+    with open('tests/ff_requests.json') as request:
+        return json.load(request)
+
+
+@pytest.fixture
 def listing():
     with open('tests/adobe_listing.json') as request:
         return json.load(request)
@@ -222,5 +235,5 @@ def pricelist_points():
 
 @pytest.fixture()
 def currencies():
-    with open('tests/test_currencies.json') as request:
+    with open('tests/mock_currencies.json') as request:
         return json.load(request)

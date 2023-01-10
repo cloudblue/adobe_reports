@@ -44,7 +44,7 @@ branch = true
 
 [tool.coverage.report]
 omit = [
-    "reports/assets/entrypoint.py"
+    "reports/assets/entrypoint.generate"
 ]
 
 exclude_lines = [
