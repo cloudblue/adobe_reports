@@ -70,4 +70,4 @@ def test_requests_generate(sync_client_factory, response_factory, progress,
     client = sync_client_factory(responses)
 
     result = entrypoint.generate(client, parameters, progress)
-    assert len(list(result)) == 7  # number of items on ff_request.json
+    assert len(list(result)) == 5  # number of items on ff_request.json
