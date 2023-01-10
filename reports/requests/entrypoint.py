@@ -33,6 +33,8 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         subscription = api_calls.request_asset(client, request['asset']['id'])  # request for anniversary date
         for item in request['asset']['items']:
             delta_str = _get_delta_str(item)
+            if delta_str == '':
+                continue
             yield (
                 utils.get_basic_value(request, 'id'),  # Request ID
                 utils.get_value(request, 'asset', 'id'),  # Connect Subscription ID
@@ -79,10 +81,8 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
 
 
 def _get_delta_str(item):
-    if (utils.get_basic_value(item, 'item_type') == 'PPU'
-            or utils.get_basic_value(item, 'quantity') == '0'):
-        return
-    else:
+    if (utils.get_basic_value(item, 'item_type') != 'PPU'
+            and utils.get_basic_value(item, 'quantity') != '0'):
         delta = 0
         delta_str = '-'
         if len(item['quantity']) > 0 and len(item['old_quantity']) > 0:
@@ -95,3 +95,4 @@ def _get_delta_str(item):
         if delta_str == '-' and delta < 0:
             delta_str = str(delta)
         return delta_str
+    return ''
