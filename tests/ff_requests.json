@@ -1,0 +1,2380 @@
+[
+  {
+    "id": "PR-1895-0864-1238-001",
+    "type": "purchase",
+    "note": "",
+    "asset": {
+      "id": "AS-1895-0864-1238",
+      "status": "processing",
+      "external_id": "1147660",
+      "external_uid": "9b86f3c9-6c8c-43e4-af6e-aaa69f150693",
+      "product": {
+        "id": "PRD-207-752-513",
+        "icon": "/media/VA-392-495/PRD-276-377-545/media/PRD-276-377-545-logo_hy9fnEf.png",
+        "name": "My Product",
+        "status": "published"
+      },
+      "connection": {
+        "id": "CT-6838-5958",
+        "type": "production",
+        "status": "approved",
+        "provider": {
+          "id": "PA-425-033",
+          "name": "CB Demo Provider"
+        },
+        "vendor": {
+          "id": "VA-392-495",
+          "name": "Adrian Inc Oct 12"
+        },
+        "hub": {
+          "id": "HB-0309-9389",
+          "name": "IMC DEMOS"
+        },
+        "created_at": "2020-10-13T05:41:30+00:00"
+      },
+      "events": {
+        "created": {
+          "at": "2020-11-23T14:18:17+00:00"
+        },
+        "updated": {
+          "at": "2020-11-23T14:23:00+00:00"
+        }
+      },
+      "items": [
+        {
+          "id": "PRD_276_377_545_0001",
+          "global_id": "PRD-276-377-545-0001",
+          "mpn": "MPN-R-001",
+          "old_quantity": "5",
+          "quantity": "2",
+          "type": "Units",
+          "display_name": "Reservation Item 001",
+          "period": "Monthly",
+          "item_type": "Reservation",
+          "params": [
+            {
+              "value": "18",
+              "events": {
+                "created": {
+                  "at": "2020-11-27T08:38:35+00:00",
+                  "by": {
+                    "id": "UR-841-574-187",
+                    "name": "Marc Serrat"
+                  }
+                },
+                "updated": {
+                  "at": "2020-12-09T10:27:14+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                }
+              },
+              "id": "asdf",
+              "title": "asdf",
+              "description": "asdf",
+              "type": "text",
+              "scope": "item",
+              "phase": "configuration",
+              "hint": "I am the hint text",
+              "placeholder": "I am the placeholder text",
+              "constraints": {
+                "required": false,
+                "hidden": false,
+                "unique": false,
+                "shared": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "PRD_276_377_545_0002",
+          "global_id": "PRD-276-377-545-0002",
+          "mpn": "MPN-R-002",
+          "old_quantity": "0",
+          "quantity": "5",
+          "type": "Units",
+          "display_name": "Reservation Item 002",
+          "period": "Monthly",
+          "item_type": "Reservation",
+          "params": [
+            {
+              "value": "17",
+              "events": {
+                "created": {
+                  "at": "2020-12-07T16:34:09+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                },
+                "updated": {
+                  "at": "2020-12-09T10:27:22+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                }
+              },
+              "id": "asdf",
+              "title": "asdf",
+              "description": "asdf",
+              "type": "text",
+              "scope": "item",
+              "phase": "configuration",
+              "hint": "I am the hint text",
+              "placeholder": "I am the placeholder text",
+              "constraints": {
+                "required": false,
+                "hidden": false,
+                "unique": false,
+                "shared": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "PRD_276_377_545_0003",
+          "global_id": "PRD-276-377-545-0003",
+          "mpn": "MPN-R-003",
+          "old_quantity": "2",
+          "quantity": "0",
+          "type": "Units",
+          "display_name": "Reservation Item 003",
+          "period": "Monthly",
+          "item_type": "Reservation",
+          "params": [
+            {
+              "value": "16",
+              "events": {
+                "created": {
+                  "at": "2020-12-07T16:34:16+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                },
+                "updated": {
+                  "at": "2020-12-09T10:27:30+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                }
+              },
+              "id": "asdf",
+              "title": "asdf",
+              "description": "asdf",
+              "type": "text",
+              "scope": "item",
+              "phase": "configuration",
+              "hint": "I am the hint text",
+              "placeholder": "I am the placeholder text",
+              "constraints": {
+                "required": false,
+                "hidden": false,
+                "unique": false,
+                "shared": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "PRD_276_377_545_0004",
+          "global_id": "PRD-276-377-545-0004",
+          "mpn": "MPN-R-004",
+          "old_quantity": "0",
+          "quantity": "",
+          "type": "Units",
+          "display_name": "Reservation Item 004",
+          "period": "Monthly",
+          "item_type": "Reservation",
+          "params": [
+            {
+              "value": "15",
+              "events": {
+                "created": {
+                  "at": "2020-12-07T16:34:23+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                },
+                "updated": {
+                  "at": "2020-12-09T10:27:38+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                }
+              },
+              "id": "asdf",
+              "title": "asdf",
+              "description": "asdf",
+              "type": "text",
+              "scope": "item",
+              "phase": "configuration",
+              "hint": "I am the hint text",
+              "placeholder": "I am the placeholder text",
+              "constraints": {
+                "required": false,
+                "hidden": false,
+                "unique": false,
+                "shared": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "PRD_276_377_545_0005",
+          "global_id": "PRD-276-377-545-0005",
+          "mpn": "MPN-R-005",
+          "old_quantity": "0",
+          "quantity": "5",
+          "type": "Units",
+          "display_name": "Reservation Item 005",
+          "period": "Monthly",
+          "item_type": "Reservation",
+          "params": [
+            {
+              "value": "14",
+              "events": {
+                "created": {
+                  "at": "2020-12-07T16:34:30+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                },
+                "updated": {
+                  "at": "2020-12-09T10:27:45+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                }
+              },
+              "id": "asdf",
+              "title": "asdf",
+              "description": "asdf",
+              "type": "text",
+              "scope": "item",
+              "phase": "configuration",
+              "hint": "I am the hint text",
+              "placeholder": "I am the placeholder text",
+              "constraints": {
+                "required": false,
+                "hidden": false,
+                "unique": false,
+                "shared": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "PRD_276_377_545_0006",
+          "global_id": "PRD-276-377-545-0006",
+          "mpn": "MPN-R-006",
+          "old_quantity": "0",
+          "quantity": "6",
+          "type": "Units",
+          "display_name": "Reservation Item 006",
+          "period": "Monthly",
+          "item_type": "Reservation",
+          "params": [
+            {
+              "value": "13",
+              "events": {
+                "created": {
+                  "at": "2020-12-07T16:34:37+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                },
+                "updated": {
+                  "at": "2020-12-09T10:27:52+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                }
+              },
+              "id": "asdf",
+              "title": "asdf",
+              "description": "asdf",
+              "type": "text",
+              "scope": "item",
+              "phase": "configuration",
+              "hint": "I am the hint text",
+              "placeholder": "I am the placeholder text",
+              "constraints": {
+                "required": false,
+                "hidden": false,
+                "unique": false,
+                "shared": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "PRD_276_377_545_0007",
+          "global_id": "PRD-276-377-545-0007",
+          "mpn": "MPN-R-007",
+          "old_quantity": "0",
+          "quantity": "0",
+          "type": "Units",
+          "display_name": "Reservation Item 007",
+          "period": "Monthly",
+          "item_type": "Reservation",
+          "params": [
+            {
+              "value": "12",
+              "events": {
+                "created": {
+                  "at": "2020-12-07T16:34:43+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                },
+                "updated": {
+                  "at": "2020-12-09T10:27:58+00:00",
+                  "by": {
+                    "id": "SU-745-238-122",
+                    "name": "CLI Token"
+                  }
+                }
+              },
+              "id": "asdf",
+              "title": "asdf",
+              "description": "asdf",
+              "type": "text",
+              "scope": "item",
+              "phase": "configuration",
+              "hint": "I am the hint text",
+              "placeholder": "I am the placeholder text",
+              "constraints": {
+                "required": false,
+                "hidden": false,
+                "unique": false,
+                "shared": null
+              }
+            }
+          ]
+        }
+
+      ],
+      "params": [
+        {
+          "id": "adobe_vip_number",
+          "name": "adobe_vip_number",
+          "type": "text",
+          "phase": "ordering",
+          "description": "Adobe VIP Number",
+          "value": "",
+          "value_error": "",
+          "title": "Adobe VIP Number",
+          "constraints": {
+            "meta": {},
+            "required": false,
+            "hidden": true,
+            "readonly": false
+          }
+        },
+        {
+          "id": "adobe_order_id",
+          "name": "adobe_order_id",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Adobe Order ID",
+          "value": "P9201150234",
+          "value_error": "",
+          "title": "Adobe Order ID",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "transfer_id",
+          "name": "transfer_id",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Transfer ID of a membership once it it is initiated for transfers",
+          "value": "",
+          "value_error": "",
+          "title": "Transfer ID",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "action_type",
+          "name": "action_type",
+          "type": "dropdown",
+          "phase": "ordering",
+          "description": "Option to customer to choose whether it is a purchase or a transfer",
+          "value": "purchase",
+          "value_error": "",
+          "title": "Choose your action",
+          "constraints": {
+            "meta": {
+              "choices": [
+                {
+                  "label": "Transfer",
+                  "value": "transfer"
+                },
+                {
+                  "label": "Make a new Purchase",
+                  "value": "purchase"
+                }
+              ]
+            },
+            "required": true,
+            "hidden": false,
+            "readonly": false
+          },
+          "value_choices": [
+            {
+              "label": "Transfer",
+              "value": "transfer"
+            },
+            {
+              "label": "Make a new Purchase",
+              "value": "purchase"
+            }
+          ]
+        },
+        {
+          "id": "adobe_user_email",
+          "name": "adobe_user_email",
+          "type": "text",
+          "phase": "ordering",
+          "description": "Adobe User Email",
+          "value": "Custome123123123sar3w@qaa.catchall.infra.im",
+          "value_error": "",
+          "title": "Adobe User Email",
+          "constraints": {
+            "meta": {},
+            "required": false,
+            "hidden": true,
+            "readonly": false
+          }
+        },
+        {
+          "id": "adobe_customer_id",
+          "name": "adobe_customer_id",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Adobe Customer ID",
+          "value": "P1005041940",
+          "value_error": "",
+          "title": "Adobe Customer ID",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": true,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "discount_group",
+          "name": "discount_group",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "discount group",
+          "value": "01A12",
+          "value_error": "",
+          "title": "discount group",
+          "constraints": {
+            "placeholder": "discount group",
+            "hint": "discount group",
+            "meta": {},
+            "required": false,
+            "reconciliation": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "t0_f_password",
+          "name": "t0_f_password",
+          "type": "password",
+          "phase": "fulfillment",
+          "description": "t0_f_password D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_f_password T",
+          "constraints": {
+            "max_length": 100,
+            "min_length": 1,
+            "meta": {},
+            "required": true,
+            "reconciliation": false
+          }
+        },
+        {
+          "id": "t0_f_text",
+          "name": "t0_f_text",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "t0_f_text D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_f_text T",
+          "constraints": {
+            "placeholder": "I am the placeholder text",
+            "hint": "I am the hint text",
+            "meta": {},
+            "required": true,
+            "reconciliation": false
+          }
+        },
+        {
+          "id": "t0_o_address",
+          "name": "t0_o_address",
+          "type": "address",
+          "phase": "ordering",
+          "description": "t0_o_address D",
+          "value": "1388 Feil ForkPort Leoview, MI 47687 Hauckstad Nevada 70601-0096 US",
+          "value_error": "",
+          "title": "t0_o_address T",
+          "constraints": {
+            "default": {
+              "country": null
+            },
+            "meta": {},
+            "required": true
+          },
+          "structured_value": {
+            "address_line1": "1388 Feil ForkPort Leoview, MI 47687",
+            "address_line2": "",
+            "city": "Hauckstad",
+            "state": "Nevada",
+            "postal_code": "70601-0096",
+            "country": "US"
+          }
+        },
+        {
+          "id": "t0_o_checkbox",
+          "name": "t0_o_checkbox",
+          "type": "checkbox",
+          "phase": "ordering",
+          "description": "t0_o_checkbox D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_o_checkbox T",
+          "constraints": {
+            "meta": {
+              "choices": [
+                {
+                  "label": "L-1",
+                  "value": "V-1"
+                },
+                {
+                  "label": "L-2",
+                  "value": "V-2"
+                },
+                {
+                  "label": "L-3",
+                  "value": "V-3"
+                }
+              ]
+            },
+            "required": false
+          },
+          "structured_value": {
+            "V-1": true,
+            "V-2": false,
+            "V-3": false
+          },
+          "value_choices": [
+            {
+              "label": "L-1",
+              "value": "V-1"
+            },
+            {
+              "label": "L-2",
+              "value": "V-2"
+            },
+            {
+              "label": "L-3",
+              "value": "V-3"
+            }
+          ]
+        },
+        {
+          "id": "t0_o_choice",
+          "name": "t0_o_choice",
+          "type": "choice",
+          "phase": "ordering",
+          "description": "t0_o_choice D",
+          "value": "V-1",
+          "value_error": "",
+          "title": "t0_o_choice T",
+          "constraints": {
+            "meta": {
+              "choices": [
+                {
+                  "label": "L-1",
+                  "value": "V-1"
+                },
+                {
+                  "label": "L-2",
+                  "value": "V-2"
+                },
+                {
+                  "label": "L-3",
+                  "value": "V-3",
+                  "default": true
+                }
+              ]
+            },
+            "required": false
+          },
+          "value_choices": [
+            {
+              "label": "L-1",
+              "value": "V-1"
+            },
+            {
+              "label": "L-2",
+              "value": "V-2"
+            },
+            {
+              "label": "L-3",
+              "value": "V-3",
+              "default": true
+            }
+          ]
+        },
+        {
+          "id": "t0_o_domain",
+          "name": "t0_o_domain",
+          "type": "domain",
+          "phase": "ordering",
+          "description": "t0_o_domain D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_o_domain T",
+          "constraints": {
+            "placeholder": "I am the placeholder text",
+            "hint": "I am the hint text",
+            "meta": {},
+            "required": false
+          }
+        },
+        {
+          "id": "t0_o_dropdown",
+          "name": "t0_o_dropdown",
+          "type": "dropdown",
+          "phase": "ordering",
+          "description": "t0_o_dropdown D",
+          "value": "V-3",
+          "value_error": "",
+          "title": "t0_o_dropdown  T",
+          "constraints": {
+            "hint": "I am the hint text",
+            "meta": {
+              "choices": [
+                {
+                  "label": "L-1",
+                  "value": "V-1"
+                },
+                {
+                  "label": "L-2",
+                  "value": "V-2"
+                },
+                {
+                  "label": "C-3",
+                  "value": "V-3",
+                  "default": true
+                }
+              ]
+            },
+            "required": false
+          },
+          "value_choices": [
+            {
+              "label": "L-1",
+              "value": "V-1"
+            },
+            {
+              "label": "L-2",
+              "value": "V-2"
+            },
+            {
+              "label": "C-3",
+              "value": "V-3",
+              "default": true
+            }
+          ]
+        },
+        {
+          "id": "t0_o_email",
+          "name": "t0_o_email",
+          "type": "email",
+          "phase": "ordering",
+          "description": "t0_o_email D",
+          "value": "mamam@mia.com",
+          "value_error": "",
+          "title": "t0_o_email T UPDATE",
+          "constraints": {
+            "placeholder": "I am the placeholder text",
+            "hint": "I am the hint text",
+            "meta": {},
+            "required": false
+          }
+        },
+        {
+          "id": "t0_o_object",
+          "name": "t0_o_object",
+          "type": "object",
+          "phase": "ordering",
+          "description": "t0_o_object D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_o_object T",
+          "constraints": {
+            "hint": "I am the hint text",
+            "meta": {},
+            "required": false
+          }
+        },
+        {
+          "id": "t0_o_password",
+          "name": "t0_o_password",
+          "type": "password",
+          "phase": "ordering",
+          "description": "t0_o_password D",
+          "value": "u#",
+          "value_error": "",
+          "title": "t0_o_password T",
+          "constraints": {
+            "max_length": 100,
+            "min_length": 1,
+            "meta": {},
+            "required": false
+          }
+        },
+        {
+          "id": "t0_o_phone",
+          "name": "t0_o_phone",
+          "type": "phone",
+          "phase": "ordering",
+          "description": "t0_o_phone D",
+          "value": "+34687769698",
+          "value_error": "",
+          "title": "t0_o_phone T",
+          "constraints": {
+            "hint": "I am the hint text",
+            "default": {
+              "country": null
+            },
+            "meta": {},
+            "required": false
+          },
+          "structured_value": {
+            "area_code": "687",
+            "country_code": "+34",
+            "phone_number": "769698",
+            "extension": ""
+          }
+        },
+        {
+          "id": "t0_o_subdomain",
+          "name": "t0_o_subdomain",
+          "type": "subdomain",
+          "phase": "ordering",
+          "description": "t0_o_subdomain D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_o_subdomain T",
+          "constraints": {
+            "hint": "I am the hint text",
+            "meta": {
+              "choices": [
+                {
+                  "value": "AAA.COM",
+                  "default": true,
+                  "label": "AAA.COM"
+                },
+                {
+                  "value": "BBB.COM",
+                  "label": "BBB.COM"
+                }
+              ]
+            },
+            "required": false
+          },
+          "value_choices": [
+            {
+              "value": "AAA.COM",
+              "default": true,
+              "label": "AAA.COM"
+            },
+            {
+              "value": "BBB.COM",
+              "label": "BBB.COM"
+            }
+          ]
+        },
+        {
+          "id": "t0_o_text",
+          "name": "t0_o_text",
+          "type": "text",
+          "phase": "ordering",
+          "description": "t0_o_text D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_o_text  T",
+          "constraints": {
+            "placeholder": "I am the placeholder text",
+            "hint": "I am the hint text",
+            "meta": {},
+            "required": false
+          }
+        },
+        {
+          "id": "t0_o_url",
+          "name": "t0_o_url",
+          "type": "url",
+          "phase": "ordering",
+          "description": "t0_o_url D",
+          "value": "",
+          "value_error": "",
+          "title": "t0_o_url T",
+          "constraints": {
+            "placeholder": "I am the placeholder text",
+            "hint": "I am the hint text",
+            "meta": {},
+            "required": false
+          }
+        }
+      ],
+      "tiers": {
+        "customer": {
+          "id": "TA-2483-1010-5646",
+          "external_id": "1149069",
+          "external_uid": "df57b844-955f-4ed5-84d7-e736eda44a79",
+          "name": "Mayer-Kerluke",
+          "contact_info": {
+            "address_line1": "1388 Feil ForkPort Leoview, MI 47687",
+            "address_line2": null,
+            "city": "Hauckstad",
+            "state": "Nevada",
+            "postal_code": "70601-0096",
+            "country": "us",
+            "contact": {
+              "first_name": "Florian",
+              "last_name": "Langosh",
+              "email": "jazlyn25@hagenes.com",
+              "phone_number": {
+                "country_code": "+1",
+                "area_code": "709",
+                "phone_number": "8908253",
+                "extension": "280"
+              }
+            }
+          }
+        },
+        "tier1": {
+          "id": "TA-0-2347-9392-6524",
+          "external_id": "1",
+          "external_uid": "6108fa88-62ba-4e18-af32-8af334afafae",
+          "name": "Connectdemos",
+          "contact_info": {
+            "address_line1": "3351 Michelson Drive, Suite 100",
+            "address_line2": "",
+            "city": "Irvine",
+            "state": "CA",
+            "postal_code": "92612-0697",
+            "country": "us",
+            "contact": {
+              "first_name": "Charlie",
+              "last_name": "Smith",
+              "email": "admin@imcdemos.com",
+              "phone_number": {
+                "country_code": "+1",
+                "area_code": "714",
+                "phone_number": "5661000",
+                "extension": ""
+              }
+            }
+          }
+        },
+        "tier2": {}
+      },
+      "configuration": {
+        "params": [
+          {
+            "value": "05f5e51a-86f4-4af3-8e1d-4078c218bafd",
+            "events": {
+              "created": {
+                "at": "2021-02-08T11:03:39+00:00",
+                "by": {
+                  "id": "UR-468-220-200",
+                  "name": "Marcos López Martínez"
+                }
+              },
+              "updated": {
+                "at": "2021-02-08T11:03:39+00:00"
+              }
+            },
+            "id": "adobe_client_secret_billing_migration",
+            "title": "Adobe Client Secret Billing Migration",
+            "description": "Adobe Client Secret Billing Migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "Adobe Client Secret Billing Migration",
+            "placeholder": "Adobe Client Secret Billing Migration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "asdfasdfasdfsad",
+            "events": {
+              "created": {
+                "at": "2022-06-03T07:38:18+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-06-03T07:38:18+00:00"
+              }
+            },
+            "id": "adobe_client_secret_billing_migration_preview",
+            "title": "Adobe client secret billing migration preview",
+            "description": "Adobe client secret billing migration preview",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "ef4c7826b8974394a4f687ccb8eb0731",
+            "events": {
+              "created": {
+                "at": "2021-02-03T09:37:20+00:00",
+                "by": {
+                  "id": "UR-468-220-200",
+                  "name": "Marcos López Martínez"
+                }
+              },
+              "updated": {
+                "at": "2022-05-12T08:41:51+00:00",
+                "by": {
+                  "id": "UR-339-375-648",
+                  "name": "Jose Paniagua"
+                }
+              }
+            },
+            "id": "api_key_billing_migration",
+            "title": "API Key Billing Migration",
+            "description": "API Key Billing Migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "API Key Billing Migration",
+            "placeholder": "API Key Billing Migration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "asdfasdfasdfasfd",
+            "events": {
+              "created": {
+                "at": "2022-06-03T07:37:52+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-06-03T07:37:52+00:00"
+              }
+            },
+            "id": "api_key_billing_migration_preview",
+            "title": "Api key billing migration preview",
+            "description": "Api key billing migration preview",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "6820",
+            "events": {
+              "created": {
+                "at": "2021-02-08T11:00:22+00:00",
+                "by": {
+                  "id": "UR-468-220-200",
+                  "name": "Marcos López Martínez"
+                }
+              },
+              "updated": {
+                "at": "2021-02-08T11:00:22+00:00"
+              }
+            },
+            "id": "distributorid_billing_migration",
+            "title": "Distributor ID of the Adobe Distributor Billing Migration",
+            "description": "Distributor ID of the Adobe Distributor Billing Migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "Distributor ID of the Adobe Distributor Billing Migration",
+            "placeholder": "Distributor ID of the Adobe Distributor Billing Migration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "34334",
+            "events": {
+              "created": {
+                "at": "2022-06-03T07:38:29+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-10-24T15:42:25+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "distributorid_billing_migration_preview",
+            "title": "Distributorid billing migration preview",
+            "description": "Distributorid billing migration preview",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "{\"iss\":\"8CF80F9A5F2B47C80A494026@AdobeOrg\",\"sub\":\"99680AF55F2B65480A494121@techacct.adobe.com\",\"https://ims-na1-stg1.adobelogin.com/s/ent_partners_sdk\":true,\"aud\":\"https://ims-na1-stg1.adobelogin.com/c/ef4c7826b8974394a4f687ccb8eb0731\"}",
+            "events": {
+              "created": {
+                "at": "2021-02-03T09:36:11+00:00",
+                "by": {
+                  "id": "UR-468-220-200",
+                  "name": "Marcos López Martínez"
+                }
+              },
+              "updated": {
+                "at": "2021-02-03T09:36:11+00:00"
+              }
+            },
+            "id": "jwt_payload_billing_migration",
+            "title": "JWT Payload Billing Migration",
+            "description": "JWT Payload Billing Migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "JWT Payload Billing Migration",
+            "placeholder": "JWT Payload Billing Migration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "asdfasdfasdfasdfasd",
+            "events": {
+              "created": {
+                "at": "2022-06-03T07:37:48+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-06-03T07:37:48+00:00"
+              }
+            },
+            "id": "jwt_payload_billing_migration_preview",
+            "title": "JWT payload billing migration preview",
+            "description": "JWT payload billing migration preview",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "https://ims-na1-stg1.adobelogin.com",
+            "events": {
+              "created": {
+                "at": "2021-02-03T09:34:29+00:00",
+                "by": {
+                  "id": "UR-468-220-200",
+                  "name": "Marcos López Martínez"
+                }
+              },
+              "updated": {
+                "at": "2021-02-03T09:34:29+00:00"
+              }
+            },
+            "id": "jwt_url_billing_migration",
+            "title": "JWT URL Billing Migration",
+            "description": "JWT URL Billing Migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "JWT URL Billing Migration",
+            "placeholder": "JWT URL Billing Migration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "asdfasddfasdfasdfa",
+            "events": {
+              "created": {
+                "at": "2022-06-03T07:38:21+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-06-03T07:38:21+00:00"
+              }
+            },
+            "id": "jwt_url_billing_migration_preview",
+            "title": "JWT url billing migration",
+            "description": "Jwt url billing migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "-----BEGIN PRIVATE KEY----- MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDp12zOaebYo7Cl8YWsp9t5icoo mzAvD8W1/ZXWMZUmRg9w10ESgIK1zaa55IcXUBnpLNm/5ybIvNszmEhJJvrRTAsFv1c+BhVNakLL X7v0/+5NpPa/cck3L72EOR+I3ISkkyQkiWqyMjVRdJvPMbX80r5L6Pdq5qz1xx9Sb3zcO3/AUHo6 pscnn8TLFtn2s3se1pEiwjpDkdbFr79L41bmo2Ml6H/BV98g+7QtetMub0yXQ/dYvpQEXBte6YDb SpafkqKRZ3srjQXd6O5hrm/EhiYmbtUzK15G2Guowcl9omWT6goph4m8v8NTmD6yDbSflkPIMZ5Y UpOKbV5YfD3RAgMBAAECggEBAIzlgGne5XkjKAzUufaOLW/N1kEhQKcamcZORToKJhQpoqQbDtpX FGr2vr7DM6KYYQReQdWfMX9CS9GKsANjuTzi1MFhyO9WOv+qRxTDWj0E+FFQVFyF8veNjGNfB+Eu /b0r61sYcXFtTzMFT9xH15++W2rhtDJ1S0HL+NNy2YjYKb2nRQyIM6mT85VEujVVD7m+hRi7osJV b6XDvZZmcksfSb4il1/3trbK7OZzWdOdth0AjV8UeZFBuLxVTR9ZGvuDMjMHlPHBXSKPy0isvL9v P00FqYuj7lRLf739hZMq2G0n58HQI3u8RwmL4NQvABe1zkSBk/W0s7qqUkxKVQECgYEA/9S4EjFU uLW5rpA4TreR2F027RD0p15BvYlT6pWtqch37trLwOWC3PzJxazmJjKvxbZqXIm/pNtFAl8PC+Fd 09f7+6czsn4hbii3km97ZSaJeY5iRpAAucmNAWYjmtAgwFhz/1RV9bo4zlv6N1yHKlkUOWgSz0iw vwn4AjOjgTsCgYEA6f78YeROvGJ/ajCL4FeDG2ZAOAq+qo8P4NbJjZewBMHyD7G5Bwlf20DQMjpA cm+QKfj5sWxxSjI/sbMA+3shE424YNu4gPDn+CYsFUCrVJmNfH0MNBMa6j6u3SEHIbUTaVRahcp1 YbqKrFHx+xgEIG39cBDFB4uiZCs09vdvjGMCgYBnghWHptX0dfJOoqNllfg4Zl6WxEl4fjZzDWEa hLzi+O0tgvD1dubfqpeoly/3PILJp+iY0FLtzJm7P+LCl8hyseyOATR1f3rfKzI62Ug/wLvWprk0 e4cPpHCcpEq7lIHr0N397I1rApGBTM2MIK+/fpMkNuuFWo/Ie6wQl/wLiQKBgQDhcspp6tWtjd0j S8jJCqgIMxk2pauUmyf6QheJc5ekzdRSKLKTxAV2MtklO5iyaSjmN7sjpc71ZLqXlFci9TwmIcp+ j9QRb4qgPO8GPvuUFCoMwlKKrcml3WUPKu47HMKqHhrlgu5bjaZkZsOVYEtBj5e6bH3ZSkDY8AQk 2ru/7wKBgQCnfEkIeMEB9+rpQaRNZPUlwwldG/KqvdyO5Y5yModn6voxjzkvMmBEJZYhQGtYhAZB i/xZO75/NS0SLUF7Wa1hF14bUGxwDN+TcLMjgQnJoIh/9JTttfIZJIFnPDyYfPCFap+ygnidFcOA uPaN8BcftFfhagXQv5vy89u2WroiKQ== -----END PRIVATE KEY-----",
+            "events": {
+              "created": {
+                "at": "2021-02-03T09:38:01+00:00",
+                "by": {
+                  "id": "UR-468-220-200",
+                  "name": "Marcos López Martínez"
+                }
+              },
+              "updated": {
+                "at": "2022-05-12T08:43:41+00:00",
+                "by": {
+                  "id": "UR-339-375-648",
+                  "name": "Jose Paniagua"
+                }
+              }
+            },
+            "id": "private_key_billing_migration",
+            "title": "Private Key Billing Migration",
+            "description": "Private Key Billing Migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "Private Key Billing Migration",
+            "placeholder": "Private Key Billing Migration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "asdfadsffasdasdf",
+            "events": {
+              "created": {
+                "at": "2022-06-03T07:38:25+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-06-03T07:38:25+00:00"
+              }
+            },
+            "id": "private_key_billing_migration_preview",
+            "title": "Private key billing migration preview",
+            "description": "Private key billing migration preview",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "https://partnersandbox-stage.adobe.io",
+            "events": {
+              "created": {
+                "at": "2021-02-03T09:35:10+00:00",
+                "by": {
+                  "id": "UR-468-220-200",
+                  "name": "Marcos López Martínez"
+                }
+              },
+              "updated": {
+                "at": "2021-02-03T09:35:10+00:00"
+              }
+            },
+            "id": "url_billing_migration",
+            "title": "URL Billling Migration",
+            "description": "URL Billling Migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "URL Billling Migration",
+            "placeholder": "URL Billling Migration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "asdfasdfasdfasdfas",
+            "events": {
+              "created": {
+                "at": "2022-06-03T07:38:15+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-06-03T07:38:15+00:00"
+              }
+            },
+            "id": "url_billing_migration_preview",
+            "title": "URL Billing Migration Preview",
+            "description": "url billing migration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "TL-522-391-040",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:28:42+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-02-03T15:57:48+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "activation_template_id",
+            "title": "Activation Template ID",
+            "description": "Activation Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "aaa",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:27:27+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:27:27+00:00"
+              }
+            },
+            "id": "adobe_client_secret",
+            "title": "Adobe Client Secret (Production Credentials Only)",
+            "description": "This is the client secret of Adobe Partner. Valid for Production credentials only",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "cc0db61d-cb14-4bbc-b9a2-8bb7fa59fec7",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:28:33+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:31:20+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "adobe_client_secret_preview",
+            "title": "Adobe Client Secret Preview",
+            "description": "Adobe Client Secret Preview",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "Adobe Client Secret Preview",
+            "placeholder": "Adobe Client Secret Preview",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "cc0db61d-cb14-4bbc-b9a2-8bb7fa59fec7",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:29:40+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:19:15+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "adobe_client_secret_test",
+            "title": "Adobe Client Secret Test",
+            "description": "Adobe Client Secret Test",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "Adobe Client Secret Test",
+            "placeholder": "Adobe Client Secret Test",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "USD",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:25:02+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:25:02+00:00"
+              }
+            },
+            "id": "Adobe_Currency",
+            "title": "Currency",
+            "description": "Currency of the Marketplace",
+            "type": "dropdown",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "choices": [
+                {
+                  "label": "US Dollars",
+                  "value": "USD"
+                },
+                {
+                  "label": "Euro",
+                  "value": "EUR"
+                },
+                {
+                  "label": "Indian Rupee",
+                  "value": "INR"
+                }
+              ],
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "ingram_sandbox_de",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:31:08+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:31:08+00:00"
+              }
+            },
+            "id": "api_key",
+            "title": "API Key",
+            "description": "API Key",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "5c5ffe930de1411993ed465c9308e9b5",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:26:27+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:22:00+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "api_key_preview",
+            "title": "API Key Preview",
+            "description": "API Key Preview",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "5c5ffe930de1411993ed465c9308e9b5",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:31:45+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:19:05+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "api_key_test",
+            "title": "API Key Test",
+            "description": "API Key Test",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "one-to-many",
+            "events": {
+              "created": {
+                "at": "2022-06-29T10:12:18+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              },
+              "updated": {
+                "at": "2022-12-27T08:59:50+00:00",
+                "by": {
+                  "id": "UR-276-801-441",
+                  "name": "Manuel Ruiz"
+                }
+              }
+            },
+            "id": "business-model",
+            "title": "Business model (1:1 or 1:n)",
+            "description": "Param that allows creation of assets with 1:1 support (Insight)",
+            "type": "choice",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "choices": [
+                {
+                  "label": "One to many business model",
+                  "value": "one-to-many"
+                },
+                {
+                  "label": "One to one business model",
+                  "value": "one-to-one",
+                  "default": true
+                }
+              ],
+              "shared": null
+            }
+          },
+          {
+            "value": "TL-298-266-263",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:26:55+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:26:55+00:00"
+              }
+            },
+            "id": "customer_address_inquiring_template_id",
+            "title": "Customer Address Inquiring Template ID  (TO BE REMOVED)",
+            "description": "Customer Address Inquiring Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "TL-298-266-263",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:24:21+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:24:21+00:00"
+              }
+            },
+            "id": "customer_phone_number_inquiring_template_id",
+            "title": "Customer Phone Number Inquiring Template ID  (TO BE REMOVED)",
+            "description": "Customer Phone Number Inquiring Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "0000000005",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:29:15+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:29:15+00:00"
+              }
+            },
+            "id": "distributorid",
+            "title": "Adobe Distributor ID",
+            "description": "Distributor ID of the Adobe Distributor",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "10850",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:27:13+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:31:39+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "distributorid_preview",
+            "title": "Distributor ID of the Adobe Distributor Preview",
+            "description": "Distributor ID of the Adobe Distributor Preview",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "Adobe Distributor ID Preview",
+            "placeholder": "Adobe Distributor ID Preview",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "10850",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:26:10+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:19:29+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "distributorid_test",
+            "title": "Distributor ID of the Adobe Distributor Test",
+            "description": "Distributor ID of the Adobe Distributor Test",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "Distributor ID of the Adobe Distributor Test",
+            "placeholder": "Distributor ID of the Adobe Distributor Test",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "TL-298-266-263",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:24:37+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:24:37+00:00"
+              }
+            },
+            "id": "inquiring_template_id",
+            "title": "Inquiring Template ID",
+            "description": "Inquiring Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "{\"iss\":\"84BF3B7F5F1B480B0A495EAF@AdobeOrg\",\"sub\":\"A45C38F65F2169A30A495FDD@techacct.adobe.com\",\"https://ims-na1.adobelogin.com/s/ent_partners_sdk\":true,\"aud\":\"https://ims-na1.adobelogin.com/c/3915339a66c34db196be679e119123b2\"}",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:30:56+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:30:56+00:00"
+              }
+            },
+            "id": "jwt_payload",
+            "title": "JWT Payload (Production only)",
+            "description": "JWT Payload",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "JWT Payload",
+            "placeholder": "JWT Payload",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "{\"iss\":\"8F3E10FD5F2B47C40A494115@AdobeOrg\",\"sub\":\"A1AF6C485F2B56880A494218@techacct.adobe.com\",\"https://ims-na1-stg1.adobelogin.com/s/ent_partners_sdk\":true,\"aud\":\"https://ims-na1-stg1.adobelogin.com/c/5c5ffe930de1411993ed465c9308e9b5\"}",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:25:57+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:33:24+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "jwt_payload_preview",
+            "title": "JWT Payload Preview",
+            "description": "JWT Payload Preview",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "JWT Payload Preview",
+            "placeholder": "JWT Payload Preview",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "{\"iss\":\"8F3E10FD5F2B47C40A494115@AdobeOrg\",\"sub\":\"A1AF6C485F2B56880A494218@techacct.adobe.com\",\"https://ims-na1-stg1.adobelogin.com/s/ent_partners_sdk\":true,\"aud\":\"https://ims-na1-stg1.adobelogin.com/c/5c5ffe930de1411993ed465c9308e9b5\"}",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:25:39+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-25T12:11:35+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "jwt_payload_test",
+            "title": "JWT Payload Test",
+            "description": "JWT Payload Test",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "JWT Payload Test",
+            "placeholder": "JWT Payload Test",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "https://ims-na1-stg1.adobelogin.com",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:23:50+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:31:30+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "jwt_url_preview",
+            "title": "JWT URL Preview",
+            "description": "JWT URL Preview",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "JWT URL Preview",
+            "placeholder": "JWT URL Preview",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "https://ims-na1-stg1.adobelogin.com",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:27:43+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-07-29T11:11:01+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "jwt_url_test",
+            "title": "JWT URL Test",
+            "description": "JWT URL Test",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "JWT URL Test",
+            "placeholder": "JWT URL Test",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "en-US",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:23:35+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:23:35+00:00"
+              }
+            },
+            "id": "preferred_language",
+            "title": "Preferred Language",
+            "description": "Preferred Language",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "-----BEGIN PRIVATE KEY----- MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC6TcgFjrtqQKZhIWDTy8FPexS8 Rmd5PrRObOXnUF+N+WDK1uN2W+puiHfpOs1G+/egd+yhbZKzIYN0koLKmPPtyjSqJX5nMkCLSC8J 445sFPjQw58g/kR4MMvV/31AeiV1iwa0dj066+bvcK6QQD3fYdJcR7rpb58IAtY3wBytPnynkhaT wTfhYJk062kmKUCq4JeWBTh7z7RmuXZ3rERcKUeYGyNXc5lYVDK5RiVQrj/QV2qLwiSLk1DG+au0 R4SV2TRJgdW+eknGZM6vsohxwFcoEXK30fZJQPZ8WGfhmAseirhVPafGS2hlJ21xp8R/Tb6kyBhO 6dOkwMhGTN3NAgMBAAECggEAZBV6+flWl1sJxq5OvRj9zXv6hLZxygG0jVkVHPHhk3y/0dglNCVm yGCJwoKzWonr2onyVjpuD8tWOl6m4r3OdRUmu60OvdOSNwDdPDvB/DA8BrLAntHZ6JOWPW1WVTgJ PZ8lR/cpJ6kpU8I+FQJd+s4rWyWxtMwhLAWSHTsYbLxzzmZ6wKskzC80lz31ARQxK6YqCD8SMJTN V4XLRGX83pgSqjyx2KAj5Rg4ExnxapqbYtknTLrv1VOClfMuSRCgSp7ueTpsfm+DZMNMU83Zg2EF Cc22S0HPQhXGFsNkgAhLLUIvtZ5w6aRviSj/Zkg+lZ00bHt1COcsmZDHEmS6AQKBgQD0Sc7XWZ8S psc6wYVb9xI6Zc4fK8R1Da4bA5wDCu3nXybht29HrYtm0Ju1c1X+zK/t3/FaZ9585O9IvhNL+lLZ WdkcJaYTYd1hOLNI+c3bUxYaYUW48rE8NrExuTjiHE1Ps7pEW54YUqJVgtzOts2rFfMRXHImH0nx VogHTyLcgQKBgQDDPFHqae2i2F0zYxIUuVg7RXZdlL7fkpUNmgi292BBoSixpGHsTipVSt3RodyL FoYtQIvMx6a/HQs2JVjLCL978K7M+cXjpLjgAB3XiJPNgSD5ch3ETmxlM+/Badt9kqYhbebkdpYg KgsgLcVRn4lNP+FerM3LeJrZP1eHSdcLTQKBgHD5ATMOO0aA4noFrQrOxBtFoYFA2GXZob7UeH3f vA3YLz8LeecIFwPBTYEoiYiAWIwFmLRafMX9ibt2S65DYbUqnAEsWBV2mM6xThhdjhnz3rDsczYI 5nYWRPPd2LSYqhhF4cpjJEXTUUeCcWMXnx2T1QkeW5vNtIBrqBTZQCIBAoGBAL0/cEwhCDftMVLJ etJZ41v49ka6E9eWOCOqJz5sRoL3nAGuTTmJf2GUI7a8BpNQbxnYUmtbMJhap+6BfzO4NB0I7fhF OXxzxL1lf4fYnST8QaFq683JEyt6j7JVUWzExYLsDH9zMAzXlFdJ5tY7JhWakXR7XzUXoEpsKwU6 H1iVAoGAf/icUC4ivcrlkUdC2euXMOuwBksj3d+Z6GZR5ahvryYKd5Ymkl6dQZLmQSbl0OP7Zs53 bZrtE5Vgxykz0fuXDnTdYCBfR757cNiqn6QyzjD1mld/7ZOkMokTfrQ0965XuY5pO6/UFGs0Uvpu hP/7WsbadgRlvcibvRR+0maBCrc= -----END PRIVATE KEY-----",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:30:10+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:30:10+00:00"
+              }
+            },
+            "id": "private_key",
+            "title": "Private Key (Production only)",
+            "description": "Private Key (Production only)",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "private_key",
+            "placeholder": "private_key",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "-----BEGIN PRIVATE KEY----- MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCbFHzQmKBIT0dM ayyLYnBxGL9faFQU5ZPCj2UUktAWKuzoeh5E73edZN/VkcGXIHUqaWTogwNA3Hc4 1GJ1wO2zi39cMs10AUlPItM6W3iaJKdwCbU19A2ov0rW/IOlum09bTZ+kxX9CiCs QFjTkQJPvpi+7Isebs2wBFHkJ/9wR3y9F4McdU3sC8UETweTZvJ47dnpsZ+GFif5 5CO/CKDdDuXZUbU8LmIrpEKPbOpG+ub2WogSFGepMVzPU5FjaduQ/6XH3KKHlMxK Of5bCuxFwby9P/j7IgIxilih6j/eIgcAyTIBaJVJj+wTo2y5KFCC7+k/o4Fh39xl a3pOOp2dAgMBAAECggEBAJTp2Gypkoe88Nb1twFlFlnTjLh9wveJ+BgEf+iAjaYr s/AMi5JgbHjLy5AV9VI8TaXbLJWEcJRQ337HmoA+MUKOOk77TYQOVCnUZAaOnUFO 3yVbfRGA97jJb4D/Wx7B5HHutDxY2u1vUy50X5dQkGqot53mIDSp64MQst4mdkeG LxjS16ALdxYPfekPouXONCyAGYCfRK5ypa//VKeTBuh+K7m+f0rKGXzaZZvXXZJ3 pvy/DXsXfVONpVRrbKV7lM0KmB80ULA2Bx0Vfh9JIuFcpVAWu5Oo9jC8JWG7t06m SkMi6HBkQfTF7iTzkaoTwmTE7wBem6Tdvd1/6pqpELUCgYEAyUFYTF3464t8Detw SiCz+AlSMCnmoML/lTRMt1IVFJpZ8rC8v22KBDm5HSrCngSxTXJSDi/c7fUT/IBm 50HZPEr83dtCnXr4CVJQE/A8L1HSa9Mb+ZPem/onkuDAQRYgwTbI0kFC4nWBxuCh dY7sy+GxItK/svTWIBv/2Tk8eo8CgYEAxUOssdlI/1hOH66MSGxxNTDHCiLikEkw 1/T1ZxWzAgiey38S2+OebkMAV56D/xlKMRX6i+mG5GnuiMWbmzwTJz8ENlM3yIYy QeE5bUzdzhr6ErNUMzxNtk6tcoM7s+328ce3+XPi/a2uyfSmuiB50A47ehfY0Zrq LngSkbkgqxMCgYBdu2RfdOjo8zbc2MmcjKylGdpAelNijk8w84HDY6RTyyuXX38Y /PBp1WSE1BR+OhtFwbe7ycjwvtMHJ9pFXKLLdPVecq8M32fEF6UaFCpDs6z38QO3 coocRR7HRovkBGVO97ACVMjM5gOCV757HQzmTAAPAu6rb2KG4+N+DS1AuwKBgAo7 G07SDSYpJ0wfWmk7LpfqorgU3RlMonrg2oVxK6qUVeAKBClhYcsoMHFa6E+nuSBY mnj9MKDSGawAS7S+ZePoMci7gi4lP6AJFVhk3zAcWBH2OQy7OPCWngpNYiBP3Dnn +NO4PfKYOnOA+9C1dHvk8RLA/97HIRQt6BCkwFv/AoGAajbA5+JJTZ8yzpPwWogB Fpav1g+6zhT6pqV0NNsFt93Vg5i9PpJQqLtdvbxea0sfFgTv1zbziDXtLV0wGEtF nJMC4wMUkyokHKGIGbhSMJOwZpWPhSLMHtU66ZXX2QPEsWhayP3EqOAepzw8y6ba vQm7hMdfHZKw51WEK4zYTCI= -----END PRIVATE KEY-----",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:29:54+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:21:11+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "private_key_preview",
+            "title": "Private Key Preview",
+            "description": "Private Key Preview",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "-----BEGIN PRIVATE KEY----- MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCbFHzQmKBIT0dM ayyLYnBxGL9faFQU5ZPCj2UUktAWKuzoeh5E73edZN/VkcGXIHUqaWTogwNA3Hc4 1GJ1wO2zi39cMs10AUlPItM6W3iaJKdwCbU19A2ov0rW/IOlum09bTZ+kxX9CiCs QFjTkQJPvpi+7Isebs2wBFHkJ/9wR3y9F4McdU3sC8UETweTZvJ47dnpsZ+GFif5 5CO/CKDdDuXZUbU8LmIrpEKPbOpG+ub2WogSFGepMVzPU5FjaduQ/6XH3KKHlMxK Of5bCuxFwby9P/j7IgIxilih6j/eIgcAyTIBaJVJj+wTo2y5KFCC7+k/o4Fh39xl a3pOOp2dAgMBAAECggEBAJTp2Gypkoe88Nb1twFlFlnTjLh9wveJ+BgEf+iAjaYr s/AMi5JgbHjLy5AV9VI8TaXbLJWEcJRQ337HmoA+MUKOOk77TYQOVCnUZAaOnUFO 3yVbfRGA97jJb4D/Wx7B5HHutDxY2u1vUy50X5dQkGqot53mIDSp64MQst4mdkeG LxjS16ALdxYPfekPouXONCyAGYCfRK5ypa//VKeTBuh+K7m+f0rKGXzaZZvXXZJ3 pvy/DXsXfVONpVRrbKV7lM0KmB80ULA2Bx0Vfh9JIuFcpVAWu5Oo9jC8JWG7t06m SkMi6HBkQfTF7iTzkaoTwmTE7wBem6Tdvd1/6pqpELUCgYEAyUFYTF3464t8Detw SiCz+AlSMCnmoML/lTRMt1IVFJpZ8rC8v22KBDm5HSrCngSxTXJSDi/c7fUT/IBm 50HZPEr83dtCnXr4CVJQE/A8L1HSa9Mb+ZPem/onkuDAQRYgwTbI0kFC4nWBxuCh dY7sy+GxItK/svTWIBv/2Tk8eo8CgYEAxUOssdlI/1hOH66MSGxxNTDHCiLikEkw 1/T1ZxWzAgiey38S2+OebkMAV56D/xlKMRX6i+mG5GnuiMWbmzwTJz8ENlM3yIYy QeE5bUzdzhr6ErNUMzxNtk6tcoM7s+328ce3+XPi/a2uyfSmuiB50A47ehfY0Zrq LngSkbkgqxMCgYBdu2RfdOjo8zbc2MmcjKylGdpAelNijk8w84HDY6RTyyuXX38Y /PBp1WSE1BR+OhtFwbe7ycjwvtMHJ9pFXKLLdPVecq8M32fEF6UaFCpDs6z38QO3 coocRR7HRovkBGVO97ACVMjM5gOCV757HQzmTAAPAu6rb2KG4+N+DS1AuwKBgAo7 G07SDSYpJ0wfWmk7LpfqorgU3RlMonrg2oVxK6qUVeAKBClhYcsoMHFa6E+nuSBY mnj9MKDSGawAS7S+ZePoMci7gi4lP6AJFVhk3zAcWBH2OQy7OPCWngpNYiBP3Dnn +NO4PfKYOnOA+9C1dHvk8RLA/97HIRQt6BCkwFv/AoGAajbA5+JJTZ8yzpPwWogB Fpav1g+6zhT6pqV0NNsFt93Vg5i9PpJQqLtdvbxea0sfFgTv1zbziDXtLV0wGEtF nJMC4wMUkyokHKGIGbhSMJOwZpWPhSLMHtU66ZXX2QPEsWhayP3EqOAepzw8y6ba vQm7hMdfHZKw51WEK4zYTCI= -----END PRIVATE KEY-----",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:21:53+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-25T12:11:21+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "private_key_test",
+            "title": "Private Key Test",
+            "description": "Private Key Test",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "hint": "I am the hint text",
+            "placeholder": "I am the placeholder text",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": "edit"
+            }
+          },
+          {
+            "value": "TL-298-266-263",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:31:30+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:31:30+00:00"
+              }
+            },
+            "id": "reseller_phone_number_inquiring_template_id",
+            "title": "Reseller Phone Number Inquiring Template ID  (TO BE REMOVED)",
+            "description": "Reseller Phone Number Inquiring Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "TL-648-986-534",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:31:20+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:31:20+00:00"
+              }
+            },
+            "id": "tier1_template_id",
+            "title": "Tier 1 Template ID",
+            "description": "Tier 1 Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "TL-618-427-878",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:28:57+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-02-04T09:08:34+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "transfer_template_id",
+            "title": "Transfer Template ID",
+            "description": "Transfer Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "https://partnersandbox-stage.adobe.io",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:29:28+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:29:28+00:00"
+              }
+            },
+            "id": "url",
+            "title": "URL",
+            "description": "URL",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "https://partnersandbox-stage.adobe.io",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:24:50+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-08-23T07:31:48+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "url_preview",
+            "title": "URL Preview",
+            "description": "URL Preview",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "https://partnersandbox-stage.adobe.io",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:27:59+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2022-07-29T11:10:45+00:00",
+                "by": {
+                  "id": "UR-806-871-487",
+                  "name": "dfranco"
+                }
+              }
+            },
+            "id": "url_test",
+            "title": "URL Test",
+            "description": "URL Test",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": false,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          },
+          {
+            "value": "TL-298-266-263",
+            "events": {
+              "created": {
+                "at": "2021-05-03T10:31:56+00:00",
+                "by": {
+                  "id": "UR-471-523-754",
+                  "name": "Gustavo Bermejo"
+                }
+              },
+              "updated": {
+                "at": "2021-05-03T10:31:56+00:00"
+              }
+            },
+            "id": "vip_number_inquiring_template_id",
+            "title": "VIP Number Inquiring Template ID  (TO BE REMOVED)",
+            "description": "VIP Number Inquiring Template ID",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "required": true,
+              "hidden": false,
+              "unique": false,
+              "readonly": false,
+              "shared": null
+            }
+          }
+        ]
+      },
+      "marketplace": {
+        "id": "MP-65669",
+        "name": "Demo Marketplace",
+        "icon": "/media/PA-425-033/marketplaces/MP-91673/icon_0NPrdJx.png"
+      },
+      "contract": {
+        "id": "CRD-58096-38285-80856",
+        "type": "distribution",
+        "name": "Contract of Demo Marketplace Agreement"
+      }
+    },
+    "reason": "",
+    "status": "pending",
+    "created": "2020-11-23T14:18:17+00:00",
+    "updated": "2020-11-23T14:23:00+00:00",
+    "answered": false,
+    "assignee": {
+      "id": "UR-841-574-187",
+      "name": "Marc Serrat",
+      "email": "mserrat@odin.com"
+    },
+    "activation_key": "",
+    "template": {
+      "id": "TL-139-014-284",
+      "name": "Additional information is required to process your request",
+      "message": "Please complete our **[Activation Form](https://customer.sandbox.connect.cloudblue.com/?request_id=PR-1895-0864-1238-001&amp;code=zP51aEnxhLNjacoK)** to resume processing of your request"
+    },
+    "previous_approved_request": null,
+    "effective_date": "2020-11-23T12:52:27+00:00",
+    "planned_date": null,
+    "external_attributes": {},
+    "marketplace": {
+      "id": "MP-65669",
+      "name": "Demo Marketplace",
+      "icon": "/media/PA-425-033/marketplaces/MP-91673/icon_0NPrdJx.png"
+    },
+    "contract": {
+      "id": "CRD-58096-38285-80856",
+      "type": "distribution",
+      "name": "Contract of Demo Marketplace Agreement"
+    }
+  }
+]

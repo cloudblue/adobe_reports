@@ -1,0 +1,37 @@
+[
+  {
+    "id": "LST-502-711-061",
+    "status": "listed",
+    "contract": {
+      "id": "CRD-87835-67303-85378",
+      "type": "distribution",
+      "name": "Contract of Proofpoint UBS SP DA",
+      "marketplace": {
+        "id": "MP-65669",
+        "name": "IM -  United States",
+        "icon": "/media/PA-800-926/marketplaces/MP-65669/icon.png"
+      }
+    },
+    "product": {
+      "id": "PRD-207-752-513",
+      "icon": "/media/VA-610-138/PRD-207-752-513/media/PRD-207-752-513-logo_VJRHeIz.png",
+      "name": "Adobe Cloud",
+      "status": "published"
+    },
+    "created": "2021-05-03T06:49:52+00:00",
+    "updated": "2022-10-05T07:44:00+00:00",
+    "vendor": {
+      "id": "VA-610-138",
+      "name": "IMC Gamma Team Vendor"
+    },
+    "provider": {
+      "id": "PA-800-926",
+      "name": "IMC Gamma Team Provider"
+    },
+    "pricelist": {
+      "id": "PL-667-945-709",
+      "name": "Test Insights pricelist - 2",
+      "status": "active"
+    }
+  }
+]
