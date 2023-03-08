@@ -1,4 +1,6 @@
 *.pyc
+.idea
 htmlcov
 .coverage
 coverage.xml
+.DS_Store

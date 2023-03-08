@@ -1,9 +1,7 @@
-# Welcome to connect-reports !
+# Welcome to Adobe Reports!
+In this repository you can find the reports to use with Adobe Connector.
 
-
-This project is made to generate custom reports using Connect SDK
-
+Adobe Approved Requests - report containing the Adobe Approved Request with Discounts applied
 
 ## License
-
-**connect-reports** is licensed under the *Apache Software License 2.0* license.
+Adobe Reports is licensed under the Apache Software License 2.0 license.
