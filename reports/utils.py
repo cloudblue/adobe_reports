@@ -6,18 +6,22 @@ FOREXAPI_URL = 'https://theforexapi.com/api/latest'
 
 
 def get_param_value(params: list, value: str) -> str:
-    if params[0]['id'] == value:
-        return params[0]['value']
-    if len(params) == 1:
+    try:
+        if params[0]['id'] == value:
+            return params[0]['value']
+        if len(params) == 1:
+            return '-'
+        return get_param_value(list(params[1:]), value)
+    except Exception:
         return '-'
-    return get_param_value(list(params[1:]), value)
-
 
 def get_basic_value(base, value):
-    if base and value in base:
-        return base[value]
-    return '-'
-
+    try:
+        if base and value in base:
+            return base[value]
+        return '-'
+    except Exception:
+        return '-'
 
 def get_value(base, prop, value):
     if prop in base:
