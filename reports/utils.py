@@ -242,7 +242,11 @@ def get_base_currency_financials(financials_and_seats: dict, currency: dict) -> 
 def get_financials_from_product_per_marketplace(client, marketplace_id, asset_id):
     listing = api_calls.request_listing(client, marketplace_id, asset_id)
     price_list_points = []
-    if listing and listing['pricelist']:
-        price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
-        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'])
+
+    try:
+        if listing and listing['pricelist']:
+            price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
+            price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'])
+    except:
+        return {}
     return get_financials_from_price_list(price_list_points)
