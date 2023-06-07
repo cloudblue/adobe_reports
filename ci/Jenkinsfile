@@ -1,0 +1,260 @@
+#!groovy
+
+library("platform-pipeline-shared-lib")
+
+def environment = [
+    NETWORK: "$JOB_NAME" + "_default",
+    PROJECT_NAME: "adobe-reports",
+    FILES_SOURCE: "reports",
+    FILES_TEST: "tests/",
+    FILES_EXCLUDED: "",
+    PACKAGE_TYPE: "zip",
+    STORAGE_HOST: "storage.dev.cloud.im",
+    STORAGE_PATH: "/home/storage/connect/${env.PROJECT_NAME}",
+
+    RUN_DEPENDENCY_CHECK: false,
+    PUBLISH_PACKAGE: true,
+]
+
+def pipelineStages = [
+    [name: 'Environment Setup', steps: {
+        env.SEMANTIC_VERSION = sh(returnStdout: true, script: "git describe --exact-match ${env.GIT_COMMIT} --abbrev=0 --tags || echo 'v0.0.0-dev'").trim()
+        env.PROJECT_KEY = "connectors-${env.PROJECT_NAME}"
+        env.PROJECT_VERSION = "${env.SEMANTIC_VERSION}" + "${env.SEMANTIC_VERSION == 'v0.0.0-dev' ? '.' : '-'}" + "${env.BUILD_NUMBER}"
+
+        HAS_PYPROJECT = fileExists 'pyproject.toml'
+        HAS_REQUIREMENTS = fileExists 'requirements.txt'
+        HAS_REQUIREMENTS_DEV = fileExists 'requirements-dev.txt'
+
+        PROJECT_DELIVERABLE="${env.PROJECT_NAME}-${env.PROJECT_VERSION}.${env.PACKAGE_TYPE}"
+    }],
+    [name: 'Installing tools', steps: {
+        sh """#!/bin/bash
+        set -euxo pipefail
+
+        python --version
+
+        echo "Updating base packages..."
+        apt update && apt-get install -y default-jre wget zip unzip
+        python -m pip install --upgrade pip
+
+        if [ "${HAS_PYPROJECT}" = true ]
+        then
+            echo "Installing poetry"
+            python -m pip install poetry
+        elif [ "${HAS_REQUIREMENTS}" = true ]
+        then
+            echo "Using Pip"
+            python -m pip install coverage pylint pytest pytest-cov mock --trusted-host pypi.int.zone
+        else
+            error "No pyproject.toml or requirements.txt files found."
+        fi
+
+        if [ "${RUN_DEPENDENCY_CHECK}" = true ]
+        then
+            python -m pip install cyclonedx-bom==1.4.0 --trusted-host pypi.int.zone
+
+            DC_VERSION=\$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
+            echo "Installing dependency-check \$DC_VERSION"
+            wget -q "https://github.com/jeremylong/DependencyCheck/releases/download/v\$DC_VERSION/dependency-check-\$DC_VERSION-release.zip" -O dependency-check.zip
+            unzip dependency-check.zip
+            mv dependency-check/ /opt/dependency-check
+            rm dependency-check.zip
+        fi
+
+        echo "Downloading and Installing sonar-scanner..."
+        SONAR_VERSION=\$(curl --silent "https://api.github.com/repos/SonarSource/sonar-scanner-cli/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\\1/')
+        echo "Sonar version \$SONAR_VERSION"
+        wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-\$SONAR_VERSION-linux.zip
+        unzip sonar-scanner-cli-\$SONAR_VERSION-linux.zip
+        mv sonar-scanner-\$SONAR_VERSION-linux/ /opt/sonar
+        rm sonar-scanner-cli-\$SONAR_VERSION-linux.zip
+        """
+    }],
+    [name: 'Python Dependency Packager', steps: {
+        if (env.PUBLISH_PACKAGE.toBoolean() && HAS_REQUIREMENTS.toBoolean()) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'ci.jenkins.svc', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
+                sh """#!/bin/bash
+                set -euxo pipefail
+
+                python -m pip install build
+                
+                mv requirements.txt requirements.preprocess.txt
+
+                REQUIREMENTS=(\$(cat requirements.preprocess.txt))
+                PROJECT_WORK_DIR=\$(pwd)
+
+                mkdir -p deps/
+                mkdir -p build/
+
+                for requirement in "\${REQUIREMENTS[@]}"; do
+                if [[ \$requirement == *"git+"* ]]; then
+                    dependency_source=\$(echo \$requirement | sed "s/git+//g")
+                    dependency_name=\${dependency_source##*=}
+                    dependency_version="master"
+                    dependency_repository_full=\$(echo \$dependency_source | cut -f 1 -d "#")
+                    dependency_repository=\${dependency_repository_full%@*}
+
+                    at_count=\$(echo "\$dependency_repository_full" | awk -F"@" '{print NF-1}')
+                    if [ \$at_count -ge 1 ]; then
+                        dependency_version=\$(echo \$dependency_repository_full | rev | cut -f 1 -d "@" | rev)
+                    fi
+
+                    echo "Dependency Source: \$dependency_source"
+                    echo "Dependency Name: \$dependency_name"
+                    echo "Dependency Version: \$dependency_version"
+                    echo "Dependency Repository: \$dependency_repository"
+
+                    if [ \$dependency_version == "master" ]; then
+                        GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i \$SSH_PRIVATE_KEY" git clone \$dependency_repository build/\$dependency_name
+                    else
+                        GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i \$SSH_PRIVATE_KEY" git clone -b \$dependency_version --single-branch \$dependency_repository build/\$dependency_name
+                    fi
+
+                    cd build/\$dependency_name
+                    if [ -f "pyproject.toml" ]
+                    then
+                        poetry build
+                    else
+                        python -m build
+                    fi
+                    cd \$PROJECT_WORK_DIR
+
+                    cp build/\$dependency_name/dist/*.whl build/
+                    rm -rf build/\$dependency_name
+
+                    ls -lrt build
+                fi
+                done
+
+                touch requirements.txt
+                cat requirements.preprocess.txt | sed '/git+/d' > requirements.txt
+
+                echo "Adding dependencies locally"
+                dependencies=(\$(find build/ -iname "*.whl"))
+                for dependency in "\${dependencies[@]}"; do
+                    dependency=\${dependency/build//}
+                    mv "build/\${dependency}" "deps/\${dependency}"
+                    echo "Adding requirement \${dependency}"
+                    echo -e "deps/\${dependency}" >> requirements.txt
+                done
+
+                rm -rf build requirements.preprocess.txt
+
+                cat requirements.txt
+                """
+            }
+        }
+    }],
+    [name: 'Install dependencies', steps: {
+        sh """#!/bin/bash
+        set -euxo pipefail
+
+        echo "Installing Python Dependencies..."
+
+        if [ "${HAS_PYPROJECT}" = true ]
+        then
+            echo "Using Poetry"
+            poetry install -vvv
+            poetry env info
+        elif [ "${HAS_REQUIREMENTS}" = true ]
+        then
+            echo "Using Pip"
+            pip install -r requirements.txt
+
+            if [ "${HAS_REQUIREMENTS_DEV}" = true ]
+            then
+                pip install -r requirements-dev.txt
+            fi
+
+            python -m pip freeze
+        fi
+        """
+    }],
+    [name: 'Check Dependencies', steps: {
+        if (env.RUN_DEPENDENCY_CHECK.toBoolean()) {
+            sh """#!/bin/bash
+            set -euxo pipefail
+
+            mkdir -p "/tmp/${PROJECT_NAME}"
+            /opt/dependency-check/bin/dependency-check.sh -s . -o "/tmp/${PROJECT_NAME}" -f ALL  --nodeAuditSkipDevDependencies --disableNodeJS
+            pip freeze > requirements-full.txt
+            cyclonedx-py -r -i requirements-full.txt -o bom.xml
+            """
+        }
+    }],
+    [name: 'Test Execution', steps: {
+        sh """#!/bin/bash
+        set -euxo pipefail
+
+        if [ "${HAS_PYPROJECT}" = true ]
+        then
+            poetry run pytest
+        elif [ "${HAS_REQUIREMENTS}" = true ]
+        then
+            python -m pytest --cov=. --cov-report xml
+        fi
+        """
+    }],
+    [name: 'SonarQube Analysis', steps: {
+        sh """#!/bin/bash
+        set -euxo pipefail
+
+        if [ "${env.FILES_EXCLUDED}" = null ]
+        then
+            /opt/sonar/bin/sonar-scanner \
+            -Dsonar.host.url=${env.SONAR_URL} \
+            -Dsonar.login=${env.SONAR_LOGIN} \
+            -Dsonar.project.tags=connectors \
+            -Dsonar.projectVersion=${PROJECT_VERSION} \
+            -Dsonar.projectKey=${PROJECT_KEY} \
+            -Dsonar.sources=${FILES_SOURCE} \
+            -Dsonar.tests=${FILES_TEST} \
+            -Dsonar.python.coverage.reportPaths=coverage.xml \
+            -Dsonar.python.pylint=venv/bin/pylint
+        else
+            /opt/sonar/bin/sonar-scanner \
+            -Dsonar.host.url=${env.SONAR_URL} \
+            -Dsonar.login=${env.SONAR_LOGIN} \
+            -Dsonar.project.tags=connectors \
+            -Dsonar.projectVersion=${PROJECT_VERSION} \
+            -Dsonar.projectKey=${PROJECT_KEY} \
+            -Dsonar.sources=${FILES_SOURCE} \
+            -Dsonar.tests=${FILES_TEST} \
+            -Dsonar.exclusions=${env.FILES_EXCLUDED} \
+            -Dsonar.python.coverage.reportPaths=coverage.xml \
+            -Dsonar.python.pylint=venv/bin/pylint
+        fi
+        """
+    }],
+    [name: 'Build Package', steps: {
+        if (env.PUBLISH_PACKAGE.toBoolean()) {
+            sh """#!/bin/bash
+            set -euxo pipefail
+
+            echo "${PROJECT_NAME}-${PROJECT_VERSION}" >> version.txt
+            zip -r "${PROJECT_DELIVERABLE}" . -x "ci/*" "vendor/*" ".git/*" ".gitignore" "Jenkinsfile" "tests/*" ".scannerwork/*" "venv/*" ".pytest_cache/*" "*coverage*" "__pycache__" "bom.xml"
+            stat "${PROJECT_DELIVERABLE}"
+            """
+        }
+    }],
+    [name: 'Publish Package', steps: {
+        if (env.PUBLISH_PACKAGE.toBoolean()) {
+            if (env.BRANCH_NAME == "master" && SEMANTIC_VERSION != "v0.0.0-dev") {
+                withCredentials([sshUserPrivateKey(credentialsId: 'connect-storage-dev-ssh-key', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
+                    sh """#!/bin/bash
+                    set -euxo pipefail
+
+                    ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no -l storage ${STORAGE_HOST} "[ -d ${STORAGE_PATH} ] ||  mkdir -p ${STORAGE_PATH}"
+                    scp -i $SSH_PRIVATE_KEY "${PROJECT_DELIVERABLE}" storage@${STORAGE_HOST}:${STORAGE_PATH}/${PROJECT_DELIVERABLE}
+                    echo "Link to download the package: http://${STORAGE_HOST}:81/connect/${PROJECT_NAME}/${PROJECT_DELIVERABLE}"
+                    """
+                }
+            }
+        }
+    }]
+]
+def image = 'python:3.8-bullseye'
+def workingDir = '.'
+
+runPipeline(environment: environment, stages: pipelineStages, image: image, workingDir: workingDir)
