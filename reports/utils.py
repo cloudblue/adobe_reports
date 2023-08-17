@@ -5,6 +5,17 @@ BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
 
 
+
+def get_param_value_by_name(params: list, value: str) -> str:
+    try:
+        if params[0]['name'] == value:
+            return params[0]['value']
+        if len(params) == 1:
+            return '-'
+        return get_param_value_by_name(list(params[1:]), value)
+    except Exception:
+        return '-'
+
 def get_param_value(params: list, value: str) -> str:
     try:
         if params[0]['id'] == value:
@@ -63,11 +74,15 @@ def process_asset_headers(asset, asset_headers) -> dict:
         if '-' in header:
             params[header] = get_value_from_split_header(asset, header)
         else:
-            params[header] = asset[header]
+            if header in asset:
+                params[header] = asset[header]
+            else:
+                params[header] = '-'
+
     return params
 
 
-def process_asset_parameters(asset_params: list, asset_parameters: list) -> dict:
+def process_asset_parameters_by_name(asset_params: list, asset_parameters: list) -> dict:
     """
     This function takes asset_params and asset_parameters(headers) to reach values in asset_params for
     each key at asset_parameters
@@ -80,14 +95,14 @@ def process_asset_parameters(asset_params: list, asset_parameters: list) -> dict
     """
     params_dict = dict.fromkeys(asset_parameters)
     for param in asset_params:
-        param_id = param['id']
+        param_id = param['name']
         if param_id == 'discount_group':
             discount_group = get_discount_level(param['value'])
             params_dict[param_id] = discount_group
         elif param_id in asset_parameters:
             params_dict[param_id] = param['value']
-    return params_dict
 
+    return params_dict
 
 def calculate_renewal_date(asset_creation_date):
     renewal_date = datetime.datetime.fromisoformat(asset_creation_date).replace(year=today().year)
@@ -107,19 +122,22 @@ def get_value_from_split_header(asset: dict, header: str) -> str:
     :param header: str from headers
     :return: str with value from asset
     """
-    h0 = header.split('-')[0]
-    h1 = header.split('-')[1]
-    if h0 == 'created':
-        value = asset['events'][h0][h1]
-    elif h0 == 'provider':
-        value = asset['connection'][h0][h1]
-    elif h0 in ['customer', 'reseller']:
-        if h0 == 'reseller':
-            h0 = 'tier1'
-        value = asset['tiers'][h0][h1]
-    else:
-        value = asset[h0][h1]
-    return value
+    try:
+        h0 = header.split('-')[0]
+        h1 = header.split('-')[1]
+        if h0 == 'created':
+            value = asset['events'][h0][h1]
+        elif h0 == 'provider':
+            value = asset['connection'][h0][h1]
+        elif h0 in ['customer', 'reseller']:
+            if h0 == 'reseller':
+                h0 = 'tier1'
+            value = asset['tiers'][h0][h1]
+        else:
+            value = asset[h0][h1]
+        return value
+    except Exception:
+        return '-'
 
 
 def get_discount_level(discount_group: str) -> str:

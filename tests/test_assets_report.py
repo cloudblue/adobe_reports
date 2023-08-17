@@ -24,7 +24,8 @@ input_data = {
         "all": False,
         "choices": ['PRD-207-752-513'],
     },
-    "status": 'active'
+    "status": 'active',
+    "commitment_status": "all assets"
 }
 
 
@@ -57,6 +58,7 @@ def test_assets_generate(sync_client_factory, response_factory, progress,
 
     result = entrypoint.generate(client, input_data, progress)
     assert len(list(result)) == 1  # number of assets on active_assets.json
+
 
 
 def test_assets_generate_empty_assets(sync_client_factory, response_factory, progress):
@@ -114,3 +116,48 @@ def test_price_list_not_exist(sync_client_factory, response_factory, assets, lis
         ),
     ])
     assert not entrypoint._get_marketplace_params(client, assets[0])
+
+
+
+def test_assets_generate_with_3yc(sync_client_factory, response_factory, progress,
+                           listing, pricelist_version, pricelist_points, assets):
+    responses = [
+        response_factory(
+            query=ASSETS_QUERY,
+            count=1
+        ),
+        response_factory(
+            query=ASSETS_QUERY,
+            value=assets,
+        ),
+        response_factory(
+            query=LISTING_QUERY,
+            value=listing,
+        ),
+        response_factory(
+            query=PRICELIST_VERSION_QUERY,
+            value=pricelist_version,
+        ),
+        response_factory(
+            query=PRICELIST_POINTS_QUERY,
+            value=pricelist_points,
+        ),
+    ]
+
+    input_data_local = {
+        "date": {
+            "after": "2022-12-1T00:00:00",
+            "before": "2022-12-15T00:00:00",
+        },
+        "product": {
+            "all": False,
+            "choices": ['PRD-207-752-513'],
+        },
+        "status": 'active',
+        "commitment_status": "3yc"
+    }
+
+    client = sync_client_factory(responses)
+
+    result = entrypoint.generate(client, input_data_local, progress)
+    assert len(list(result)) == 0  # number of assets on active_assets.json

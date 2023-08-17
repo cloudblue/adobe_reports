@@ -23,6 +23,9 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         adobe_user_email = utils.get_param_value(parameters_list, 'adobe_user_email')
         adobe_cloud_program_id = utils.get_param_value(parameters_list, 'adobe_customer_id')
         pricing_level = utils.get_discount_level(utils.get_param_value(parameters_list, 'discount_group'))
+        commitment = utils.get_param_value(parameters_list,'commitment_status')
+        commitment_start_date = utils.get_param_value(parameters_list,'commitment_start_date')
+        commitment_end_date = utils.get_param_value(parameters_list, 'commitment_end_date')
 
         # get currency from configuration params
         currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
@@ -35,6 +38,11 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
             delta_str = _get_delta_str(item)
             if delta_str == '':
                 continue
+
+            if parameters['commitment_status'] == '3yc':
+                if commitment == '-' or commitment == '':
+                    continue
+
             yield (
                 utils.get_basic_value(request, 'id'),  # Request ID
                 utils.get_value(request, 'asset', 'id'),  # Connect Subscription ID
@@ -75,6 +83,9 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 utils.get_value(financials, item['global_id'], 'msrp'),  # MSRP
                 utils.get_basic_value(request['asset']['connection'], 'type'),  # Connection Type,
                 utils.today_str(),  # Exported At
+                commitment,
+                commitment_start_date,
+                commitment_end_date
             )
         progress += 1
         progress_callback(progress, total)

@@ -14,7 +14,7 @@ asset_headers = [
 
 asset_params_headers = [
     'seamless_move', 'discount_group', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
-    'adobe_vip_number', 'adobe_user_email'
+    'adobe_vip_number', 'adobe_user_email', 'commitment_status', 'commitment_start_date', 'commitment_end_date'
 ]
 
 marketplace_headers = [
@@ -59,6 +59,7 @@ def generate(
 
     assets = api_calls.request_assets(client, input_data)
     total = assets.count()
+
     counter = 0
     if total == 0:
         yield 'EMPTY ASSETS'
@@ -67,6 +68,15 @@ def generate(
         if not marketplace_params:
             marketplace_params = dict.fromkeys(marketplace_headers)
         # assets need to be in a list to yield
+        if input_data['commitment_status'] == '3yc':
+            print(asset['id'])
+            print(utils.get_param_value_by_name(asset['params'], 'commitment_status'))
+            if utils.get_param_value_by_name(asset['params'], 'commitment_status') == '-' \
+                    or utils.get_param_value_by_name(asset['params'], 'commitment_status') == '':
+                counter += 1
+                progress_callback(counter, total)
+                continue
+
         yield _process_line(asset, marketplace_params)
         counter += 1
         progress_callback(counter, total)
@@ -81,7 +91,7 @@ def _process_line(asset: dict, marketplace_params: dict) -> list:
     :return: list with line values
     """
     asset_values = utils.process_asset_headers(asset, asset_headers)
-    asset_values.update(utils.process_asset_parameters(asset['params'], asset_params_headers))
+    asset_values.update(utils.process_asset_parameters_by_name(asset['params'], asset_params_headers))
     asset_values['renewal_date'] = str(utils.calculate_renewal_date(asset_values['created-at']))
     asset_values.update(marketplace_params)
     return list(asset_values.values())

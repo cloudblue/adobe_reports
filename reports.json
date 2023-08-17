@@ -64,6 +64,22 @@
               "label": "Terminated"
             }
           ]
+        },
+        {
+          "id": "commitment_status",
+          "type": "choice",
+          "name": "three years commit",
+          "description": "Show orders with three commitment",
+          "choices": [
+            {
+              "value": "all assets",
+              "label": "all assets"
+            },
+            {
+              "value": "3yc",
+              "label": "with three years commit"
+            }
+          ]
         }
       ],
       "renderers": [
@@ -162,6 +178,22 @@
             {
               "value": "preview",
               "label": "Preview"
+            }
+          ]
+        },
+        {
+          "id": "commitment_status",
+          "type": "choice",
+          "name": "three years commit",
+          "description": "Show orders with three commitment",
+          "choices": [
+            {
+              "value": "all assets",
+              "label": "all assets"
+            },
+            {
+              "value": "3yc",
+              "label": "with three years commit"
             }
           ]
         }
