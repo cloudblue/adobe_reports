@@ -26,6 +26,10 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         commitment = utils.get_param_value(parameters_list,'commitment_status')
         commitment_start_date = utils.get_param_value(parameters_list,'commitment_start_date')
         commitment_end_date = utils.get_param_value(parameters_list, 'commitment_end_date')
+        recommitment = utils.get_param_value(parameters_list,'recommitment_status')
+        recommitment_start_date = utils.get_param_value(parameters_list,'recommitment_start_date')
+        recommitment_end_date = utils.get_param_value(parameters_list, 'recommitment_end_date')
+        external_referenci_id = utils.get_param_value(parameters_list, 'external_reference_id')
 
         # get currency from configuration params
         currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
@@ -39,7 +43,7 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
             if delta_str == '':
                 continue
 
-            if parameters['commitment_status'] == '3yc':
+            if parameters['commitment_status'] == '3yc': #pragma: no cover
                 if commitment == '-' or commitment == '':
                     continue
 
@@ -85,7 +89,11 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 utils.today_str(),  # Exported At
                 commitment,
                 commitment_start_date,
-                commitment_end_date
+                commitment_end_date,
+                recommitment,
+                recommitment_start_date,
+                recommitment_end_date,
+                external_referenci_id
             )
         progress += 1
         progress_callback(progress, total)

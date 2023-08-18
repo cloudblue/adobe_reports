@@ -13,8 +13,9 @@ asset_headers = [
 ]
 
 asset_params_headers = [
-    'seamless_move', 'discount_group', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
-    'adobe_vip_number', 'adobe_user_email', 'commitment_status', 'commitment_start_date', 'commitment_end_date'
+    'external_reference_id', 'seamless_move', 'discount_group', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
+    'adobe_vip_number', 'adobe_user_email', 'commitment_status', 'commitment_start_date', 'commitment_end_date',
+    'recommitment_status', 'recommitment_start_date', 'recommitment_end_date'
 ]
 
 marketplace_headers = [
