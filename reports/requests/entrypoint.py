@@ -93,7 +93,9 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
 
 def _get_delta_str(item):
     if (utils.get_basic_value(item, 'item_type') != 'PPU'
-            and utils.get_basic_value(item, 'quantity') != '0'):
+        and (utils.get_basic_value(item, 'quantity') != '0'
+            or utils.get_basic_value(item, 'old_quantity') != '0')
+    ):
         delta = 0
         delta_str = '-'
         if len(item['quantity']) > 0 and len(item['old_quantity']) > 0:
