@@ -69,6 +69,7 @@
           "id": "commitment_status",
           "type": "choice",
           "name": "three years commit",
+          "required": true,
           "description": "Show orders with three commitment",
           "choices": [
             {
@@ -186,6 +187,7 @@
           "type": "choice",
           "name": "three years commit",
           "description": "Show orders with three commitment",
+          "required": true,
           "choices": [
             {
               "value": "all assets",
