@@ -115,24 +115,33 @@ def _get_marketplace_params(client, asset):
         price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id']) \
             if price_list_version else []
         if price_list_version and price_list_points:
-            # dict with currency and currency change
-            currency = utils.get_currency_and_change(price_list_version)
+            try:
+                # dict with currency and currency change
+                currency = utils.get_currency_and_change(price_list_version)
 
-            # dict with all financials from all items in price list
-            price_list_financials = utils.get_financials_from_price_list(price_list_points)
+                # dict with all financials from all items in price list
+                price_list_financials = utils.get_financials_from_price_list(price_list_points)
 
-            # dict with seats and financials from assets items
-            financials_and_seats = utils.get_financials_and_seats(asset['items'], price_list_financials)
+                # dict with seats and financials from assets items
+                financials_and_seats = utils.get_financials_and_seats(asset['items'], price_list_financials)
 
-            # dict with financials in USD
-            base_financials = utils.get_base_currency_financials(financials_and_seats, currency)
+                # dict with financials in USD
+                base_financials = utils.get_base_currency_financials(financials_and_seats, currency)
 
-            currency.pop('change')
-            currency.update(financials_and_seats)
-            currency.update(base_financials)
-            currency['cost'] = '{:0.2f}'.format(currency['cost'])
-            currency['reseller_cost'] = '{:0.2f}'.format(currency['reseller_cost'])
-            currency['msrp'] = '{:0.2f}'.format(currency['msrp'])
-            return currency
+
+                currency.pop('change')
+                currency.update(financials_and_seats)
+                currency.update(base_financials)
+                currency['cost'] = '{:0.2f}'.format(currency['cost'])
+                currency['reseller_cost'] = '{:0.2f}'.format(currency['reseller_cost'])
+                currency['msrp'] = '{:0.2f}'.format(currency['msrp'])
+                return currency
+            except:
+                currency = {
+                    'cost': "0.0",
+                    'resseller_cost': "0.0",
+                    'msrp': "0.0"
+                }
+                return currency
     # Listing has no price list or is not active
     return None
