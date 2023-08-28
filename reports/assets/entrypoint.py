@@ -69,7 +69,7 @@ def generate(
         if not marketplace_params:
             marketplace_params = dict.fromkeys(marketplace_headers)
         # assets need to be in a list to yield
-        if input_data['commitment_status'] == '3yc':
+        if "commitment_status" in input_data and input_data['commitment_status'] == '3yc':
             print(asset['id'])
             print(utils.get_param_value_by_name(asset['params'], 'commitment_status'))
             if utils.get_param_value_by_name(asset['params'], 'commitment_status') == '-' \

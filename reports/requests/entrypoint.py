@@ -43,7 +43,7 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
             if delta_str == '':
                 continue
 
-            if parameters['commitment_status'] == '3yc': #pragma: no cover
+            if "commitment_status" in parameters and parameters['commitment_status'] == '3yc': #pragma: no cover
                 if commitment == '-' or commitment == '':
                     continue
 
