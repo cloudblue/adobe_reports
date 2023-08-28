@@ -139,7 +139,7 @@ def _get_marketplace_params(client, asset):
             except:
                 currency = {
                     'cost': "0.0",
-                    'resseller_cost': "0.0",
+                    'reseller_cost': "0.0",
                     'msrp': "0.0"
                 }
                 return currency
