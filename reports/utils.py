@@ -148,12 +148,15 @@ def get_discount_level(discount_group: str) -> str:
     :param discount_group:
     :return: str with level of discount
     """
-    if len(discount_group) > 2 and discount_group[2] == 'A':
+    if len(discount_group) > 2 and discount_group[2] == 'A' and discount_group[0] == '1':
+        discount = 'Level ' + discount_group[0:2]
+    elif len(discount_group) > 2 and discount_group[2] == 'A':
         discount = 'Level ' + discount_group[1]
     elif len(discount_group) > 2 and discount_group[2] == '0':
         discount = 'TLP Level ' + discount_group[1]
     else:
         discount = 'Empty'
+    print(discount)
     return discount
 
 
