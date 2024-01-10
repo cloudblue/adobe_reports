@@ -75,7 +75,7 @@ def pipelineStages = [
         python --version
 
         echo "Updating base packages..."
-        apt update && apt-get install -y default-jre wget zip unzip
+        apt update && apt install -y default-jre wget zip unzip dos2unix
         python -m pip install --upgrade pip
 
         if [ "${env.HAS_PYPROJECT}" = true ]
