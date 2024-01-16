@@ -289,6 +289,8 @@ def pipelineStages = [
                     curl -sSf -u ${CRED_USER}:${CRED_SECRET} -X PUT -T "${env.PROJECT_DELIVERABLE}" "${env.JFROG_UPLOAD_URL}${env.PROJECT_DELIVERABLE}"
                     """
                 }
+            } else {
+                archiveArtifacts artifacts: "${env.PROJECT_DELIVERABLE}"
             }
         }
     }]
