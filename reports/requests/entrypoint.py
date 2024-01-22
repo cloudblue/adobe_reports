@@ -23,11 +23,11 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         adobe_user_email = utils.get_param_value(parameters_list, 'adobe_user_email')
         adobe_cloud_program_id = utils.get_param_value(parameters_list, 'adobe_customer_id')
         pricing_level = utils.get_discount_level(utils.get_param_value(parameters_list, 'discount_group'))
-        commitment = utils.get_param_value(parameters_list,'commitment_status')
-        commitment_start_date = utils.get_param_value(parameters_list,'commitment_start_date')
+        commitment = utils.get_param_value(parameters_list, 'commitment_status')
+        commitment_start_date = utils.get_param_value(parameters_list, 'commitment_start_date')
         commitment_end_date = utils.get_param_value(parameters_list, 'commitment_end_date')
-        recommitment = utils.get_param_value(parameters_list,'recommitment_status')
-        recommitment_start_date = utils.get_param_value(parameters_list,'recommitment_start_date')
+        recommitment = utils.get_param_value(parameters_list, 'recommitment_status')
+        recommitment_start_date = utils.get_param_value(parameters_list, 'recommitment_start_date')
         recommitment_end_date = utils.get_param_value(parameters_list, 'recommitment_end_date')
         external_referenci_id = utils.get_param_value(parameters_list, 'external_reference_id')
 
@@ -43,12 +43,13 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
             if delta_str == '':
                 continue
 
-            if "commitment_status" in parameters and parameters['commitment_status'] == '3yc': #pragma: no cover
+            if "commitment_status" in parameters and parameters['commitment_status'] == '3yc':  # pragma: no cover
                 if commitment == '-' or commitment == '':
                     continue
 
             yield (
                 utils.get_basic_value(request, 'id'),  # Request ID
+                utils.get_value(request, 'assignee', 'id'),  # ASSIGNEE
                 utils.get_value(request, 'asset', 'id'),  # Connect Subscription ID
                 utils.get_value(request, 'asset', 'external_id'),  # End Customer Subscription ID
                 action,  # Type of Purchase
@@ -93,7 +94,7 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 recommitment,
                 recommitment_start_date,
                 recommitment_end_date,
-                external_referenci_id
+                external_referenci_id,
             )
         progress += 1
         progress_callback(progress, total)
@@ -101,8 +102,8 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
 
 def _get_delta_str(item):
     if (utils.get_basic_value(item, 'item_type') != 'PPU'
-        and (utils.get_basic_value(item, 'quantity') != '0'
-            or utils.get_basic_value(item, 'old_quantity') != '0')
+            and (utils.get_basic_value(item, 'quantity') != '0'
+                 or utils.get_basic_value(item, 'old_quantity') != '0')
     ):
         delta = 0
         delta_str = '-'

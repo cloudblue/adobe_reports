@@ -13,6 +13,7 @@ Assets can be parametrized by:
 # Columns
 
 * Asset ID
+* Assignee ID
 * Asset Status
 * External ID, Product ID, Provider ID, Provider Name, Marketplace, Marketplace Name, Contract ID, Contract Name
 * Reseller ID, Reseller External ID, Reseller Name, Created At, Customer ID, Customer External ID, Customer Name
