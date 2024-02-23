@@ -1,5 +1,5 @@
-import datetime
 from reports import api_calls
+from datetime import datetime, timezone, date
 
 BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
@@ -44,7 +44,7 @@ def convert_to_datetime(param_value):
     if param_value == "" or param_value == "-" or param_value is None:
         return "-"
 
-    return datetime.datetime.strptime(
+    return datetime.strptime(
         param_value.replace("T", " ").replace("+00:00", ""),
         "%Y-%m-%d %H:%M:%S",
     )
@@ -55,7 +55,7 @@ def today() -> datetime:
 
 
 def today_str() -> str:
-    return datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
 
 def process_asset_headers(asset, asset_headers) -> dict:
@@ -105,10 +105,10 @@ def process_asset_parameters_by_name(asset_params: list, asset_parameters: list)
     return params_dict
 
 def calculate_renewal_date(asset_creation_date):
-    renewal_date = datetime.datetime.fromisoformat(asset_creation_date).replace(year=today().year)
-    if renewal_date >= today().replace(tzinfo=datetime.timezone.utc):
+    renewal_date = datetime.fromisoformat(asset_creation_date).date().replace(year=datetime.now(timezone.utc).year)
+    if renewal_date >= datetime.now(timezone.utc).date():
         return renewal_date
-    return renewal_date.replace(year=today().year + 1)
+    return renewal_date.replace(year=datetime.now(timezone.utc).year + 1)
 
 
 def get_value_from_split_header(asset: dict, header: str) -> str:
@@ -156,7 +156,7 @@ def get_discount_level(discount_group: str) -> str:
         discount = 'TLP Level ' + discount_group[1]
     else:
         discount = 'Empty'
-    print(discount)
+
     return discount
 
 

@@ -13,7 +13,7 @@ asset_headers = [
 ]
 
 asset_params_headers = [
-    'external_reference_id', 'assignee_id', 'seamless_move', 'discount_group', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
+    'external_reference_id', 'seamless_move', 'discount_group', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
     'adobe_vip_number', 'adobe_user_email', 'commitment_status', 'commitment_start_date', 'commitment_end_date',
     'recommitment_status', 'recommitment_start_date', 'recommitment_end_date'
 ]
@@ -59,6 +59,8 @@ def generate(
     """
 
     assets = api_calls.request_assets(client, input_data)
+    print('assets COUNT')
+    print(assets)
     total = assets.count()
 
     counter = 0
@@ -93,7 +95,10 @@ def _process_line(asset: dict, marketplace_params: dict) -> list:
     """
     asset_values = utils.process_asset_headers(asset, asset_headers)
     asset_values.update(utils.process_asset_parameters_by_name(asset['params'], asset_params_headers))
-    asset_values['renewal_date'] = str(utils.calculate_renewal_date(asset_values['created-at']))
+
+    if not asset_values['renewal_date']:
+        asset_values['renewal_date'] = str(utils.calculate_renewal_date(asset_values['created-at']))
+
     asset_values.update(marketplace_params)
     return list(asset_values.values())
 

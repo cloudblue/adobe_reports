@@ -73,6 +73,7 @@ def test_requests_generate(sync_client_factory, response_factory, progress,
     result = entrypoint.generate(client, parameters, progress)
     assert len(list(result)) == 6  # number of items on ff_request.json
 
+
 def test_get_param_value():
     value = reports.utils.get_param_value([], "test")
     assert value == '-'

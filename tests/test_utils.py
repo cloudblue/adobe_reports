@@ -5,7 +5,7 @@
 #
 
 from reports import utils
-import datetime
+from datetime import datetime, timedelta, timezone
 
 # queries
 LISTING_QUERY = 'and(eq(marketplace.id,MP-65669),eq(product.id,PRD-207-752-513),eq(status,listed))'
@@ -26,18 +26,16 @@ def test_convert_to_datetime():
 
 
 def test_calculate_renewal_date_():
-    date_actual_year = utils.today().replace(
-        tzinfo=datetime.timezone.utc).replace(year=2020) + datetime.timedelta(days=1)
-    date_next_year = utils.today().replace(
-        tzinfo=datetime.timezone.utc).replace(year=2022) - datetime.timedelta(days=1)
+    date_actual_year = datetime.now(timezone.utc).replace(year=2020) + timedelta(days=1)
+    date_next_year = datetime.now(timezone.utc).replace(year=2022) - timedelta(days=1)
 
     # renewal this year
-    assert utils.calculate_renewal_date(str(date_actual_year)) == \
-           date_actual_year.replace(year=utils.today().year)
+    assert utils.calculate_renewal_date(str(date_actual_year.date())) == \
+           date_actual_year.replace(year=datetime.now(timezone.utc).year).date()
 
     # renewal next year
-    assert utils.calculate_renewal_date(str(date_next_year)) == \
-           date_next_year.replace(year=utils.today().year + 1)
+    assert utils.calculate_renewal_date(str(date_next_year.date())) == \
+           date_next_year.replace(year=datetime.now(timezone.utc).year + 1).date()
 
 
 def test_get_financials_from_product_per_marketplace(sync_client_factory, response_factory, asset):
