@@ -5,7 +5,7 @@
 #
 
 from reports import utils
-from datetime import datetime, timedelta, timezone
+import datetime
 
 # queries
 LISTING_QUERY = 'and(eq(marketplace.id,MP-65669),eq(product.id,PRD-207-752-513),eq(status,listed))'
@@ -26,16 +26,22 @@ def test_convert_to_datetime():
 
 
 def test_calculate_renewal_date_():
-    date_actual_year = datetime.now(timezone.utc).replace(year=2020) + timedelta(days=1)
-    date_next_year = datetime.now(timezone.utc).replace(year=2022) - timedelta(days=1)
+    date_leap = datetime.date(2020, 2, 29)
+    current_date_before = datetime.date(2021, 1, 1)
+    current_date_after = datetime.date(2021, 6, 16)
+    current_date_leap = datetime.date(2024, 2, 29)
 
-    # renewal this year
-    assert utils.calculate_renewal_date(str(date_actual_year.date())) == \
-           date_actual_year.replace(year=datetime.now(timezone.utc).year).date()
+    # Leap year before the current date
+    assert utils.calculate_renewal_date(str(date_leap), current_date_before) == datetime.date(2021, 3, 1)
 
-    # renewal next year
-    assert utils.calculate_renewal_date(str(date_next_year.date())) == \
-           date_next_year.replace(year=datetime.now(timezone.utc).year + 1).date()
+    # Leap year after current date
+    assert utils.calculate_renewal_date(str(date_leap), current_date_after) == datetime.date(2022, 3, 1)
+
+    # Both dates are leap dates
+    assert utils.calculate_renewal_date(str(date_leap), current_date_leap) == datetime.date(2024, 2, 29)
+
+    # Normal date
+    assert utils.calculate_renewal_date(str(current_date_after), current_date_leap) == datetime.date(2024, 6, 16)
 
 
 def test_get_financials_from_product_per_marketplace(sync_client_factory, response_factory, asset):

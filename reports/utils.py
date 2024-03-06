@@ -1,9 +1,9 @@
 from reports import api_calls
 from datetime import datetime, timezone, date
+import calendar
 
 BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
-
 
 
 def get_param_value_by_name(params: list, value: str) -> str:
@@ -16,6 +16,7 @@ def get_param_value_by_name(params: list, value: str) -> str:
     except Exception:
         return '-'
 
+
 def get_param_value(params: list, value: str) -> str:
     try:
         if params[0]['id'] == value:
@@ -26,6 +27,7 @@ def get_param_value(params: list, value: str) -> str:
     except Exception:
         return '-'
 
+
 def get_basic_value(base, value):
     try:
         if base and value in base:
@@ -33,6 +35,7 @@ def get_basic_value(base, value):
         return '-'
     except Exception:
         return '-'
+
 
 def get_value(base, prop, value):
     if prop in base:
@@ -104,11 +107,24 @@ def process_asset_parameters_by_name(asset_params: list, asset_parameters: list)
 
     return params_dict
 
-def calculate_renewal_date(asset_creation_date):
-    renewal_date = datetime.fromisoformat(asset_creation_date).date().replace(year=datetime.now(timezone.utc).year)
-    if renewal_date >= datetime.now(timezone.utc).date():
+def handle_renewal_date(asset_creation_date: str) -> date:
+    return calculate_renewal_date(asset_creation_date, datetime.now(timezone.utc).date())
+
+def calculate_renewal_date(asset_creation_date: str, current_date: date) -> date:
+    date = datetime.fromisoformat(asset_creation_date).date()
+    renewal_date = resolve_leap_year_renewal_date(date, current_date.year)
+    if renewal_date >= current_date:
         return renewal_date
-    return renewal_date.replace(year=datetime.now(timezone.utc).year + 1)
+    return resolve_leap_year_renewal_date(renewal_date, current_date.year + 1)
+
+
+def resolve_leap_year_renewal_date(original_date: date, target_year: int) -> date:
+    if calendar.isleap(original_date.year) and original_date.month == 2 and original_date.day == 29:
+        if calendar.isleap(target_year):
+            return original_date.replace(year=target_year)
+        else:
+            return date(year=target_year, month=3, day=1)
+    return original_date.replace(year=target_year)
 
 
 def get_value_from_split_header(asset: dict, header: str) -> str:

@@ -97,7 +97,7 @@ def _process_line(asset: dict, marketplace_params: dict) -> list:
     asset_values.update(utils.process_asset_parameters_by_name(asset['params'], asset_params_headers))
 
     if not asset_values['renewal_date']:
-        asset_values['renewal_date'] = str(utils.calculate_renewal_date(asset_values['created-at']))
+        asset_values['renewal_date'] = str(utils.handle_renewal_date(asset_values['created-at']))
 
     asset_values.update(marketplace_params)
     return list(asset_values.values())
@@ -132,8 +132,6 @@ def _get_marketplace_params(client, asset):
 
                 # dict with financials in USD
                 base_financials = utils.get_base_currency_financials(financials_and_seats, currency)
-
-
                 currency.pop('change')
                 currency.update(financials_and_seats)
                 currency.update(base_financials)
