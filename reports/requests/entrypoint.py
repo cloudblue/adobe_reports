@@ -49,7 +49,8 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
 
             yield (
                 utils.get_basic_value(request, 'id'),  # Request ID
-                utils.get_value(request, 'assignee', 'id'),  # ASSIGNEE
+                utils.get_value(request, 'assignee', 'id'),  # ASSIGNEE ID
+                utils.get_value(request, 'assignee', 'name'),  # ASSIGNEE NAME
                 utils.get_value(request, 'asset', 'id'),  # Connect Subscription ID
                 utils.get_value(request, 'asset', 'external_id'),  # End Customer Subscription ID
                 action,  # Type of Purchase
