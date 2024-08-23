@@ -13,16 +13,18 @@ asset_headers = [
 ]
 
 asset_params_headers = [
-    'external_reference_id', 'seamless_move', 'discount_group', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
-    'adobe_vip_number', 'adobe_user_email', 'commitment_status', 'commitment_start_date', 'commitment_end_date',
-    'recommitment_status', 'recommitment_start_date', 'recommitment_end_date'
+    'external_reference_id', 'seamless_move',  'auto_renewal_status', 'discount_group', 'discount_group_consumables',
+    'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id', 'adobe_vip_number', 'adobe_user_email',
+    'cb_adobe_account_subscription_list', 'three_years_commitment', 'commitment_status', 'three_years_minimum_licenses',
+    'three_years_minimum_consumables', 'commitment_start_date', 'commitment_end_date', 'three_years_recommitment',
+    'three_years_recommitment_minimum_licenses', 'three_years_recommitment_minimum_consumables','recommitment_status',
+    'recommitment_start_date', 'recommitment_end_date',
 ]
 
 marketplace_headers = [
     'currency', 'cost', 'reseller_cost', 'msrp', 'seats', 'USD-cost', 'USD-msrp',
     'USD-reseller_cost'
 ]
-
 
 def generate(
         client=None,
@@ -59,8 +61,6 @@ def generate(
     """
 
     assets = api_calls.request_assets(client, input_data)
-    print('assets COUNT')
-    print(assets)
     total = assets.count()
 
     counter = 0

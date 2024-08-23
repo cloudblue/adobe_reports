@@ -1,9 +1,11 @@
 from reports import api_calls
 from datetime import datetime, timezone, date
 import calendar
+import json
 
 BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
+ASSETS_WITH_STRUCTURED_VALUE=['cb_adobe_account_subscription_list']
 
 
 def get_param_value_by_name(params: list, value: str) -> str:
@@ -97,14 +99,17 @@ def process_asset_parameters_by_name(asset_params: list, asset_parameters: list)
     :return: dict with values from asset_params and keys from asset_parameters
     """
     params_dict = dict.fromkeys(asset_parameters)
+
     for param in asset_params:
         param_id = param['name']
         if param_id == 'discount_group':
             discount_group = get_discount_level(param['value'])
             params_dict[param_id] = discount_group
+        elif param_id in ASSETS_WITH_STRUCTURED_VALUE:
+            value = param.get('structured_value', {}).get('value', [])
+            params_dict[param_id] = json.dumps(value)
         elif param_id in asset_parameters:
             params_dict[param_id] = param['value']
-
     return params_dict
 
 def handle_renewal_date(asset_creation_date: str) -> date:
