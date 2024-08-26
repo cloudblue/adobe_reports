@@ -328,6 +328,36 @@
         "description": "The date on which the customer account has been created. Required for transfers.",
         "type": "text",
         "value": ""
+      },
+       {
+          "id": "cb_adobe_account_subscription_list",
+          "name": "cb_adobe_account_subscription_list",
+          "type": "object",
+          "phase": "fulfillment",
+          "description": "CB Adobe Account Subscription List",
+          "value": "",
+          "value_error": "",
+          "title": "CB Adobe Account Subscription List",
+          "constraints": {
+              "hint": "I am the hint text",
+              "meta": {},
+              "required": false,
+              "reconciliation": false,
+              "hidden": true,
+              "readonly": true
+          },
+          "structured_value": {
+              "value": [
+                  {
+                      "sku": "1111CA",
+                      "subscription_id": "123123123"
+                  },
+                  {
+                      "sku": "2222CA",
+                      "subscription_id": "123121432"
+                  }
+              ]
+          }
       }
     ],
     "tiers": {

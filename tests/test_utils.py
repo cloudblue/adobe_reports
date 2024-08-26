@@ -72,3 +72,71 @@ def test_discount_level():
     assert utils.get_discount_level(group1) == 'Level 1'
     assert utils.get_discount_level(group2) == 'TLP Level 1'
     assert utils.get_discount_level('nothing') == 'Empty'
+
+
+def test_auto_renewal_status():
+    active = 'active_auto_renewal_status'
+    inactive = 'inactive_auto_renewal_status'
+    assert utils.get_auto_renewal_status(active) == 'Active'
+    assert utils.get_auto_renewal_status(inactive) == 'Inactive'
+    assert utils.get_discount_level('nothing') == 'Empty'
+
+def test_structured_value():
+    structured_value_true = {
+        "id": "three_years_commitment",
+        "structured_value": {
+            "3 Years commitment": True
+        },
+        "value_choices": [
+            {
+                "label": "3YC",
+                "value": "3 Years commitment"
+            }
+        ]
+    }
+    structured_value_false = {
+        "id": "three_years_commitment",
+        "structured_value": {
+            "3 Years commitment": False
+        },
+        "value_choices": [
+            {
+                "label": "3YC",
+                "value": "3 Years commitment"
+            }
+        ]
+    }
+    assert utils.get_three_years_commitment(structured_value_true) == 'Y'
+    assert utils.get_three_years_commitment(structured_value_false) == 'N'
+
+def test_three_years_commitment():
+    structured_value_true = {
+        "id": "three_years_commitment",
+        "structured_value": {
+            "3 Years commitment": True
+        }
+    }
+    structured_value_false = {
+        "id": "three_years_commitment",
+        "structured_value": {
+            "3 Years commitment": False
+        }
+    }
+    assert utils.get_three_years_commitment(structured_value_true) == 'Y'
+    assert utils.get_three_years_commitment(structured_value_false) == 'N'
+
+def test_three_years_recommitment():
+    structured_value_true = {
+        "id": "three_years_recommitment",
+        "structured_value": {
+            "3YR": True
+        },
+    }
+    structured_value_false = {
+        "id": "three_years_recommitment",
+        "structured_value": {
+            "3YR": False
+        },
+    }
+    assert utils.get_three_years_recommitment(structured_value_true) == 'Y'
+    assert utils.get_three_years_recommitment(structured_value_false) == 'N'

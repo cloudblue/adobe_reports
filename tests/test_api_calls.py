@@ -3,10 +3,10 @@
 # Copyright (c) 2022, Carlos Anuarbe
 # All rights reserved.
 #
-
 import requests
 from reports import utils
 from reports import api_calls
+import requests_mock
 
 # queries
 LISTING_QUERY = 'and(eq(marketplace.id,MP-65669),eq(product.id,PRD-207-752-513),eq(status,listed))'

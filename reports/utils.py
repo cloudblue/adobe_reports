@@ -5,8 +5,6 @@ import json
 
 BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
-ASSETS_WITH_STRUCTURED_VALUE=['cb_adobe_account_subscription_list']
-
 
 def get_param_value_by_name(params: list, value: str) -> str:
     try:
@@ -100,14 +98,19 @@ def process_asset_parameters_by_name(asset_params: list, asset_parameters: list)
     """
     params_dict = dict.fromkeys(asset_parameters)
 
+    handlers = {
+        'discount_group': lambda param: get_discount_level(param['value']),
+        'discount_group_consumables': lambda param: get_discount_level(param['value']),
+        'cb_adobe_account_subscription_list': get_account_subscription_list,
+        'auto_renewal_status': lambda param: get_auto_renewal_status(param['value']),
+        'three_years_commitment': get_three_years_commitment,
+        'three_years_recommitment': get_three_years_recommitment
+    }
+
     for param in asset_params:
         param_id = param['name']
-        if param_id == 'discount_group':
-            discount_group = get_discount_level(param['value'])
-            params_dict[param_id] = discount_group
-        elif param_id in ASSETS_WITH_STRUCTURED_VALUE:
-            value = param.get('structured_value', {}).get('value', [])
-            params_dict[param_id] = json.dumps(value)
+        if param_id in handlers:
+            params_dict[param_id] = handlers[param_id](param)
         elif param_id in asset_parameters:
             params_dict[param_id] = param['value']
     return params_dict
@@ -291,3 +294,23 @@ def get_financials_from_product_per_marketplace(client, marketplace_id, asset_id
     except:
         return {}
     return get_financials_from_price_list(price_list_points)
+
+def get_auto_renewal_status(value: str):
+    if value == 'active_auto_renewal_status':
+        return 'Active'
+    elif value == 'inactive_auto_renewal_status':
+        return 'Inactive'
+    else:
+        return 'Empty'
+
+def get_structured_value(value:{}, param:str):
+    return value.get('structured_value', {}).get(param, [])
+
+def get_account_subscription_list(value:{}):
+    return json.dumps(get_structured_value(value, 'value'))
+
+def get_three_years_commitment(value: {}) -> str:
+    return 'Y' if get_structured_value(value, '3 Years commitment') == True else 'N'
+
+def get_three_years_recommitment(value: {}) -> str:
+    return 'Y' if get_structured_value(value, '3YR') == True else 'N'
