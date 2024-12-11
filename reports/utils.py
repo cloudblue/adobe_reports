@@ -314,3 +314,14 @@ def get_three_years_commitment(value: {}) -> str:
 
 def get_three_years_recommitment(value: {}) -> str:
     return 'Y' if get_structured_value(value, '3YR') == True else 'N'
+
+
+def get_days_between_effective_and_renewal_date(effective_date, renewal_date):
+    try:
+        effective = datetime.strptime(effective_date, "%Y-%m-%dT%H:%M:%S%z")
+        effective_ymd = datetime(effective.year, effective.month, effective.day)
+        renewal = datetime.strptime(renewal_date, "%Y-%m-%d")
+
+        return (renewal - effective_ymd).days
+    except:
+        return "-"

@@ -30,6 +30,9 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         recommitment_start_date = utils.get_param_value(parameters_list, 'recommitment_start_date')
         recommitment_end_date = utils.get_param_value(parameters_list, 'recommitment_end_date')
         external_referenci_id = utils.get_param_value(parameters_list, 'external_reference_id')
+        renewal_date = utils.get_param_value(parameters_list, 'renewal_date')
+        effective_date = utils.get_basic_value(request, 'effective_date')
+        prorata_days = utils.get_days_between_effective_and_renewal_date(effective_date, renewal_date)
 
         # get currency from configuration params
         currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
@@ -74,10 +77,14 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 utils.get_value(request['asset'], 'product', 'id'),  # Product ID
                 utils.get_value(request['asset'], 'product', 'name'),  # Product Name
                 utils.get_value(request, 'asset', 'status'),  # Subscription Status
-                utils.get_value(subscription, 'billing', 'next_date'),  # Anniversary Date
                 utils.convert_to_datetime(
-                    utils.get_basic_value(request, 'effective_date'),  # Effective  Date
+                    utils.get_value(subscription, 'billing', 'next_date'),  # Anniversary Date
                 ),
+                renewal_date,  # Adobe Renewal Date
+                utils.convert_to_datetime(
+                    effective_date,  # Effective  Date
+                ),
+                prorata_days,
                 utils.convert_to_datetime(
                     utils.get_basic_value(request, 'created'),  # Creation  Date
                 ),
