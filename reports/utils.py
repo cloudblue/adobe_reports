@@ -112,7 +112,7 @@ def process_asset_parameters_by_name(asset_params: list, asset_parameters: list)
         if param_id in handlers:
             params_dict[param_id] = handlers[param_id](param)
         elif param_id in asset_parameters:
-            params_dict[param_id] = param['value']
+            params_dict[param_id] = param['value'] if 'value' in param else ''
     return params_dict
 
 def handle_renewal_date(asset_creation_date: str) -> date:
