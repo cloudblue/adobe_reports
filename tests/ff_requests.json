@@ -506,6 +506,25 @@
           }
         },
         {
+          "id": "discount_group_consumables",
+          "name": "discount_group_consumables",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "discount group consumables",
+          "value": "T1A12",
+          "value_error": "",
+          "title": "discount group consumables",
+          "constraints": {
+            "placeholder": "discount group consumables",
+            "hint": "discount group consumables",
+            "meta": {},
+            "required": false,
+            "reconciliation": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
           "id": "t0_f_password",
           "name": "t0_f_password",
           "type": "password",
@@ -858,6 +877,181 @@
             "hint": "I am the hint text",
             "meta": {},
             "required": false
+          }
+        },
+        {
+          "id": "cb_flex_discounts_applied",
+          "name": "cb_flex_discounts_applied",
+          "type": "object",
+          "phase": "fulfillment",
+          "description": "Adobe Flex Discounts Applied",
+          "value": "",
+          "value_error": "",
+          "title": "Adobe Flex Discounts Applied",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": true,
+            "readonly": true
+          },
+          "structured_value": {
+            "discounts": [
+              {
+                "mpn": "MPN-R-002",
+                "order_id": "P9201150234",
+                "id": "12345678-1234-1234-1234-123456789abc",
+                "code": "ADOBE_PROMOTION_Q1"
+              },
+              {
+                "mpn": "MPN-R-005",
+                "order_id": "P9201150234",
+                "id": "87654321-4321-4321-4321-cba987654321",
+                "code": "ADOBE_DISCOUNT_SPECIAL"
+              },
+              {
+                "mpn": "MPN-R-005",
+                "order_id": "P9201150234",
+                "id": "11111111-2222-3333-4444-555555555555",
+                "code": "ADOBE_EXTRA_SAVINGS"
+              }
+            ]
+          }
+        },
+        {
+          "id": "commitment_status",
+          "name": "commitment_status",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Commitment Status",
+          "value": "COMMITTED",
+          "value_error": "",
+          "title": "Commitment Status",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "commitment_start_date",
+          "name": "commitment_start_date",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Commitment Start Date",
+          "value": "2023-11-23",
+          "value_error": "",
+          "title": "Commitment Start Date",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "commitment_end_date",
+          "name": "commitment_end_date",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Commitment End Date",
+          "value": "2026-11-23",
+          "value_error": "",
+          "title": "Commitment End Date",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "recommitment_status",
+          "name": "recommitment_status",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Recommitment Status",
+          "value": "-",
+          "value_error": "",
+          "title": "Recommitment Status",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "recommitment_start_date",
+          "name": "recommitment_start_date",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Recommitment Start Date",
+          "value": "-",
+          "value_error": "",
+          "title": "Recommitment Start Date",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "recommitment_end_date",
+          "name": "recommitment_end_date",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Recommitment End Date",
+          "value": "-",
+          "value_error": "",
+          "title": "Recommitment End Date",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "external_reference_id",
+          "name": "external_reference_id",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "External Reference ID",
+          "value": "EXT-REF-12345",
+          "value_error": "",
+          "title": "External Reference ID",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
+          }
+        },
+        {
+          "id": "renewal_date",
+          "name": "renewal_date",
+          "type": "text",
+          "phase": "fulfillment",
+          "description": "Renewal Date",
+          "value": "2021-11-23",
+          "value_error": "",
+          "title": "Renewal Date",
+          "constraints": {
+            "meta": {},
+            "reconciliation": false,
+            "required": false,
+            "hidden": false,
+            "readonly": false
           }
         }
       ],

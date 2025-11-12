@@ -68,3 +68,205 @@ def test_discount_level():
     assert utils.get_discount_level(group1) == 'Level 1'
     assert utils.get_discount_level(group2) == 'TLP Level 1'
     assert utils.get_discount_level('nothing') == 'Empty'
+
+
+def test_get_flex_discounts_with_single_match():
+    """Test get_flex_discounts with a single matching discount using structured_value"""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'type': 'object',
+            'value': '',
+            'structured_value': {
+                'discounts': [
+                    {
+                        'mpn': '65304520CA',
+                        'order_id': 'P9201911604',
+                        'id': '55555555-8768-4e8a-9a2f-fb6a6b08f557',
+                        'code': 'ADOBE_ALL_PROMOTION'
+                    }
+                ]
+            }
+        }
+    ]
+    result = utils.get_flex_discounts(params, '65304520CA', 'P9201911604')
+    assert result['discounted_mpn'] == '65304520CA'
+    assert result['discounted_order_id'] == 'P9201911604'
+    assert result['discount_id'] == '55555555-8768-4e8a-9a2f-fb6a6b08f557'
+    assert result['discount_code'] == 'ADOBE_ALL_PROMOTION'
+
+
+def test_get_flex_discounts_with_multiple_matches():
+    """Test get_flex_discounts with multiple matching discounts (concatenated)"""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'type': 'object',
+            'value': '',
+            'structured_value': {
+                'discounts': [
+                    {
+                        'mpn': '65304520CA',
+                        'order_id': 'P9201911604',
+                        'id': '11111111-1111-1111-1111-111111111111',
+                        'code': 'PROMO_1'
+                    },
+                    {
+                        'mpn': '65304520CA',
+                        'order_id': 'P9201911604',
+                        'id': '22222222-2222-2222-2222-222222222222',
+                        'code': 'PROMO_2'
+                    }
+                ]
+            }
+        }
+    ]
+    result = utils.get_flex_discounts(params, '65304520CA', 'P9201911604')
+    assert result['discounted_mpn'] == '65304520CA,65304520CA'
+    assert result['discounted_order_id'] == 'P9201911604,P9201911604'
+    assert result['discount_id'] == '11111111-1111-1111-1111-111111111111,22222222-2222-2222-2222-222222222222'
+    assert result['discount_code'] == 'PROMO_1,PROMO_2'
+
+
+def test_get_flex_discounts_no_match():
+    """Test get_flex_discounts when no matching discount is found"""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'type': 'object',
+            'value': '',
+            'structured_value': {
+                'discounts': [
+                    {
+                        'mpn': '65304520CA',
+                        'order_id': 'P9201911604',
+                        'id': '55555555-8768-4e8a-9a2f-fb6a6b08f557',
+                        'code': 'ADOBE_ALL_PROMOTION'
+                    }
+                ]
+            }
+        }
+    ]
+    result = utils.get_flex_discounts(params, 'DIFFERENT_MPN', 'P9201911604')
+    assert result['discounted_mpn'] == '-'
+    assert result['discounted_order_id'] == '-'
+    assert result['discount_id'] == '-'
+    assert result['discount_code'] == '-'
+
+
+def test_get_flex_discounts_missing_parameter():
+    """Test get_flex_discounts when parameter doesn't exist"""
+    params = [
+        {
+            'id': 'some_other_param',
+            'value': 'some_value',
+        }
+    ]
+    result = utils.get_flex_discounts(params, '65304520CA', 'P9201911604')
+    assert result['discounted_mpn'] == '-'
+    assert result['discounted_order_id'] == '-'
+    assert result['discount_id'] == '-'
+    assert result['discount_code'] == '-'
+
+
+def test_get_flex_discounts_with_json_string():
+    """Test get_flex_discounts with JSON string in value field (backward compatibility)"""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'value': '{"discounts":[{"mpn":"65304520CA","order_id":"P9201911604","id":"55555555-8768-4e8a-9a2f-fb6a6b08f557","code":"ADOBE_ALL_PROMOTION"}]}',
+        }
+    ]
+    result = utils.get_flex_discounts(params, '65304520CA', 'P9201911604')
+    assert result['discounted_mpn'] == '65304520CA'
+    assert result['discounted_order_id'] == 'P9201911604'
+    assert result['discount_id'] == '55555555-8768-4e8a-9a2f-fb6a6b08f557'
+    assert result['discount_code'] == 'ADOBE_ALL_PROMOTION'
+
+
+def test_get_flex_discounts_invalid_json():
+    """Test get_flex_discounts with invalid JSON"""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'value': 'invalid json {{{',
+        }
+    ]
+    result = utils.get_flex_discounts(params, '65304520CA', 'P9201911604')
+    assert result['discounted_mpn'] == '-'
+    assert result['discounted_order_id'] == '-'
+    assert result['discount_id'] == '-'
+    assert result['discount_code'] == '-'
+
+
+def test_get_days_between_effective_and_renewal_date_with_timezone():
+    """Test prorata calculation with timezone in effective date"""
+    result = utils.get_days_between_effective_and_renewal_date(
+        '2020-11-23T12:52:27+00:00',
+        '2021-11-23'
+    )
+    assert result == 365
+
+
+def test_get_days_between_effective_and_renewal_date_without_timezone():
+    """Test prorata calculation without timezone in effective date"""
+    result = utils.get_days_between_effective_and_renewal_date(
+        '2020-11-23T12:52:27',
+        '2021-11-23'
+    )
+    assert result == 365
+
+
+def test_get_days_between_effective_and_renewal_date_space_separator():
+    """Test prorata calculation with space separator in effective date"""
+    result = utils.get_days_between_effective_and_renewal_date(
+        '2020-11-23 12:52:27',
+        '2021-11-23'
+    )
+    assert result == 365
+
+
+def test_get_days_between_effective_and_renewal_date_real_data():
+    """Test prorata calculation with real data from report"""
+    result = utils.get_days_between_effective_and_renewal_date(
+        '2025-10-10T03:20:04+00:00',
+        '2026-09-08'
+    )
+    assert result == 333
+
+
+def test_get_days_between_effective_and_renewal_date_missing_effective():
+    """Test prorata calculation with missing effective date"""
+    result = utils.get_days_between_effective_and_renewal_date(
+        '-',
+        '2021-11-23'
+    )
+    assert result == '-'
+
+
+def test_get_days_between_effective_and_renewal_date_missing_renewal():
+    """Test prorata calculation with missing renewal date"""
+    result = utils.get_days_between_effective_and_renewal_date(
+        '2020-11-23T12:52:27+00:00',
+        '-'
+    )
+    assert result == '-'
+
+
+def test_get_flex_discounts_empty_discounts():
+    """Test get_flex_discounts with empty discounts array"""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'type': 'object',
+            'value': '',
+            'structured_value': {
+                'discounts': []
+            }
+        }
+    ]
+    result = utils.get_flex_discounts(params, '65304520CA', 'P9201911604')
+    assert result['discounted_mpn'] == '-'
+    assert result['discounted_order_id'] == '-'
+    assert result['discount_id'] == '-'
+    assert result['discount_code'] == '-'

@@ -1,4 +1,5 @@
 import datetime
+import json
 from reports import api_calls
 
 BASE_CURRENCY = 'USD'
@@ -242,7 +243,119 @@ def get_base_currency_financials(financials_and_seats: dict, currency: dict) -> 
 def get_financials_from_product_per_marketplace(client, marketplace_id, asset_id):
     listing = api_calls.request_listing(client, marketplace_id, asset_id)
     price_list_points = []
-    if listing and listing['pricelist']:
+    if listing and listing.get('pricelist'):
         price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
-        price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'])
+        if price_list_version:
+            price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'])
     return get_financials_from_price_list(price_list_points)
+
+
+def get_days_between_effective_and_renewal_date(effective_date, renewal_date):
+    """
+    Calculate the number of days between effective date and renewal date.
+    
+    :type effective_date: str
+    :type renewal_date: str
+    :param effective_date: Effective date in ISO format (e.g., "2020-11-23T12:52:27+00:00")
+    :param renewal_date: Renewal date in YYYY-MM-DD format (e.g., "2020-12-01")
+    :return: Number of days between the two dates, or '-' if calculation fails
+    """
+    try:
+        # Handle empty or missing values
+        if not effective_date or effective_date == '-' or not renewal_date or renewal_date == '-':
+            return "-"
+        
+        # Normalize the effective_date string (same approach as convert_to_datetime)
+        # Remove timezone info and convert T to space for consistent parsing
+        normalized_effective = effective_date.replace("T", " ").replace("+00:00", "").strip()
+        
+        # Parse the normalized effective date
+        effective = datetime.datetime.strptime(normalized_effective, "%Y-%m-%d %H:%M:%S")
+        effective_ymd = datetime.datetime(effective.year, effective.month, effective.day)
+        
+        # Parse renewal date
+        renewal = datetime.datetime.strptime(renewal_date, "%Y-%m-%d")
+
+        return (renewal - effective_ymd).days
+    except Exception:
+        return "-"
+
+
+def get_flex_discounts(params: list, item_mpn: str, order_id: str) -> dict:
+    """
+    Parse the cb_flex_discounts_applied parameter and match discounts for a specific item.
+    
+    :type params: list
+    :type item_mpn: str
+    :type order_id: str
+    :param params: asset parameters list
+    :param item_mpn: MPN of the item to match
+    :param order_id: Adobe Order ID to match
+    :return: dict with matched discount fields or '-' if not found
+    """
+    result = {
+        'discounted_mpn': '-',
+        'discounted_order_id': '-',
+        'discount_id': '-',
+        'discount_code': '-',
+    }
+    
+    try:
+        # Find the cb_flex_discounts_applied parameter
+        flex_param = None
+        for param in params:
+            if param.get('id') == 'cb_flex_discounts_applied':
+                flex_param = param
+                break
+        
+        if not flex_param:
+            return result
+        
+        # For object-type parameters, data is in 'structured_value', not 'value'
+        flex_discounts_data = None
+        if 'structured_value' in flex_param and flex_param['structured_value']:
+            flex_discounts_data = flex_param['structured_value']
+        elif 'value' in flex_param and flex_param['value']:
+            # Fallback: try parsing from 'value' field if it's a JSON string
+            value = flex_param['value']
+            if value and value != '-':
+                flex_discounts_data = json.loads(value)
+        
+        if not flex_discounts_data:
+            return result
+        
+        # Get discounts array
+        discounts = flex_discounts_data.get('discounts', [])
+        
+        if not discounts:
+            return result
+        
+        # Find matching discounts for this item
+        matched_mpns = []
+        matched_order_ids = []
+        matched_discount_ids = []
+        matched_discount_codes = []
+        
+        for discount in discounts:
+            discount_mpn = discount.get('mpn', '')
+            discount_order_id = discount.get('order_id', '')
+            
+            # Match by MPN and Order ID
+            if discount_mpn == item_mpn and discount_order_id == order_id:
+                matched_mpns.append(discount_mpn)
+                matched_order_ids.append(discount_order_id)
+                matched_discount_ids.append(discount.get('id', ''))
+                matched_discount_codes.append(discount.get('code', ''))
+        
+        # If matches found, concatenate with comma
+        if matched_mpns:
+            result['discounted_mpn'] = ','.join(matched_mpns)
+            result['discounted_order_id'] = ','.join(matched_order_ids)
+            result['discount_id'] = ','.join(matched_discount_ids)
+            result['discount_code'] = ','.join(matched_discount_codes)
+        
+    except (json.JSONDecodeError, TypeError, KeyError, AttributeError):
+        # If any error occurs (invalid JSON, wrong structure, etc.), return default values
+        pass
+    
+    return result
