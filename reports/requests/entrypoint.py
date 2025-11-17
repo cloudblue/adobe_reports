@@ -22,23 +22,27 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         action = utils.get_param_value(parameters_list, 'action_type')
         adobe_user_email = utils.get_param_value(parameters_list, 'adobe_user_email')
         adobe_cloud_program_id = utils.get_param_value(parameters_list, 'adobe_customer_id')
-        pricing_level = utils.get_discount_level(utils.get_param_value(parameters_list, 'discount_group'))
+        discount_group = utils.get_param_value(parameters_list, 'discount_group')
+        discount_group_consumables = utils.get_param_value(parameters_list, 'discount_group_consumables')
+        pricing_level = utils.get_discount_level(discount_group)
         commitment = utils.get_param_value(parameters_list, 'commitment_status')
         commitment_start_date = utils.get_param_value(parameters_list, 'commitment_start_date')
         commitment_end_date = utils.get_param_value(parameters_list, 'commitment_end_date')
         recommitment = utils.get_param_value(parameters_list, 'recommitment_status')
         recommitment_start_date = utils.get_param_value(parameters_list, 'recommitment_start_date')
         recommitment_end_date = utils.get_param_value(parameters_list, 'recommitment_end_date')
-        external_referenci_id = utils.get_param_value(parameters_list, 'external_reference_id')
+        external_reference_id = utils.get_param_value(parameters_list, 'external_reference_id')
         renewal_date = utils.get_param_value(parameters_list, 'renewal_date')
         effective_date = utils.get_basic_value(request, 'effective_date')
         prorata_days = utils.get_days_between_effective_and_renewal_date(effective_date, renewal_date)
 
+        # COMMENTED OUT: Currency, Cost, Reseller Cost, MSRP columns removed from report
+        # These lines extracted financial data that is no longer needed
         # get currency from configuration params
-        currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
+        # currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
 
-        financials = utils.get_financials_from_product_per_marketplace(
-            client, request['asset']['marketplace']['id'], request['asset']['product']['id'])
+        # financials = utils.get_financials_from_product_per_marketplace(
+        #     client, request['asset']['marketplace']['id'], request['asset']['product']['id'])
 
         subscription = api_calls.request_asset(client, request['asset']['id'])  # request for anniversary date
         for item in request['asset']['items']:
@@ -49,6 +53,11 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
             if "commitment_status" in parameters and parameters['commitment_status'] == '3yc':  # pragma: no cover
                 if commitment == '-' or commitment == '':
                     continue
+
+            # Get flex discounts for this item
+            item_mpn = utils.get_basic_value(item, 'mpn')
+            item_type = utils.get_basic_value(item, 'type')
+            flex_discounts = utils.get_flex_discounts(parameters_list, item_mpn, order_number)
 
             yield (
                 utils.get_basic_value(request, 'id'),  # Request ID
@@ -62,11 +71,18 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 vip_number,  # VIP #
                 adobe_cloud_program_id,  # Adobe Cloud Program ID
                 pricing_level,  # Pricing SKU Level (Volume Discount level)
+                discount_group,  # Discount Group Licenses
+                discount_group_consumables,  # Discount Group Consumables
                 utils.get_basic_value(item, 'display_name'),  # Product Description
-                utils.get_basic_value(item, 'mpn'),  # Part Number
+                item_mpn,  # Part Number
+                item_type,  # Unit of Measure
                 utils.get_basic_value(item, 'period'),  # Product Period
                 utils.get_basic_value(item, 'quantity'),  # Cumulative Seat
                 delta_str,  # Order Delta
+                flex_discounts['discounted_mpn'],  # Discounted MPN
+                flex_discounts['discounted_order_id'],  # Discounted Adobe Order Id
+                flex_discounts['discount_id'],  # Adobe Discount Id
+                flex_discounts['discount_code'],  # Adobe Discount Code
                 utils.get_value(request['asset']['tiers'], 'tier1', 'id'),  # Reseller ID
                 utils.get_value(request['asset']['tiers'], 'tier1', 'name'),  # Reseller Name
                 utils.get_value(request['asset']['tiers'], 'customer', 'name'),  # End Customer Name
@@ -90,10 +106,11 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 ),
                 utils.get_basic_value(request, 'type'),  # Transaction Type
                 adobe_user_email,  # Adobe User Email
-                currency,  # Currency
-                utils.get_value(financials, item['global_id'], 'cost'),  # Cost
-                utils.get_value(financials, item['global_id'], 'reseller_cost'),  # Reseller Cost
-                utils.get_value(financials, item['global_id'], 'msrp'),  # MSRP
+                # COMMENTED OUT: Currency, Cost, Reseller Cost, MSRP columns removed from report (4 columns)
+                # currency,  # Currency
+                # utils.get_value(financials, item['global_id'], 'cost'),  # Cost
+                # utils.get_value(financials, item['global_id'], 'reseller_cost'),  # Reseller Cost
+                # utils.get_value(financials, item['global_id'], 'msrp'),  # MSRP
                 utils.get_basic_value(request['asset']['connection'], 'type'),  # Connection Type,
                 utils.today_str(),  # Exported At
                 commitment,
@@ -102,7 +119,7 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 recommitment,
                 recommitment_start_date,
                 recommitment_end_date,
-                external_referenci_id,
+                external_reference_id,
             )
         progress += 1
         progress_callback(progress, total)

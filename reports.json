@@ -158,6 +158,10 @@
             {
               "value": "adjustment",
               "label": "Adjustment"
+            },
+            {
+              "value": "renew",
+              "label": "Renewal"
             }
           ]
         },
