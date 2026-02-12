@@ -30,6 +30,30 @@ def get_value(base, prop, value):
     return '-'
 
 
+def get_hub_id(connection: dict) -> str:
+    """
+    Return Hub ID from asset.connection, or '-' if missing/empty.
+    """
+    if not connection:
+        return '-'
+    value = get_value(connection, 'hub', 'id')
+    return value if value else '-'
+
+
+def get_hub_name(connection: dict) -> str:
+    """
+    Return Hub Name from asset.connection. If hub is missing, name empty,
+    or name is None/the string "None", return Provider Name for consistency.
+    """
+    if not connection:
+        return '-'
+    hub = connection.get('hub') or {}
+    name = get_basic_value(hub, 'name')
+    if name and name != '-' and str(name).strip().lower() != 'none':
+        return name
+    return get_value(connection, 'provider', 'name')
+
+
 def convert_to_datetime(param_value):
     if param_value == "" or param_value == "-" or param_value is None:
         return "-"
@@ -243,8 +267,10 @@ def get_base_currency_financials(financials_and_seats: dict, currency: dict) -> 
 def get_financials_from_product_per_marketplace(client, marketplace_id, asset_id):
     listing = api_calls.request_listing(client, marketplace_id, asset_id)
     price_list_points = []
-    if listing and listing.get('pricelist'):
-        price_list_version = api_calls.request_price_list(client, listing['pricelist']['id'])
+    # Use .get() to avoid KeyError when listing has no 'pricelist' (e.g. not listed)
+    pricelist = (listing or {}).get('pricelist')
+    if pricelist and (pricelist.get('id') if isinstance(pricelist, dict) else None):
+        price_list_version = api_calls.request_price_list(client, pricelist['id'])
         if price_list_version:
             price_list_points = api_calls.request_price_list_version_points(client, price_list_version['id'])
     return get_financials_from_price_list(price_list_points)

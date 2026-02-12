@@ -7,6 +7,14 @@
 from reports import utils
 from reports import api_calls
 
+# Production-only: exclude approved requests from these hub IDs (no exclusion for test/preview)
+EXCLUDED_PRODUCTION_HUB_IDS = frozenset({
+    'HB-4043-4841',
+    'HB-1042-0462',
+    'HB-9379-5319',
+    'HB-8855-1470',
+})
+
 
 def generate(client, parameters, progress_callback, renderer_type=None, extra_context=None, ):
     requests = api_calls.request_approved_requests(client, parameters)
@@ -14,6 +22,14 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
     progress = 0
     total = requests.count()
     for request in requests:
+        connection = request.get('asset', {}).get('connection') or {}
+        conn_type = utils.get_basic_value(connection, 'type')
+        hub_id = utils.get_hub_id(connection)
+        if conn_type == 'production' and hub_id in EXCLUDED_PRODUCTION_HUB_IDS:
+            progress += 1
+            progress_callback(progress, total)
+            continue
+
         # get subscription parameters values
         parameters_list = request['asset']['params']
         vip_number = utils.get_param_value(parameters_list, 'adobe_vip_number')
@@ -81,6 +97,8 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 utils.get_value(request['asset']['tiers'], 'tier1', 'name'),  # Reseller Name
                 utils.get_value(request['asset']['tiers'], 'customer', 'name'),  # End Customer Name
                 utils.get_value(request['asset']['tiers'], 'customer', 'external_id'),  # End Customer External ID
+                utils.get_hub_id(connection),  # Hub Id
+                utils.get_hub_name(connection),  # Hub Name
                 utils.get_value(request['asset']['connection'], 'provider', 'id'),  # Provider ID
                 utils.get_value(request['asset']['connection'], 'provider', 'name'),  # Provider Name
                 utils.get_value(request, 'marketplace', 'name'),  # Marketplace

@@ -4,6 +4,8 @@
 # All rights reserved.
 #
 
+import copy
+
 from reports.requests import entrypoint
 
 # queries
@@ -74,9 +76,9 @@ def test_requests_generate(sync_client_factory, response_factory, progress,
     # Verify number of rows (items with non-empty delta)
     assert len(result) == 6  # number of items on ff_request.json
     
-    # Verify each row has 53 columns (46 original + 4 flex discount + 2 discount group + 1 UoM)
+    # Verify each row has 55 columns (+2 Hub Id, Hub Name)
     for row in result:
-        assert len(row) == 53
+        assert len(row) == 55
     
     # Verify basic data in first row
     first_row = result[0]
@@ -88,7 +90,9 @@ def test_requests_generate(sync_client_factory, response_factory, progress,
     assert first_row[12] == 'T1A12'  # Discount Group Consumables (position 13)
     assert first_row[14] == 'MPN-R-001'  # Part Number (position 15)
     assert first_row[15] == 'Units'  # Unit of Measure (position 16)
-    assert first_row[16] == 'Monthly'  # Product Period (position 17, shifted by +1)
+    assert first_row[16] == 'Monthly'  # Product Period (position 17)
+    assert first_row[27] == 'HB-0309-9389'  # Hub Id
+    assert first_row[28] == 'IMC DEMOS'  # Hub Name
     
     # Verify discount data for specific items
     # Item with MPN-R-002 should have one discount
@@ -112,13 +116,34 @@ def test_requests_generate(sync_client_factory, response_factory, progress,
     assert item_001[21] == '-'  # Adobe Discount Id (shifted from 20 to 21)
     assert item_001[22] == '-'  # Adobe Discount Code (shifted from 21 to 22)
     
-    # Verify new columns (commitment, renewal date, etc.)
-    assert item_001[34] == '2021-11-23'  # Adobe Renewal Date (shifted from 33 to 34)
-    assert item_001[36] == 365  # Prorata (days) (shifted from 35 to 36)
-    assert item_001[46] == 'COMMITTED'  # commitment (shifted from 45 to 46)
-    assert item_001[47] == '2023-11-23'  # commitment start date (shifted from 46 to 47)
-    assert item_001[48] == '2026-11-23'  # commitment end date (shifted from 47 to 48)
-    assert item_001[49] == '-'  # recommitment (shifted from 48 to 49)
-    assert item_001[50] == '-'  # recommitment start date (shifted from 49 to 50)
-    assert item_001[51] == '-'  # recommitment end date (shifted from 50 to 51)
-    assert item_001[52] == 'EXT-REF-12345'  # external reference id (shifted from 51 to 52)
+    # Verify new columns (commitment, renewal date, etc.) — indices shifted +2 after Hub Id/Hub Name
+    assert item_001[36] == '2021-11-23'  # Adobe Renewal Date
+    assert item_001[38] == 365  # Prorata (days)
+    assert item_001[48] == 'COMMITTED'  # commitment
+    assert item_001[49] == '2023-11-23'  # commitment start date
+    assert item_001[50] == '2026-11-23'  # commitment end date
+    assert item_001[51] == '-'  # recommitment
+    assert item_001[52] == '-'  # recommitment start date
+    assert item_001[53] == '-'  # recommitment end date
+    assert item_001[54] == 'EXT-REF-12345'  # external reference id
+
+
+def test_requests_generate_excludes_production_hubs(sync_client_factory, response_factory, progress,
+                                                    listing, pricelist_version, pricelist_points,
+                                                    asset, ff_requests):
+    """Production requests with excluded hub IDs yield no rows; other envs are not filtered."""
+    excluded_requests = copy.deepcopy(ff_requests)
+    for req in excluded_requests:
+        req['asset']['connection']['type'] = 'production'
+        req['asset']['connection']['hub'] = {'id': 'HB-4043-4841', 'name': 'Excluded Hub'}
+    responses_list = [
+        response_factory(query=REQUEST_QUERY, count=1),
+        response_factory(query=REQUEST_QUERY, value=excluded_requests),
+        response_factory(query=LISTING_QUERY, value=listing),
+        response_factory(query=PRICELIST_VERSION_QUERY, value=pricelist_version),
+        response_factory(query=PRICELIST_POINTS_QUERY, value=pricelist_points),
+        response_factory(query=ASSET_QUERY, value=asset),
+    ]
+    client = sync_client_factory(responses_list)
+    result = list(entrypoint.generate(client, parameters, progress))
+    assert len(result) == 0

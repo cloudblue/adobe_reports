@@ -21,6 +21,26 @@ def test_get_value(asset):
     assert utils.get_value(asset[0], 'product', 'id') == 'PRD-207-752-513'
 
 
+def test_get_hub_id():
+    assert utils.get_hub_id(None) == '-'
+    assert utils.get_hub_id({}) == '-'
+    assert utils.get_hub_id({'hub': {'id': 'HB-3050-0939', 'name': 'commerce-dev.platform.cloudblue.io'}}) == 'HB-3050-0939'
+    assert utils.get_hub_id({'hub': {}}) == '-'
+    assert utils.get_hub_id({'hub': {'name': 'Only Name'}}) == '-'
+
+
+def test_get_hub_name():
+    assert utils.get_hub_name(None) == '-'
+    assert utils.get_hub_name({}) == '-'
+    conn = {'hub': {'id': 'HB-3050-0939', 'name': 'commerce-dev.platform.cloudblue.io'}, 'provider': {'name': 'My Provider'}}
+    assert utils.get_hub_name(conn) == 'commerce-dev.platform.cloudblue.io'
+    assert utils.get_hub_name({'hub': {}, 'provider': {'name': 'Fallback Provider'}}) == 'Fallback Provider'
+    assert utils.get_hub_name({'provider': {'name': 'Provider Only'}}) == 'Provider Only'
+    # When hub name is None or string "None", use Provider Name
+    assert utils.get_hub_name({'hub': {'name': None}, 'provider': {'name': 'Provider When None'}}) == 'Provider When None'
+    assert utils.get_hub_name({'hub': {'name': 'None'}, 'provider': {'name': 'Provider When String None'}}) == 'Provider When String None'
+
+
 def test_convert_to_datetime():
     assert utils.convert_to_datetime('') == '-'
 
