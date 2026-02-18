@@ -41,7 +41,8 @@ parameters = {
 }
 
 
-def test_requests_generate(sync_client_factory, response_factory, progress, asset, ff_requests):
+def test_requests_generate(sync_client_factory, response_factory, progress,
+                           listing, pricelist_version, pricelist_points, asset, ff_requests):
     responses = [
         response_factory(
             query=REQUEST_QUERY,
@@ -50,6 +51,18 @@ def test_requests_generate(sync_client_factory, response_factory, progress, asse
         response_factory(
             query=REQUEST_QUERY,
             value=ff_requests,
+        ),
+        response_factory(
+            query=LISTING_QUERY,
+            value=listing,
+        ),
+        response_factory(
+            query=PRICELIST_VERSION_QUERY,
+            value=pricelist_version,
+        ),
+        response_factory(
+            query=PRICELIST_POINTS_QUERY,
+            value=pricelist_points,
         ),
         response_factory(
             query=ASSET_QUERY,

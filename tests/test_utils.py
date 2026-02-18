@@ -43,17 +43,17 @@ def test_calculate_renewal_date_():
     # Normal date
     assert utils.calculate_renewal_date(str(current_date_after), current_date_leap) == datetime.date(2024, 6, 16)
 
-#
-# def test_get_financials_from_product_per_marketplace(sync_client_factory, response_factory, asset):
-#     responses = [
-#         response_factory(
-#             query=LISTING_QUERY,
-#             value=[]
-#         ),
-#     ]
-#     client = sync_client_factory(responses)
-#     assert utils.get_financials_from_product_per_marketplace(
-#         client, asset[0]['marketplace']['id'], asset[0]['product']['id']) == {}
+
+def test_get_financials_from_product_per_marketplace(sync_client_factory, response_factory, asset):
+    responses = [
+        response_factory(
+            query=LISTING_QUERY,
+            value=[]
+        ),
+    ]
+    client = sync_client_factory(responses)
+    assert utils.get_financials_from_product_per_marketplace(
+        client, asset[0]['marketplace']['id'], asset[0]['product']['id']) == {}
 
 
 def test_same_currency(pricelist_version):
