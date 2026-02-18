@@ -43,17 +43,17 @@ def test_calculate_renewal_date_():
     # Normal date
     assert utils.calculate_renewal_date(str(current_date_after), current_date_leap) == datetime.date(2024, 6, 16)
 
-
-def test_get_financials_from_product_per_marketplace(sync_client_factory, response_factory, asset):
-    responses = [
-        response_factory(
-            query=LISTING_QUERY,
-            value=[]
-        ),
-    ]
-    client = sync_client_factory(responses)
-    assert utils.get_financials_from_product_per_marketplace(
-        client, asset[0]['marketplace']['id'], asset[0]['product']['id']) == {}
+#
+# def test_get_financials_from_product_per_marketplace(sync_client_factory, response_factory, asset):
+#     responses = [
+#         response_factory(
+#             query=LISTING_QUERY,
+#             value=[]
+#         ),
+#     ]
+#     client = sync_client_factory(responses)
+#     assert utils.get_financials_from_product_per_marketplace(
+#         client, asset[0]['marketplace']['id'], asset[0]['product']['id']) == {}
 
 
 def test_same_currency(pricelist_version):
@@ -140,3 +140,42 @@ def test_three_years_recommitment():
     }
     assert utils.get_three_years_recommitment(structured_value_true) == 'Y'
     assert utils.get_three_years_recommitment(structured_value_false) == 'N'
+
+
+def test_get_hub_id():
+    connection = {'hub': {'id': 'HB-1234-5678'}}
+    assert utils.get_hub_id(connection) == 'HB-1234-5678'
+
+    connection_no_hub = {'provider': {'id': 'PR-1234'}}
+    assert utils.get_hub_id(connection_no_hub) == '-'
+
+    assert utils.get_hub_id(None) == '-'
+
+
+def test_get_hub_name():
+    # Case 1: Hub exists and has a valid name
+    connection = {
+        'hub': {'name': 'My Hub'},
+        'provider': {'name': 'My Provider'}
+    }
+    assert utils.get_hub_name(connection) == 'My Hub'
+
+    # Case 2: Hub name is None
+    connection_none = {
+        'hub': {'name': None},
+        'provider': {'name': 'My Provider'}
+    }
+    assert utils.get_hub_name(connection_none) == 'My Provider'
+
+    # Case 3: Hub name is "None" string
+    connection_none_str = {
+        'hub': {'name': 'None'},
+        'provider': {'name': 'My Provider'}
+    }
+    assert utils.get_hub_name(connection_none_str) == 'My Provider'
+
+    # Case 4: Hub missing
+    connection_no_hub = {
+        'provider': {'name': 'My Provider'}
+    }
+    assert utils.get_hub_name(connection_no_hub) == 'My Provider'

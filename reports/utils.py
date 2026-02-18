@@ -135,6 +135,32 @@ def resolve_leap_year_renewal_date(original_date: date, target_year: int) -> dat
     return original_date.replace(year=target_year)
 
 
+
+def get_hub_id(connection: dict) -> str:
+    """
+    Return Hub ID from asset.connection, or '-' if missing/empty.
+    """
+    if not connection:
+        return '-'
+    value = get_value(connection, 'hub', 'id')
+    return value if value else '-'
+
+
+def get_hub_name(connection: dict) -> str:
+    """
+    Return Hub Name from asset.connection. If hub is missing, name empty,
+    or name is None/the string "None", return Provider Name for consistency.
+    """
+    if not connection:
+        return '-'
+    hub = connection.get('hub') or {}
+    name = get_basic_value(hub, 'name')
+    if name and name != '-' and str(name).strip().lower() != 'none':
+        return name
+    return get_value(connection, 'provider', 'name')
+
+    
+
 def get_value_from_split_header(asset: dict, header: str) -> str:
     """
     This function gets the header with '-' format and split it to reach the value in asset

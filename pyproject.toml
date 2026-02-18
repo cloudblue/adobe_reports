@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "connect-reports"
-version = "0.1.0"
+version = "1.5.0"
 description = "This project is made to generate custom reports using Connect SDK"
 authors = ["Carlos Anuarbe"]
 license = "Apache Software License 2.0"
