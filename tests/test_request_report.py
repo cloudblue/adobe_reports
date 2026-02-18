@@ -3,6 +3,7 @@
 # Copyright (c) 2022, Carlos Anuarbe
 # All rights reserved.
 #
+import copy
 import reports.utils
 from reports.requests import entrypoint
 
@@ -70,8 +71,38 @@ def test_requests_generate(sync_client_factory, response_factory, progress,
     ]
     client = sync_client_factory(responses)
 
-    result = entrypoint.generate(client, parameters, progress)
-    assert len(list(result)) == 6  # number of items on ff_request.json
+    result = list(entrypoint.generate(client, parameters, progress))
+    assert len(result) == 6  # number of items on ff_request.json
+
+    # Verify Hub ID and Hub Name are in the result (columns 27 and 28, index starting at 0)
+    # The columns are added before Provider ID.
+    # Provider ID was at index 27 before, now it is at index 29.
+    # Hub ID at index 27, Hub Name at index 28.
+    assert result[0][27] == 'HB-0309-9389'
+    assert result[0][28] == 'IMC DEMOS'
+
+
+def test_requests_generate_skip_excluded_hubs(sync_client_factory, response_factory, progress, asset, ff_requests):
+    # Mock a request with an excluded Hub ID (e.g., HB-4043-4841)
+    excluded_request = copy.deepcopy(ff_requests[0])
+    excluded_request['asset']['connection']['hub']['id'] = 'HB-4043-4841'
+    excluded_request['asset']['connection']['type'] = 'production'
+
+    responses = [
+        response_factory(
+            query=REQUEST_QUERY,
+            count=1
+        ),
+        response_factory(
+            query=REQUEST_QUERY,
+            value=[excluded_request],
+        ),
+    ]
+    client = sync_client_factory(responses)
+
+    result = list(entrypoint.generate(client, parameters, progress))
+    # It should skip all items in this request, so result should be empty
+    assert len(result) == 0
 
 
 def test_get_param_value():

@@ -7,6 +7,12 @@
 from reports import utils
 from reports import api_calls
 
+EXCLUDED_PRODUCTION_HUB_IDS = frozenset({
+    'HB-4043-4841',
+    'HB-1042-0462',
+    'HB-9379-5319',
+    'HB-8855-1470',
+})
 
 def generate(client, parameters, progress_callback, renderer_type=None, extra_context=None, ):
     requests = api_calls.request_approved_requests(client, parameters)
@@ -14,6 +20,13 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
     progress = 0
     total = requests.count()
     for request in requests:
+        connection = request.get('asset', {}).get('connection') or {}
+        conn_type = utils.get_basic_value(connection, 'type')
+        hub_id = utils.get_hub_id(connection)
+        if conn_type == 'production' and hub_id in EXCLUDED_PRODUCTION_HUB_IDS:
+            progress += 1
+            progress_callback(progress, total)
+            continue
         # get subscription parameters values
         parameters_list = request['asset']['params']
         vip_number = utils.get_param_value(parameters_list, 'adobe_vip_number')
@@ -36,13 +49,11 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         effective_date = utils.get_basic_value(request, 'effective_date')
         prorata_days = utils.get_days_between_effective_and_renewal_date(effective_date, renewal_date)
 
-        # COMMENTED OUT: Currency, Cost, Reseller Cost, MSRP columns removed from report
-        # These lines extracted financial data that is no longer needed
         # get currency from configuration params
-        # currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
+        currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
 
-        # financials = utils.get_financials_from_product_per_marketplace(
-        #     client, request['asset']['marketplace']['id'], request['asset']['product']['id'])
+        financials = utils.get_financials_from_product_per_marketplace(
+            client, request['asset']['marketplace']['id'], request['asset']['product']['id'])
 
         subscription = api_calls.request_asset(client, request['asset']['id'])  # request for anniversary date
         for item in request['asset']['items']:
@@ -87,6 +98,8 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 utils.get_value(request['asset']['tiers'], 'tier1', 'name'),  # Reseller Name
                 utils.get_value(request['asset']['tiers'], 'customer', 'name'),  # End Customer Name
                 utils.get_value(request['asset']['tiers'], 'customer', 'external_id'),  # End Customer External ID
+                utils.get_hub_id(connection),  # Hub Id
+                utils.get_hub_name(connection),  # Hub Name
                 utils.get_value(request['asset']['connection'], 'provider', 'id'),  # Provider ID
                 utils.get_value(request['asset']['connection'], 'provider', 'name'),  # Provider Name
                 utils.get_value(request, 'marketplace', 'name'),  # Marketplace
@@ -106,11 +119,10 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 ),
                 utils.get_basic_value(request, 'type'),  # Transaction Type
                 adobe_user_email,  # Adobe User Email
-                # COMMENTED OUT: Currency, Cost, Reseller Cost, MSRP columns removed from report (4 columns)
-                # currency,  # Currency
-                # utils.get_value(financials, item['global_id'], 'cost'),  # Cost
-                # utils.get_value(financials, item['global_id'], 'reseller_cost'),  # Reseller Cost
-                # utils.get_value(financials, item['global_id'], 'msrp'),  # MSRP
+                currency,  # Currency
+                utils.get_value(financials, item['global_id'], 'cost'),  # Cost
+                utils.get_value(financials, item['global_id'], 'reseller_cost'),  # Reseller Cost
+                utils.get_value(financials, item['global_id'], 'msrp'),  # MSRP
                 utils.get_basic_value(request['asset']['connection'], 'type'),  # Connection Type,
                 utils.today_str(),  # Exported At
                 commitment,
