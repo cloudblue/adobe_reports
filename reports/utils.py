@@ -310,13 +310,8 @@ def get_base_currency_financials(financials_and_seats: dict, currency: dict) -> 
         'USD-msrp': '{:0.2f}'.format(financials_and_seats['msrp'] * currency['change'])}
 
 
-# This function was used in reports/requests/entrypoint.py to retrieve financial data
-# for the removed columns. Commenting out eliminates 3 API calls per request, improving performance.
-# NOTE: This function is NOT used in the Assets report. The Assets report uses direct API calls
-# to request_listing(), request_price_list(), and request_price_list_version_points() instead.
-# If you need to restore the financial columns, uncomment this function and the related code
-# in reports/requests/entrypoint.py (lines 39-45 and lines 109-113).
-#
+# Not used by any report since CBPFR-2987 removed the financial columns (obsolete price list
+# source). Kept until the pricing helpers are cleaned up.
 def get_financials_from_product_per_marketplace(client, marketplace_id, asset_id):
     listing = api_calls.request_listing(client, marketplace_id, asset_id)
     price_list_points = []

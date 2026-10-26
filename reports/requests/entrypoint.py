@@ -52,9 +52,6 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
         # get currency from configuration params
         currency = utils.get_param_value(request['asset']['configuration']['params'], 'Adobe_Currency')
 
-        financials = utils.get_financials_from_product_per_marketplace(
-            client, request['asset']['marketplace']['id'], request['asset']['product']['id'])
-
         subscription = api_calls.request_asset(client, request['asset']['id'])  # request for anniversary date
         for item in request['asset']['items']:
             delta_str = _get_delta_str(item)
@@ -120,9 +117,6 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 utils.get_basic_value(request, 'type'),  # Transaction Type
                 adobe_user_email,  # Adobe User Email
                 currency,  # Currency
-                utils.get_value(financials, item['global_id'], 'cost'),  # Cost
-                utils.get_value(financials, item['global_id'], 'reseller_cost'),  # Reseller Cost
-                utils.get_value(financials, item['global_id'], 'msrp'),  # MSRP
                 utils.get_basic_value(request['asset']['connection'], 'type'),  # Connection Type,
                 utils.today_str(),  # Exported At
                 commitment,
