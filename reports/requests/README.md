@@ -23,6 +23,9 @@ Request can be parametrized by:
 * Order delta, Reseller ID, Reseller Name, End Customer Name End Customer External ID
 * Provider  ID, Provider Name, Marketplace, Product ID, Product Name, Subscription Status, Anniversary Date
 * Request Effective Date, Request Creation Date, Request Type, Adobe User Email, Currency
-* Cost, Reseller Cost, MSRP, Connection Type or Environment Type, Exported At
+* Connection Type or Environment Type, Exported At
+
+Cost, Reseller Cost and MSRP columns were removed: the price list source they were calculated from is
+obsolete. Currency is kept, it comes from the asset Adobe_Currency configuration parameter.
 
 Command to create report: ccli report execute requests -d .
