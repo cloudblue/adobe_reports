@@ -60,6 +60,19 @@ def request_approved_requests(client, parameters):
     return client.requests.filter(query).order_by("created")
 
 
+def request_current_assets(client, parameters):
+    query = R()
+    if parameters.get('product') and parameters['product']['all'] is False:
+        query &= R().product.id.oneof(parameters['product']['choices'])
+    if parameters.get('mkp') and parameters['mkp']['all'] is False:
+        query &= R().marketplace.id.oneof(parameters['mkp']['choices'])
+    if parameters.get('status') and parameters['status']['all'] is False:
+        query &= R().status.oneof(parameters['status']['choices'])
+    if parameters.get('connexion_type') and parameters['connexion_type']['all'] is False:
+        query &= R().connection.type.oneof(parameters['connexion_type']['choices'])
+    return client('subscriptions').assets.filter(query).order_by('events.created.at')
+
+
 def request_asset(client, asset_id):
     query = R()
     query &= R().id.eq(asset_id)
