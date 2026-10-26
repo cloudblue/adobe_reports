@@ -179,3 +179,153 @@ def test_get_hub_name():
         'provider': {'name': 'My Provider'}
     }
     assert utils.get_hub_name(connection_no_hub) == 'My Provider'
+
+
+# --- CBPFR-2164: Flex discount (cb_flex_discount_final + cb_flex_discounts_applied) ---
+
+def test_get_flex_discounts_no_param():
+    """Missing both params -> all keys '-'."""
+    params = []
+    result = utils.get_flex_discounts(params, 'MPN-1', 'ORD-1')
+    assert result['discounted_mpn'] == '-'
+    assert result['application_type'] == '-'
+    assert result['discount_value'] == '-'
+
+
+def test_get_flex_discounts_legacy_single_match():
+    """Legacy cb_flex_discounts_applied: match by MPN + order_id; new columns '-'."""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'structured_value': {
+                'discounts': [
+                    {'mpn': 'MPN-A', 'order_id': 'ORD-1', 'id': 'id1', 'code': 'CODE1'}
+                ]
+            },
+        }
+    ]
+    result = utils.get_flex_discounts(params, 'MPN-A', 'ORD-1')
+    assert result['discounted_mpn'] == 'MPN-A'
+    assert result['discounted_order_id'] == 'ORD-1'
+    assert result['discount_id'] == 'id1'
+    assert result['discount_code'] == 'CODE1'
+    assert result['application_type'] == '-'
+    assert result['discount_type'] == '-'
+    assert result['discount_value'] == '-'
+
+
+def test_get_flex_discounts_legacy_no_match():
+    """Legacy: no match -> all '-'."""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'structured_value': {'discounts': [{'mpn': 'OTHER', 'order_id': 'X', 'id': 'i', 'code': 'c'}]},
+        }
+    ]
+    result = utils.get_flex_discounts(params, 'MPN-A', 'ORD-1')
+    assert result['discounted_mpn'] == '-'
+
+
+def test_get_flex_discounts_new_format_match():
+    """New cb_flex_discount_final: match by MPN only; request order # for context; new columns."""
+    params = [
+        {
+            'id': 'cb_flex_discount_final',
+            'structured_value': {
+                'discounts': [
+                    {
+                        'mpn': '30001472CB',
+                        'id': 'uuid-1',
+                        'code': 'FLEX_EDU',
+                        'application_type': 'FULL_CHAIN',
+                        'discounts': [
+                            {'type': 'PERCENTAGE_DISCOUNT', 'values': [{'discountValue': 15}]}
+                        ],
+                    }
+                ]
+            },
+        }
+    ]
+    result = utils.get_flex_discounts(params, '30001472CB', 'P9201150234')
+    assert result['discounted_mpn'] == '30001472CB'
+    assert result['discounted_order_id'] == 'P9201150234'
+    assert result['discount_id'] == 'uuid-1'
+    assert result['discount_code'] == 'FLEX_EDU'
+    assert result['application_type'] == 'FULL_CHAIN'
+    assert result['discount_type'] == 'PERCENTAGE_DISCOUNT'
+    assert result['discount_value'] == '15'
+
+
+def test_get_flex_discounts_new_format_multiple_nested():
+    """New format: multiple nested discounts -> concatenate type and value (amount only)."""
+    params = [
+        {
+            'id': 'cb_flex_discount_final',
+            'structured_value': {
+                'discounts': [
+                    {
+                        'mpn': 'MPN-X',
+                        'id': 'id1',
+                        'code': 'C1',
+                        'application_type': 'FULL_CHAIN',
+                        'discounts': [
+                            {'type': 'PERCENTAGE_DISCOUNT', 'values': [{'discountValue': 10}]},
+                            {'type': 'FIXED_DISCOUNT', 'values': [{'discountValue': 20}]},
+                        ],
+                    }
+                ]
+            },
+        }
+    ]
+    result = utils.get_flex_discounts(params, 'MPN-X', 'ORD-R')
+    assert result['discount_type'] == 'PERCENTAGE_DISCOUNT,FIXED_DISCOUNT'
+    assert result['discount_value'] == '10,20'
+
+
+def test_get_flex_discounts_failover_prefer_final():
+    """When both params have data, prefer cb_flex_discount_final."""
+    params = [
+        {
+            'id': 'cb_flex_discounts_applied',
+            'structured_value': {
+                'discounts': [{'mpn': 'MPN-A', 'order_id': 'ORD-1', 'id': 'legacy', 'code': 'L'}],
+            },
+        },
+        {
+            'id': 'cb_flex_discount_final',
+            'structured_value': {
+                'discounts': [
+                    {
+                        'mpn': 'MPN-A',
+                        'id': 'final',
+                        'code': 'F',
+                        'application_type': 'FULL_CHAIN',
+                        'discounts': [{'type': 'PERCENTAGE_DISCOUNT', 'values': [{'discountValue': 5}]}],
+                    }
+                ]
+            },
+        },
+    ]
+    result = utils.get_flex_discounts(params, 'MPN-A', 'ORD-1')
+    assert result['discount_id'] == 'final'
+    assert result['application_type'] == 'FULL_CHAIN'
+    assert result['discount_value'] == '5'
+
+
+def test_get_flex_discounts_failover_final_empty_use_applied():
+    """When final is present but empty, use cb_flex_discounts_applied."""
+    params = [
+        {
+            'id': 'cb_flex_discount_final',
+            'structured_value': {'discounts': []},
+        },
+        {
+            'id': 'cb_flex_discounts_applied',
+            'structured_value': {
+                'discounts': [{'mpn': 'MPN-B', 'order_id': 'O2', 'id': 'applied-id', 'code': 'A'}],
+            },
+        },
+    ]
+    result = utils.get_flex_discounts(params, 'MPN-B', 'O2')
+    assert result['discount_id'] == 'applied-id'
+    assert result['application_type'] == '-'

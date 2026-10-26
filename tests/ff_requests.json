@@ -506,6 +506,29 @@
           }
         },
         {
+          "id": "cb_flex_discount_final",
+          "name": "cb_flex_discount_final",
+          "type": "object",
+          "phase": "fulfillment",
+          "value": "",
+          "structured_value": {
+            "discounts": [
+              {
+                "mpn": "MPN-R-001",
+                "id": "55555555-8768-4e8a-9a2f-fb6a6b08f550",
+                "code": "FLEX_DISC_EDU",
+                "application_type": "FULL_CHAIN",
+                "discounts": [
+                  {
+                    "type": "PERCENTAGE_DISCOUNT",
+                    "values": [{"discountValue": 15}]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
           "id": "t0_f_password",
           "name": "t0_f_password",
           "type": "password",

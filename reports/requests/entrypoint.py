@@ -94,6 +94,9 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 flex_discounts['discounted_order_id'],  # Discounted Adobe Order Id
                 flex_discounts['discount_id'],  # Adobe Discount Id
                 flex_discounts['discount_code'],  # Adobe Discount Code
+                flex_discounts['application_type'],  # Discount Application Type
+                flex_discounts['discount_type'],  # Discount Type
+                flex_discounts['discount_value'],  # Discount Value
                 utils.get_value(request['asset']['tiers'], 'tier1', 'id'),  # Reseller ID
                 utils.get_value(request['asset']['tiers'], 'tier1', 'name'),  # Reseller Name
                 utils.get_value(request['asset']['tiers'], 'customer', 'name'),  # End Customer Name

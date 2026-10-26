@@ -349,81 +349,148 @@ def get_three_years_recommitment(value: {}) -> str:
     return 'Y' if get_structured_value(value, '3YR') == True else 'N'
 
 
+def _get_flex_discounts_payload(params: list):
+    """
+    Resolve which flex discount source to use and return its payload.
+    Prefer cb_flex_discount_final when it has data; else cb_flex_discounts_applied.
+
+    :param params: asset parameters list
+    :return: tuple (source, data) where source is 'cb_flex_discount_final',
+             'cb_flex_discounts_applied', or None; data is dict with 'discounts' key or None
+    """
+    def get_discounts_from_param(param):
+        if not param:
+            return None
+        data = None
+        if param.get('structured_value'):
+            data = param['structured_value']
+        elif param.get('value') and param['value'] not in ('', '-'):
+            try:
+                data = json.loads(param['value'])
+            except (TypeError, json.JSONDecodeError):
+                return None
+        if not data:
+            return None
+        discounts = data.get('discounts') if isinstance(data, dict) else None
+        return data if (isinstance(discounts, list) and len(discounts) > 0) else None
+
+    final_param = None
+    applied_param = None
+    for param in params or []:
+        if param.get('id') == 'cb_flex_discount_final':
+            final_param = param
+        elif param.get('id') == 'cb_flex_discounts_applied':
+            applied_param = param
+
+    data = get_discounts_from_param(final_param)
+    if data is not None:
+        return ('cb_flex_discount_final', data)
+    data = get_discounts_from_param(applied_param)
+    if data is not None:
+        return ('cb_flex_discounts_applied', data)
+    return (None, None)
+
+
+def _extract_discount_value_amount(nested_discount: dict) -> str:
+    """Extract amount only from nested discount values (e.g. discountValue or value)."""
+    values = nested_discount.get('values') or []
+    if not isinstance(values, list):
+        return '-'
+    parts = []
+    for v in values:
+        if not isinstance(v, dict):
+            continue
+        amount = v.get('discountValue') if v.get('discountValue') is not None else v.get('value')
+        if amount is not None:
+            parts.append(str(amount))
+    return ','.join(parts) if parts else '-'
+
+
 def get_flex_discounts(params: list, item_mpn: str, order_id: str) -> dict:
     """
-    Parse the cb_flex_discounts_applied parameter and match discounts for a specific item.
+    Parse flex discount parameter (cb_flex_discount_final or cb_flex_discounts_applied)
+    and match discounts for a specific item. Prefers cb_flex_discount_final when present.
 
     :type params: list
     :type item_mpn: str
     :type order_id: str
     :param params: asset parameters list
     :param item_mpn: MPN of the item to match
-    :param order_id: Adobe Order ID to match
-    :return: dict with matched discount fields or '-' if not found
+    :param order_id: Request's Adobe Order ID (used for legacy matching and as context for new)
+    :return: dict with discounted_mpn, discounted_order_id, discount_id, discount_code,
+             application_type, discount_type, discount_value
     """
     result = {
         'discounted_mpn': '-',
         'discounted_order_id': '-',
         'discount_id': '-',
         'discount_code': '-',
+        'application_type': '-',
+        'discount_type': '-',
+        'discount_value': '-',
     }
 
     try:
-        # Find the cb_flex_discounts_applied parameter
-        flex_param = None
-        for param in params:
-            if param.get('id') == 'cb_flex_discounts_applied':
-                flex_param = param
-                break
-
-        if not flex_param:
+        source, flex_data = _get_flex_discounts_payload(params)
+        if not source or not flex_data:
             return result
 
-        # For object-type parameters, data is in 'structured_value', not 'value'
-        flex_discounts_data = None
-        if 'structured_value' in flex_param and flex_param['structured_value']:
-            flex_discounts_data = flex_param['structured_value']
-        elif 'value' in flex_param and flex_param['value']:
-            # Fallback: try parsing from 'value' field if it's a JSON string
-            value = flex_param['value']
-            if value and value != '-':
-                flex_discounts_data = json.loads(value)
+        discounts = flex_data.get('discounts', [])
 
-        if not flex_discounts_data:
+        if source == 'cb_flex_discounts_applied':
+            # Legacy: match by MPN + order_id; new columns stay '-'
+            matched_mpns = []
+            matched_order_ids = []
+            matched_ids = []
+            matched_codes = []
+            for discount in discounts:
+                if discount.get('mpn') == item_mpn and discount.get('order_id') == order_id:
+                    matched_mpns.append(discount.get('mpn', ''))
+                    matched_order_ids.append(discount.get('order_id', ''))
+                    matched_ids.append(discount.get('id', ''))
+                    matched_codes.append(discount.get('code', ''))
+            if matched_mpns:
+                result['discounted_mpn'] = ','.join(matched_mpns)
+                result['discounted_order_id'] = ','.join(matched_order_ids)
+                result['discount_id'] = ','.join(matched_ids)
+                result['discount_code'] = ','.join(matched_codes)
             return result
 
-        # Get discounts array
-        discounts = flex_discounts_data.get('discounts', [])
-
-        if not discounts:
-            return result
-
-        # Find matching discounts for this item
+        # New: cb_flex_discount_final — match by MPN only; fill all columns
+        app_types = []
+        discount_types = []
+        discount_values = []
         matched_mpns = []
-        matched_order_ids = []
-        matched_discount_ids = []
-        matched_discount_codes = []
+        matched_ids = []
+        matched_codes = []
 
         for discount in discounts:
-            discount_mpn = discount.get('mpn', '')
-            discount_order_id = discount.get('order_id', '')
+            if discount.get('mpn') != item_mpn:
+                continue
+            matched_mpns.append(discount.get('mpn', ''))
+            matched_ids.append(discount.get('id', ''))
+            matched_codes.append(discount.get('code', ''))
+            app_types.append(discount.get('application_type') or '-')
+            nested = discount.get('discounts') or []
+            types_part = []
+            values_part = []
+            for nd in nested:
+                if isinstance(nd, dict):
+                    types_part.append(nd.get('type') or '-')
+                    values_part.append(_extract_discount_value_amount(nd))
+            discount_types.append(','.join(types_part) if types_part else '-')
+            discount_values.append(','.join(values_part) if values_part else '-')
 
-            # Match by MPN and Order ID
-            if discount_mpn == item_mpn and discount_order_id == order_id:
-                matched_mpns.append(discount_mpn)
-                matched_order_ids.append(discount_order_id)
-                matched_discount_ids.append(discount.get('id', ''))
-                matched_discount_codes.append(discount.get('code', ''))
-
-        # If matches found, concatenate with comma
         if matched_mpns:
             result['discounted_mpn'] = ','.join(matched_mpns)
-            result['discounted_order_id'] = ','.join(matched_order_ids)
-            result['discount_id'] = ','.join(matched_discount_ids)
-            result['discount_code'] = ','.join(matched_discount_codes)
+            result['discounted_order_id'] = order_id
+            result['discount_id'] = ','.join(matched_ids)
+            result['discount_code'] = ','.join(matched_codes)
+            result['application_type'] = ','.join(app_types)
+            result['discount_type'] = ','.join(discount_types)
+            result['discount_value'] = ','.join(discount_values)
 
     except (json.JSONDecodeError, TypeError, KeyError, AttributeError):
-        # If any error occurs (invalid JSON, wrong structure, etc.), return default values
         pass
 
     return result

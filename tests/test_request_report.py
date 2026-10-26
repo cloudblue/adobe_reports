@@ -74,12 +74,17 @@ def test_requests_generate(sync_client_factory, response_factory, progress,
     result = list(entrypoint.generate(client, parameters, progress))
     assert len(result) == 6  # number of items on ff_request.json
 
-    # Verify Hub ID and Hub Name are in the result (columns 27 and 28, index starting at 0)
-    # The columns are added before Provider ID.
-    # Provider ID was at index 27 before, now it is at index 29.
-    # Hub ID at index 27, Hub Name at index 28.
-    assert result[0][27] == 'HB-0309-9389'
-    assert result[0][28] == 'IMC DEMOS'
+    # Column count: 58 (55 original + 3 flex discount columns: Application Type, Type, Value)
+    assert len(result[0]) == 58
+
+    # Hub ID and Hub Name (after 3 new flex columns at 23–25): indices 30, 31
+    assert result[0][30] == 'HB-0309-9389'
+    assert result[0][31] == 'IMC DEMOS'
+
+    # Flex discount new columns (indices 23–25); fixture has cb_flex_discount_final for MPN-R-001
+    assert result[0][23] == 'FULL_CHAIN'
+    assert result[0][24] == 'PERCENTAGE_DISCOUNT'
+    assert result[0][25] == '15'
 
 
 def test_requests_generate_skip_excluded_hubs(sync_client_factory, response_factory, progress, asset, ff_requests):
