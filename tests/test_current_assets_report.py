@@ -57,12 +57,12 @@ def run(sync_client_factory, response_factory, progress):
     return _generate
 
 
-def _set_param(asset, param_id, value):
+def _set_param(asset, name, value, param_id=None):
     for param in asset['params']:
-        if param['id'] == param_id:
+        if param['name'] == name:
             param['value'] = value
             return
-    asset['params'].append({'id': param_id, 'name': param_id, 'value': value})
+    asset['params'].append({'id': param_id or name, 'name': name, 'value': value})
 
 
 def test_current_assets_generate(run, progress, assets):
@@ -138,7 +138,7 @@ def test_current_assets_3yc_filter(run, progress, assets):
     assert run(assets, params) == []
 
     assets = copy.deepcopy(assets)
-    _set_param(assets[0], 'commitment_status', 'COMMITTED')
+    _set_param(assets[0], 'commitment_status', 'COMMITTED', 'PRM-207-752-513-0099')
     result = run(assets, params)
 
     assert len(result) == 4
@@ -161,3 +161,19 @@ def test_current_assets_multiple_marketplaces_query(run, assets):
     query = ASSETS_QUERY.replace('(MP-65669)', '(MP-65669,MP-12345)')
 
     assert len(run(assets, params, query)) == 4
+
+
+def test_current_assets_params_matched_by_name(run, assets):
+    # params added later to the product get a generated id, only the name is stable
+    assets = copy.deepcopy(assets)
+    for param in assets[0]['params']:
+        if param['name'] == 'discount_group':
+            param['id'] = 'PRM-207-752-513-0065'
+    _set_param(assets[0], 'discount_group_consumables', '02A12', 'PRM-207-752-513-0092')
+    _set_param(assets[0], 'external_reference_id', 'EXT-1', 'PRM-207-752-513-0087')
+    row = run(assets)[0]
+
+    assert row[22] == '04A12'  # Discount Group Licenses
+    assert row[23] == '02A12'  # Discount Group Consumables
+    assert row[30] == 'EXT-1'  # External Reference ID
+    assert row[19] == 'P1005042327'  # Adobe Customer ID (id == name)

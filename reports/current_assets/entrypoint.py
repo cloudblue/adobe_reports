@@ -8,6 +8,10 @@ from reports import utils
 from reports import api_calls
 from reports.requests.entrypoint import EXCLUDED_PRODUCTION_HUB_IDS
 
+# Asset params must be matched by name: params added later to the product get a generated id
+# (e.g. PRM-463-843-541-0065 for discount_group), only the oldest ones have id == name.
+_param = utils.get_param_value_by_name
+
 
 def generate(client, parameters, progress_callback, renderer_type=None, extra_context=None, ):
     assets = api_calls.request_current_assets(client, parameters)
@@ -49,18 +53,18 @@ def generate(client, parameters, progress_callback, renderer_type=None, extra_co
                 utils.convert_to_datetime(
                     utils.get_value(asset.get('events', {}), 'created', 'at'),  # Created At
                 ),
-                utils.get_param_value(params, 'adobe_customer_id'),  # Adobe Customer ID
-                utils.get_param_value(params, 'adobe_vip_number'),  # Adobe VIP Number
-                utils.get_param_value(params, 'adobe_user_email'),  # Adobe User Email
-                utils.get_param_value(params, 'discount_group'),  # Discount Group Licenses
-                utils.get_param_value(params, 'discount_group_consumables'),  # Discount Group Cons.
-                utils.get_param_value(params, 'renewal_date'),  # Renewal Date
-                utils.get_param_value(params, 'auto_renewal_status'),  # Auto Renewal Status
-                utils.get_param_value(params, 'commitment_status'),  # 3YC Status
-                utils.get_param_value(params, 'commitment_start_date'),  # 3YC Start Date
-                utils.get_param_value(params, 'commitment_end_date'),  # 3YC End Date
-                utils.get_param_value(params, 'recommitment_status'),  # 3YC Recommitment Status
-                utils.get_param_value(params, 'external_reference_id'),  # External Reference ID
+                _param(params, 'adobe_customer_id'),  # Adobe Customer ID
+                _param(params, 'adobe_vip_number'),  # Adobe VIP Number
+                _param(params, 'adobe_user_email'),  # Adobe User Email
+                _param(params, 'discount_group'),  # Discount Group Licenses
+                _param(params, 'discount_group_consumables'),  # Discount Group Cons.
+                _param(params, 'renewal_date'),  # Renewal Date
+                _param(params, 'auto_renewal_status'),  # Auto Renewal Status
+                _param(params, 'commitment_status'),  # 3YC Status
+                _param(params, 'commitment_start_date'),  # 3YC Start Date
+                _param(params, 'commitment_end_date'),  # 3YC End Date
+                _param(params, 'recommitment_status'),  # 3YC Recommitment Status
+                _param(params, 'external_reference_id'),  # External Reference ID
                 utils.get_basic_value(item, 'display_name'),  # Item Name
                 utils.get_basic_value(item, 'mpn'),  # MPN
                 utils.get_basic_value(item, 'quantity'),  # Current Quantity
@@ -78,7 +82,7 @@ def _is_excluded(asset, connection, parameters):
     if conn_type == 'production' and utils.get_hub_id(connection) in EXCLUDED_PRODUCTION_HUB_IDS:
         return True
     if parameters.get('commitment_status') == '3yc':
-        commitment = utils.get_param_value(asset.get('params', []), 'commitment_status')
+        commitment = _param(asset.get('params', []), 'commitment_status')
         if commitment == '-' or commitment == '':
             return True
     return False
